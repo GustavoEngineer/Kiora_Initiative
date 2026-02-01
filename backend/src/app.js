@@ -3,7 +3,11 @@ const cors = require('cors');
 const app = express();
 
 // Middlewares Globales
-app.use(cors());
+app.use(cors({
+  origin: process.env.CORS_ORIGIN || 'https://kiora-frontend.vercel.app',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true
+}));
 app.use(express.json());
 
 // Main Route (Health check)
