@@ -53,7 +53,7 @@ production
 **Entorno:** Production, Preview
 
 > [!NOTE]
-> Vercel normalmente establece esta variable automáticamente, pero es recomendable configurarla explícitamente.
+> Vercel establece esta variable automáticamente a `production`. No necesitas configurarla explícitamente, pero si tienes problemas, confírmala manualmente.
 
 ---
 
@@ -65,6 +65,33 @@ Después de configurar las variables:
 2. Verifica los logs de despliegue en Vercel
 3. Prueba el endpoint de salud: `https://tu-backend.vercel.app/`
 4. Verifica que CORS funcione correctamente desde el frontend
+
+---
+
+## Troubleshooting
+
+### Error 500 al crear/actualizar datos
+
+Si recibes errores 500 al hacer peticiones POST/PUT:
+
+1. **Verifica los logs en Vercel:**
+   - Ve a tu proyecto → **Deployments** → Click en el deployment actual
+   - Ve a la pestaña **Functions** → Selecciona la función `/api`
+   - Revisa los logs para ver el error exacto
+
+2. **Errores comunes:**
+   - `no pg_hba.conf entry` → Verifica que `DATABASE_URL` esté correctamente configurada
+   - `SSL required` → Asegúrate de que el código tenga configuración SSL (ya incluida en `src/config/supabase.js`)
+   - `relation "tabla" does not exist` → La tabla no existe en Supabase, verifica tu esquema de base de datos
+
+3. **Verifica la configuración SSL:**
+   - El archivo `src/config/supabase.js` debe tener `ssl: { rejectUnauthorized: false }` en producción
+
+### CORS Errors
+
+Si recibes errores de CORS:
+- Verifica que `FRONTEND_URL` en Vercel sea exactamente igual a la URL del frontend
+- No incluyas `/` al final de `FRONTEND_URL`
 
 ## Desarrollo Local
 
