@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { createBloc, getBlocs } from '../services/api'
 import '../styles/TaskManager.css'
 
 function TaskManager() {
+  const navigate = useNavigate()
   const [blocs, setBlocs] = useState([])
   const [blocName, setBlocName] = useState('')
   const [loading, setLoading] = useState(false)
@@ -23,6 +25,10 @@ function TaskManager() {
 
     fetchBlocs()
   }, [])
+
+  const handleBlocClick = (blocId) => {
+    navigate(`/bloc/${blocId}`)
+  }
 
   const handleCreateBloc = async (e) => {
     e.preventDefault()
@@ -72,7 +78,11 @@ function TaskManager() {
         <div className="blocs-grid">
           {blocs.length > 0 ? (
             blocs.map((bloc, index) => (
-              <div key={bloc.id} className="bloc-card">
+              <div
+                key={bloc.id}
+                className="bloc-card"
+                onClick={() => handleBlocClick(bloc.id)}
+              >
                 <div className="bloc-card-inner">
                   <div className="bloc-icon">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
