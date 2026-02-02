@@ -1,152 +1,23 @@
-/* Import Google Fonts for tactical/military aesthetic */
-@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700;800;900&display=swap');
+/* Google Fonts Import */
+@import url('https://fonts.googleapis.com/css2?family=Google+Sans:wght@300;400;500;600;700&display=swap');
 
-/* CSS Variables from theme.js */
-:root {
-  /* Primary Colors - Cyan/Blue accents */
-  --color-primary-main: #00D9FF;
-  --color-primary-light: #5CE1FF;
-  --color-primary-dark: #00A8CC;
-  --color-primary-glow: #33E0FF;
+/* Minimal Global Styles */
 
-  /* Secondary Colors - Blue highlights */
-  --color-secondary-main: #0099FF;
-  --color-secondary-light: #66BBFF;
-  --color-secondary-dark: #0077CC;
-
-  /* Background Colors - Dark theme */
-  --color-bg-primary: #0A0A0A;
-  --color-bg-secondary: #1A1A1A;
-  --color-bg-tertiary: #252525;
-  --color-bg-overlay: rgba(0, 0, 0, 0.85);
-  --color-bg-glass: rgba(26, 26, 26, 0.7);
-
-  /* Text Colors */
-  --color-text-primary: #FFFFFF;
-  --color-text-secondary: #B0B0B0;
-  --color-text-tertiary: #808080;
-  --color-text-accent: #00D9FF;
-  --color-text-muted: #606060;
-
-  /* Border Colors */
-  --color-border-primary: #00D9FF;
-  --color-border-secondary: #404040;
-  --color-border-subtle: #2A2A2A;
-  --color-border-glow: rgba(0, 217, 255, 0.5);
-
-  /* Status Colors */
-  --color-success: #4CAF50;
-  --color-warning: #FFC107;
-  --color-error: #F44336;
-  --color-info: #2196F3;
-
-  /* UI Elements */
-  --color-button-primary: #00D9FF;
-  --color-button-secondary: #2A2A2A;
-  --color-button-hover: #5CE1FF;
-  --color-input-bg: #1A1A1A;
-  --color-input-border: #404040;
-  --color-input-focus: #00D9FF;
-  --color-progress-bar: #00D9FF;
-  --color-progress-bg: #2A2A2A;
-
-  /* Typography */
-  --font-primary: 'Rajdhani', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-secondary: 'Orbitron', 'Roboto Mono', monospace;
-  --font-mono: 'JetBrains Mono', 'Courier New', monospace;
-
-  /* Font Sizes */
-  --font-xs: 0.75rem;
-  --font-sm: 0.875rem;
-  --font-base: 1rem;
-  --font-lg: 1.125rem;
-  --font-xl: 1.25rem;
-  --font-2xl: 1.5rem;
-  --font-3xl: 1.875rem;
-  --font-4xl: 2.25rem;
-  --font-5xl: 3rem;
-
-  /* Font Weights */
-  --font-light: 300;
-  --font-normal: 400;
-  --font-medium: 500;
-  --font-semibold: 600;
-  --font-bold: 700;
-  --font-extrabold: 800;
-
-  /* Spacing */
-  --spacing-1: 0.25rem;
-  --spacing-2: 0.5rem;
-  --spacing-3: 0.75rem;
-  --spacing-4: 1rem;
-  --spacing-5: 1.25rem;
-  --spacing-6: 1.5rem;
-  --spacing-8: 2rem;
-  --spacing-10: 2.5rem;
-  --spacing-12: 3rem;
-  --spacing-16: 4rem;
-  --spacing-20: 5rem;
-  --spacing-24: 6rem;
-
-  /* Border Radius */
-  --radius-sm: 0.125rem;
-  --radius-base: 0.25rem;
-  --radius-md: 0.375rem;
-  --radius-lg: 0.5rem;
-  --radius-xl: 0.75rem;
-  --radius-2xl: 1rem;
-  --radius-full: 9999px;
-
-  /* Shadows */
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.5);
-  --shadow-base: 0 1px 3px 0 rgba(0, 0, 0, 0.7), 0 1px 2px 0 rgba(0, 0, 0, 0.6);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.8), 0 2px 4px -1px rgba(0, 0, 0, 0.6);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.9), 0 4px 6px -2px rgba(0, 0, 0, 0.7);
-  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.9), 0 10px 10px -5px rgba(0, 0, 0, 0.8);
-  --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.95);
-  --shadow-glow: 0 0 20px rgba(0, 217, 255, 0.4);
-  --shadow-glow-strong: 0 0 30px rgba(0, 217, 255, 0.6);
-  --shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.6);
-
-  /* Transitions */
-  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-base: 200ms cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-medium: 300ms cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-slow: 500ms cubic-bezier(0.4, 0, 0.2, 1);
-
-  /* Effects */
-  --blur-sm: blur(4px);
-  --blur-base: blur(8px);
-  --blur-md: blur(12px);
-  --blur-lg: blur(16px);
-  --blur-xl: blur(24px);
-
-  /* Gradients */
-  --gradient-primary: linear-gradient(135deg, #00D9FF 0%, #0099FF 100%);
-  --gradient-dark: linear-gradient(180deg, #1A1A1A 0%, #0A0A0A 100%);
-  --gradient-overlay: linear-gradient(180deg, rgba(10, 10, 10, 0) 0%, rgba(10, 10, 10, 0.9) 100%);
-  --gradient-glow: radial-gradient(circle, rgba(0, 217, 255, 0.2) 0%, rgba(0, 217, 255, 0) 70%);
-  --gradient-progress: linear-gradient(90deg, #00A8CC 0%, #00D9FF 50%, #5CE1FF 100%);
-}
-
-/* Global Reset */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* Base HTML & Body */
 html,
 body {
   height: 100%;
   width: 100%;
-  background-color: var(--color-bg-primary);
-  color: var(--color-text-primary);
-  font-family: var(--font-primary);
+  background-color: #ffffff;
+  color: #333;
+  font-family: 'Google Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
   line-height: 1.5;
-  font-weight: var(--font-normal);
-  overflow-x: hidden;
+  font-weight: 400;
 }
 
 body {
@@ -155,12 +26,10 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Root Container */
 #root {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background-color: var(--color-bg-primary);
 }
 
 /* Typography */
@@ -170,146 +39,81 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: var(--font-secondary);
-  font-weight: var(--font-bold);
-  letter-spacing: 0.05em;
-  color: var(--color-text-primary);
+  font-weight: 600;
+  color: #000;
 }
 
 h1 {
-  font-size: var(--font-4xl);
-  text-transform: uppercase;
+  font-size: 2rem;
 }
 
 h2 {
-  font-size: var(--font-3xl);
-  text-transform: uppercase;
+  font-size: 1.5rem;
 }
 
 h3 {
-  font-size: var(--font-2xl);
-}
-
-h4 {
-  font-size: var(--font-xl);
-}
-
-h5 {
-  font-size: var(--font-lg);
-}
-
-h6 {
-  font-size: var(--font-base);
+  font-size: 1.25rem;
 }
 
 /* Links */
 a {
-  color: var(--color-primary-main);
+  color: #333;
   text-decoration: none;
-  transition: color var(--transition-base);
-  font-weight: var(--font-medium);
 }
 
 a:hover {
-  color: var(--color-primary-light);
+  color: #000;
+  text-decoration: underline;
 }
 
 /* Buttons */
 button {
-  font-family: var(--font-primary);
-  font-weight: var(--font-semibold);
+  font-family: inherit;
   cursor: pointer;
-  transition: all var(--transition-base);
   border: none;
   background: none;
-  letter-spacing: 0.05em;
-}
-
-button:hover {
-  transform: translateY(-1px);
-}
-
-button:active {
-  transform: translateY(0);
 }
 
 /* Form Elements */
 input,
 textarea,
 select {
-  font-family: var(--font-primary);
-  font-size: var(--font-base);
-  color: var(--color-text-primary);
-  background-color: var(--color-input-bg);
-  border: 1px solid var(--color-input-border);
-  border-radius: var(--radius-md);
-  padding: var(--spacing-3) var(--spacing-4);
-  transition: all var(--transition-base);
+  font-family: inherit;
+  font-size: 1rem;
+  color: #333;
 }
 
-input:focus,
-textarea:focus,
-select:focus {
-  outline: none;
-  border-color: var(--color-input-focus);
-  box-shadow: var(--shadow-glow);
+input::placeholder,
+textarea::placeholder {
+  color: #999;
 }
 
-/* Custom Scrollbar */
+/* Scrollbar */
 ::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--color-bg-secondary);
-  border-radius: var(--radius-base);
+  background: #f5f5f5;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--color-primary-dark);
-  border-radius: var(--radius-base);
-  transition: background var(--transition-base);
+  background: #ccc;
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-primary-main);
-  box-shadow: var(--shadow-glow);
-}
-
-/* Firefox Scrollbar */
-* {
-  scrollbar-width: thin;
-  scrollbar-color: var(--color-primary-dark) var(--color-bg-secondary);
+  background: #999;
 }
 
 /* Selection */
 ::selection {
-  background: var(--color-primary-main);
-  color: var(--color-bg-primary);
+  background: #e0e0e0;
+  color: #000;
 }
 
 ::-moz-selection {
-  background: var(--color-primary-main);
-  color: var(--color-bg-primary);
-}
-
-/* Utility Classes */
-.text-accent {
-  color: var(--color-text-accent);
-}
-
-.text-glow {
-  text-shadow: var(--shadow-glow);
-}
-
-.border-glow {
-  box-shadow: var(--shadow-glow);
-}
-
-.gradient-text {
-  background: var(--gradient-primary);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  background: #e0e0e0;
+  color: #000;
 }

@@ -6,19 +6,19 @@
 export const theme = {
     // Color Palette
     colors: {
-        // Primary Colors - Cyan/Blue accents
+        // Primary Colors - Purple/Violet accents
         primary: {
-            main: '#00D9FF',        // Vibrant cyan blue (main accent)
-            light: '#5CE1FF',       // Light cyan
-            dark: '#00A8CC',        // Dark cyan
-            glow: '#33E0FF',        // Cyan glow effect
+            main: '#8B7CFF',        // Vibrant purple (main accent)
+            light: '#A89FF5',       // Light pastel purple
+            dark: '#6B5DD6',        // Dark purple
+            glow: '#9D8FFF',        // Purple glow effect
         },
 
-        // Secondary Colors - Blue highlights
+        // Secondary Colors - Purple highlights
         secondary: {
-            main: '#0099FF',        // Bright blue
-            light: '#66BBFF',       // Light blue
-            dark: '#0077CC',        // Dark blue
+            main: '#9D8FFF',        // Bright purple
+            light: '#B8ACFF',       // Light purple  
+            dark: '#7B6DD6',        // Dark purple
         },
 
         // Background Colors - Dark theme
@@ -35,16 +35,16 @@ export const theme = {
             primary: '#FFFFFF',     // White - main text
             secondary: '#B0B0B0',   // Light gray - secondary text
             tertiary: '#808080',    // Medium gray - tertiary/disabled text
-            accent: '#00D9FF',      // Orange - highlighted text
+            accent: '#A89FF5',      // Purple - highlighted text
             muted: '#606060',       // Dark gray - muted text
         },
 
         // Border Colors
         border: {
-            primary: '#00D9FF',     // Orange borders for highlighted elements
+            primary: '#8B7CFF',     // Purple borders for highlighted elements
             secondary: '#404040',   // Gray borders for standard elements
             subtle: '#2A2A2A',      // Very subtle borders
-            glow: 'rgba(0, 217, 255, 0.5)', // Orange glow for borders
+            glow: 'rgba(139, 124, 255, 0.5)', // Purple glow for borders
         },
 
         // Status Colors
@@ -57,13 +57,13 @@ export const theme = {
 
         // UI Elements
         ui: {
-            buttonPrimary: '#00D9FF',
+            buttonPrimary: '#8B7CFF',
             buttonSecondary: '#2A2A2A',
-            buttonHover: '#5CE1FF',
+            buttonHover: '#A89FF5',
             inputBg: '#1A1A1A',
             inputBorder: '#404040',
-            inputFocus: '#00D9FF',
-            progressBar: '#00D9FF',
+            inputFocus: '#8B7CFF',
+            progressBar: '#8B7CFF',
             progressBg: '#2A2A2A',
         }
     },
@@ -148,8 +148,8 @@ export const theme = {
         lg: '0 10px 15px -3px rgba(0, 0, 0, 0.9), 0 4px 6px -2px rgba(0, 0, 0, 0.7)',
         xl: '0 20px 25px -5px rgba(0, 0, 0, 0.9), 0 10px 10px -5px rgba(0, 0, 0, 0.8)',
         '2xl': '0 25px 50px -12px rgba(0, 0, 0, 0.95)',
-        glow: '0 0 20px rgba(0, 217, 255, 0.4)',
-        glowStrong: '0 0 30px rgba(0, 217, 255, 0.6)',
+        glow: '0 0 20px rgba(139, 124, 255, 0.4)',
+        glowStrong: '0 0 30px rgba(139, 124, 255, 0.6)',
         inner: 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.6)',
     },
 
@@ -194,11 +194,11 @@ export const theme = {
         },
 
         gradients: {
-            primary: 'linear-gradient(135deg, #00D9FF 0%, #0099FF 100%)',
+            primary: 'linear-gradient(135deg, #8B7CFF 0%, #9D8FFF 100%)',
             dark: 'linear-gradient(180deg, #1A1A1A 0%, #0A0A0A 100%)',
             overlay: 'linear-gradient(180deg, rgba(10, 10, 10, 0) 0%, rgba(10, 10, 10, 0.9) 100%)',
-            glow: 'radial-gradient(circle, rgba(0, 217, 255, 0.2) 0%, rgba(0, 217, 255, 0) 70%)',
-            progressBar: 'linear-gradient(90deg, #00A8CC 0%, #00D9FF 50%, #5CE1FF 100%)',
+            glow: 'radial-gradient(circle, rgba(139, 124, 255, 0.2) 0%, rgba(139, 124, 255, 0) 70%)',
+            progressBar: 'linear-gradient(90deg, #6B5DD6 0%, #8B7CFF 50%, #A89FF5 100%)',
         },
 
         backdrop: {
