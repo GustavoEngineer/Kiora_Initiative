@@ -34,6 +34,9 @@ app.use((err, req, res, next) => {
 // Server configuration
 const PORT = process.env.PORT || 3000;
 
+// Para Vercel (exportar la app como módulo)
+module.exports = app;
+
 // SOLO ejecutamos el listen si NO estamos en producción (o sea, en local)
 if (process.env.NODE_ENV !== 'production') {
     app.listen(PORT, () => {
@@ -41,6 +44,3 @@ if (process.env.NODE_ENV !== 'production') {
         console.log(`CORS permitido para: ${allowedOrigin}`);
     });
 }
-
-// Para Vercel, esto es lo que realmente importa:
-module.exports = app;
