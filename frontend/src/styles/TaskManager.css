@@ -1,105 +1,281 @@
+/* Futuristic Grid Background */
 .task-manager {
-  padding: 20px;
-  max-width: 800px;
-  margin: 0 auto;
+  min-height: 100vh;
+  background: linear-gradient(180deg, #0a0a0f 0%, #151520 100%);
+  padding: 3rem 2rem;
+  position: relative;
+  overflow: hidden;
 }
 
+.task-manager::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image:
+    linear-gradient(rgba(100, 255, 218, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(100, 255, 218, 0.03) 1px, transparent 1px);
+  background-size: 150px 150px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.task-manager>* {
+  position: relative;
+  z-index: 1;
+}
+
+/* Header */
 .task-manager h1 {
   color: #ffffff;
-  margin-bottom: 30px;
+  font-size: 3rem;
+  font-weight: 700;
   text-align: center;
-  font-size: 2.5em;
+  margin-bottom: 3rem;
+  text-shadow: 0 0 20px rgba(100, 255, 218, 0.3);
+  letter-spacing: 2px;
 }
 
-.task-manager h2 {
-  color: #667eea;
-  margin-bottom: 15px;
-  font-size: 1.5em;
-}
-
+/* Create Bloc Section */
 .create-bloc-section {
-  background-color: #1a1a1a;
-  padding: 20px;
-  border-radius: 8px;
-  margin-bottom: 30px;
-  border: 1px solid #333333;
+  max-width: 600px;
+  margin: 0 auto 4rem;
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(100, 255, 218, 0.1);
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+}
+
+.create-bloc-section h2 {
+  color: #64ffda;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  text-align: center;
 }
 
 .bloc-form {
   display: flex;
-  gap: 10px;
-  margin-top: 15px;
+  gap: 1rem;
+  flex-wrap: wrap;
 }
 
 .bloc-input {
   flex: 1;
-  padding: 12px;
-  border: 2px solid #333333;
-  border-radius: 4px;
-  background-color: #0a0a0a;
+  min-width: 200px;
+  padding: 0.875rem 1.25rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(100, 255, 218, 0.2);
+  border-radius: 8px;
   color: #ffffff;
-  font-size: 1em;
-  transition: border-color 0.3s ease;
+  font-size: 1rem;
+  transition: all 0.3s ease;
 }
 
 .bloc-input:focus {
   outline: none;
-  border-color: #667eea;
+  border-color: #64ffda;
+  box-shadow: 0 0 0 3px rgba(100, 255, 218, 0.1);
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .bloc-input::placeholder {
-  color: #666666;
+  color: rgba(255, 255, 255, 0.4);
 }
 
 .bloc-button {
-  padding: 12px 25px;
-  background-color: #667eea;
-  color: white;
+  padding: 0.875rem 2rem;
+  background: linear-gradient(135deg, #64ffda 0%, #00b894 100%);
   border: none;
-  border-radius: 4px;
-  font-size: 1em;
+  border-radius: 8px;
+  color: #0a0a0f;
+  font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(100, 255, 218, 0.3);
 }
 
 .bloc-button:hover:not(:disabled) {
-  background-color: #764ba2;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(100, 255, 218, 0.5);
+}
+
+.bloc-button:active:not(:disabled) {
+  transform: translateY(0);
 }
 
 .bloc-button:disabled {
-  background-color: #444444;
-  cursor: not-allowed;
   opacity: 0.6;
+  cursor: not-allowed;
 }
 
-.blocs-list {
-  background-color: #1a1a1a;
-  padding: 20px;
-  border-radius: 8px;
-  border: 1px solid #333333;
+/* Blocs Grid Container */
+.blocs-grid-container {
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
-.blocs-list ul {
-  list-style: none;
-  padding: 0;
+.blocs-grid-container h2 {
+  color: #64ffda;
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 2rem;
+  text-align: center;
 }
 
-.blocs-list li {
-  background-color: #0a0a0a;
-  padding: 15px;
-  margin-bottom: 10px;
-  border-radius: 4px;
-  color: #ffffff;
-  border-left: 4px solid #667eea;
-  transition: transform 0.2s ease, background-color 0.2s ease;
+/* Blocs Grid */
+.blocs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 2rem;
+  padding: 1rem;
 }
 
-.blocs-list li:hover {
-  background-color: #1f1f1f;
-  transform: translateX(5px);
+/* Bloc Card */
+.bloc-card {
+  aspect-ratio: 1;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(100, 255, 218, 0.15);
+  border-radius: 12px;
+  padding: 0.5rem;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
 }
 
-.blocs-list li:last-child {
-  margin-bottom: 0;
+/* Cyan corner accent */
+.bloc-card::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #64ffda, transparent);
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.bloc-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 2px;
+  height: 0;
+  background: linear-gradient(180deg, #64ffda, transparent);
+  transition: height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.bloc-card:hover {
+  background: rgba(100, 255, 218, 0.05);
+  border-color: #64ffda;
+  box-shadow:
+    0 0 30px rgba(100, 255, 218, 0.3),
+    inset 0 0 30px rgba(100, 255, 218, 0.05);
+  transform: translateY(-4px);
+}
+
+.bloc-card:hover::before {
+  width: 60px;
+}
+
+.bloc-card:hover::after {
+  height: 60px;
+}
+
+/* Card Inner */
+.bloc-card-inner {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+/* Bloc Icon */
+.bloc-icon {
+  width: 80px;
+  height: 80px;
+  color: rgba(255, 255, 255, 0.6);
+  transition: all 0.4s ease;
+}
+
+.bloc-card:hover .bloc-icon {
+  color: #64ffda;
+  filter: drop-shadow(0 0 10px rgba(100, 255, 218, 0.8));
+  transform: scale(1.1);
+}
+
+.bloc-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* Bloc Name */
+.bloc-name {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.95rem;
+  font-weight: 500;
+  text-align: center;
+  transition: color 0.3s ease;
+  padding: 0 0.5rem;
+  word-break: break-word;
+}
+
+.bloc-card:hover .bloc-name {
+  color: #64ffda;
+}
+
+/* No Blocs Message */
+.no-blocs-message {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 4rem 2rem;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 1.1rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .task-manager {
+    padding: 2rem 1rem;
+  }
+
+  .task-manager h1 {
+    font-size: 2rem;
+  }
+
+  .blocs-grid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .bloc-icon {
+    width: 60px;
+    height: 60px;
+  }
+
+  .bloc-name {
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .blocs-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .bloc-form {
+    flex-direction: column;
+  }
+
+  .bloc-button {
+    width: 100%;
+  }
 }
