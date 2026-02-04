@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { getTasks, getBlocById, createTask, updateTask, deleteTask } from '../../services/api'
+import { getTasks, getBlocById, createTask, updateTask, deleteTask, getTags } from '../../services/api'
 import TaskItemCard from './TaskCard'
 import '../../styles/TaskManager.css' // Reusing main styles or create new ones? Assuming reuse or basic for now.
 
@@ -12,13 +12,23 @@ function TaskManager() {
     const [loading, setLoading] = useState(true)
     const [newTaskTitle, setNewTaskTitle] = useState('')
 
+    const [tagsMap, setTagsMap] = useState({})
+
     const fetchData = async () => {
         try {
             setLoading(true)
             const blocData = await getBlocById(blocId)
             setBloc(blocData)
 
-            const allTasks = await getTasks()
+            const [allTasks, allTags] = await Promise.all([getTasks(), getTags()])
+
+            // Create tags map
+            const tMap = {}
+            allTags.forEach(tag => {
+                tMap[tag.id] = tag.name
+            })
+            setTagsMap(tMap)
+
             // Filter by bloc_id or tag_id
             const filteredTasks = allTasks.filter(t => t.bloc_id == blocId || t.tag_id == blocId)
             setTasks(filteredTasks)
@@ -41,7 +51,7 @@ function TaskManager() {
                 const newTask = {
                     title: newTaskTitle,
                     bloc_id: blocId,
-                    completed: false // Assuming 'completed' boolean or 'status'
+
                 }
                 await createTask(newTask)
                 setNewTaskTitle('')
@@ -52,17 +62,7 @@ function TaskManager() {
         }
     }
 
-    const handleToggleStatus = async (task) => {
-        try {
-            const updatedTask = { ...task, completed: !task.completed }
-            await updateTask(task.id, updatedTask)
-            // Optimistic update
-            setTasks(tasks.map(t => t.id === task.id ? updatedTask : t))
-        } catch (error) {
-            console.error('Error updating task:', error)
-            fetchData() // Revert on error
-        }
-    }
+
 
     const handleDeleteTask = async (taskId) => {
         if (window.confirm('¿Eliminar esta tarea?')) {
@@ -135,7 +135,8 @@ function TaskManager() {
                             <TaskItemCard
                                 key={task.id}
                                 task={task}
-                                onToggle={handleToggleStatus}
+                                tagName={tagsMap[task.tag_id]}
+
                                 onUpdateTitle={handleUpdateTitle}
                                 onDelete={handleDeleteTask}
                             />
