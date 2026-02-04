@@ -16,7 +16,7 @@ function TaskCard({ task, tagName, onUpdateTitle, onDelete, onClick, isSelected 
         <motion.div
             layoutId={`task-${task.id}`}
             layout
-            transition={{ type: 'spring', stiffness: 350, damping: 25 }}
+            transition={{ type: 'spring', stiffness: 700, damping: 35 }}
             className={`task-item ${task.completed ? 'completed' : ''} ${isSelected ? 'selected' : ''}`}
             onClick={onClick}
         >

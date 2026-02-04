@@ -24,7 +24,7 @@ function TaskInfo({ task, tagName, onClose }) {
         <motion.div
             layoutId={`task-${task.id}`}
             className="task-info-container"
-            transition={{ type: 'spring', stiffness: 350, damping: 25 }}
+            transition={{ type: 'spring', stiffness: 700, damping: 35 }}
         >
             <button className="close-task-info" onClick={onClose}>
                 ✕
@@ -37,7 +37,7 @@ function TaskInfo({ task, tagName, onClose }) {
                 </span>
             </div>
 
-            <motion.h1 layout="position" className="task-info-title">{task.title}</motion.h1>
+            <h1 className="task-info-title">{task.title}</h1>
 
             <div className="task-info-body">
                 <div className="task-info-row">
