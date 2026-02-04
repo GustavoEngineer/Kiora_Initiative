@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import { createTag } from '../../services/api'
-import '../../styles/TaskManager.css'
+import './AddTask.css'
 
 function AddTask({ blocId, tagsMap, onStartTyping, onClear, onTaskAdded }) {
     const [isExpanded, setIsExpanded] = useState(false)

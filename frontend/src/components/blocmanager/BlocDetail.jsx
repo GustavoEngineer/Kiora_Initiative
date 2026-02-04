@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { getBlocById } from '../../services/api'
-import '../../styles/BlocDetail.css'
+import './BlocDetail.css'
 
 function BlocDetail() {
     const { blocId } = useParams()

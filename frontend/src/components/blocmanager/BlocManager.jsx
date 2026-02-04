@@ -2,8 +2,7 @@ import { useState, useEffect } from 'react'
 import { getBlocs, getTasks, createTask, getTags, createTag, createBloc, updateBloc, deleteBloc } from '../../services/api'
 import BlocCard from './BlocCard'
 import CreateBlocPanel from './CreateBlocPanel'
-import '../../styles/TaskManager.css'
-import '../../styles/BlocDetail.css'
+import './BlocManager.css'
 
 function TaskManager() {
   const [loading, setLoading] = useState(false)

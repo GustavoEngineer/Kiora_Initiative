@@ -1,0 +1,130 @@
+/* Minimal TaskManager Styles */
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  /* Strictly prevent scrolling */
+}
+
+.task-manager {
+  height: 100vh;
+  /* Match viewport height */
+  width: 100vw;
+  background: #ffffff;
+  padding: 2rem;
+  overflow: hidden;
+  /* Ensure content doesn't scroll */
+}
+
+/* App Container */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* min-height: 100vh; Removed to let content dictate height if needed, or keep to center vertically */
+  height: 100vh;
+  /* Fill screen to center vertically */
+  width: 100%;
+  padding-top: 0;
+  /* Removing top padding to center fully if desired, or keep small */
+  justify-content: center;
+  /* Center vertically as well */
+  position: relative;
+  /* Context for absolute header */
+}
+
+/* Information Panel - Matches Scroll Container Height */
+.task-info-wrapper {
+  position: absolute;
+  left: 2rem;
+  top: 6rem;
+  bottom: 8rem;
+  width: 65%;
+  max-width: 900px;
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Common Task View Specifics */
+.tasks-scroll-container {
+  position: absolute;
+  right: 2rem;
+  top: 6rem;
+  bottom: 8rem;
+  width: 40%;
+  max-width: 450px;
+  overflow-y: auto;
+  padding: 1rem;
+  background-color: #f4f4f4;
+  border-radius: 12px;
+  z-index: 50;
+  /* Ensure it is on top for scrolling, but plays nice with other elements */
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.tasks-scroll-container::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.tasks-scroll-container {
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}
+
+.back-button-absolute {
+  position: absolute;
+  top: 2.5rem;
+  left: 2rem;
+  background: none;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  font-weight: 500;
+  color: #333;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.back-button-absolute:hover {
+  text-decoration: underline;
+}
+
+.empty-tasks-message {
+  text-align: center;
+  color: #999;
+  margin-top: 2rem;
+}
+
+.fade-out {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.task-list-wrapper {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.task-list-wrapper.hidden {
+  opacity: 0;
+  transform: translateY(20px);
+  pointer-events: none;
+  position: absolute;
+  /* Take out of flow to let form expand if needed, or just hide */
+  visibility: hidden;
+}

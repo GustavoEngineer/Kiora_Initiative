@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import './BlocCard.css'
 
 const BlocCard = ({ bloc, onUpdate, onDelete }) => {
     const [isFlipped, setIsFlipped] = useState(false)

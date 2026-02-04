@@ -1,0 +1,135 @@
+/* Task Info Styles (Left Side) */
+
+.task-info-container {
+    background: #fff;
+    border-radius: 24px;
+    padding: 3rem;
+    width: 100%;
+    height: 100%;
+    /* min-height was 400px, but 100% is better if wrapper is constrained */
+    /* overflow-y: auto; */
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+    position: relative;
+    border: 1px solid #f0f0f0;
+    display: flex;
+    flex-direction: column;
+    will-change: transform;
+}
+
+.task-info-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: #ccc;
+    font-size: 1.5rem;
+    font-weight: 500;
+    text-align: center;
+}
+
+.close-task-info {
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #999;
+    transition: color 0.2s;
+}
+
+.close-task-info:hover {
+    color: #333;
+}
+
+.task-info-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.task-info-tag {
+    background: #f0f0f0;
+    padding: 0.4rem 1rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #555;
+}
+
+.task-info-status {
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.task-info-status.completed {
+    color: #2e7d32;
+}
+
+.task-info-status.pending {
+    color: #d32f2f;
+}
+
+.task-info-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin: 0 0 2rem 0;
+    line-height: 1.1;
+    color: #111;
+}
+
+.task-info-body {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.task-info-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 1.1rem;
+    color: #444;
+}
+
+.info-label {
+    font-weight: 600;
+    color: #888;
+    width: 120px;
+}
+
+.task-info-description {
+    margin-top: 1rem;
+    padding-top: 2rem;
+    border-top: 1px solid #eee;
+}
+
+.section-title {
+    font-size: 1.2rem;
+    margin: 0 0 1rem 0;
+    color: #333;
+}
+
+.task-info-description p {
+    color: #666;
+    line-height: 1.6;
+    font-size: 1.05rem;
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.4s ease-out forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

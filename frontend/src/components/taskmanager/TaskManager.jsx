@@ -3,7 +3,9 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { getTasks, getBlocById, createTask, updateTask, deleteTask, getTags } from '../../services/api'
 import TaskItemCard from './TaskCard'
 import AddTask from './AddTask'
-import '../../styles/TaskManager.css'
+import TaskInfo from './TaskInfo'
+import './TaskManager.css'
+import { LayoutGroup } from 'framer-motion'
 
 function TaskManager() {
     const { blocId } = useParams()
@@ -47,6 +49,8 @@ function TaskManager() {
         }
     }, [blocId])
 
+    const [selectedTask, setSelectedTask] = useState(null)
+
     const handleTaskAdded = async (newTaskData) => {
         try {
             await createTask(newTaskData)
@@ -62,6 +66,9 @@ function TaskManager() {
             try {
                 await deleteTask(taskId)
                 setTasks(tasks.filter(t => t.id !== taskId))
+                if (selectedTask && selectedTask.id === taskId) {
+                    setSelectedTask(null)
+                }
             } catch (error) {
                 console.error('Error deleting task:', error)
             }
@@ -74,9 +81,16 @@ function TaskManager() {
             const updatedTask = { ...task, title: newTitle }
             await updateTask(task.id, updatedTask)
             setTasks(tasks.map(t => t.id === task.id ? updatedTask : t))
+            if (selectedTask && selectedTask.id === task.id) {
+                setSelectedTask(updatedTask)
+            }
         } catch (error) {
             console.error('Error updating task title:', error)
         }
+    }
+
+    const handleSelectTask = (task) => {
+        setSelectedTask(task)
     }
 
     if (loading) return (
@@ -98,44 +112,57 @@ function TaskManager() {
 
     return (
         <div className="task-manager">
-            <div className="app-container">
-                <h1 className="blocs-header">{bloc.name}</h1>
+            <LayoutGroup>
+                <div className="app-container">
+                    <h1 className="blocs-header">{bloc.name}</h1>
 
-                <button
-                    className="back-button-absolute"
-                    onClick={() => navigate('/')}
-                >
-                    ← Volver
-                </button>
+                    <button
+                        className="back-button-absolute"
+                        onClick={() => navigate('/')}
+                    >
+                        ← Volver
+                    </button>
 
-                <div className="tasks-scroll-container">
-                    {/* Add Task Component */}
-                    <AddTask
-                        blocId={blocId}
-                        tagsMap={tagsMap}
-                        onStartTyping={() => setIsAddingTask(true)}
-                        onClear={() => setIsAddingTask(false)}
-                        onTaskAdded={handleTaskAdded}
-                    />
+                    {/* Task Info Panel (Left Side) */}
+                    <div className="task-info-wrapper">
+                        <TaskInfo
+                            task={selectedTask}
+                            tagName={selectedTask ? tagsMap[selectedTask.tag_id] : null}
+                            onClose={() => setSelectedTask(null)}
+                        />
+                    </div>
 
-                    {/* Task List - Hidden when adding task */}
-                    <div className={`task-list-wrapper ${isAddingTask ? 'hidden' : ''}`}>
-                        {tasks.length === 0 ? (
-                            <p className="empty-tasks-message">No hay tareas. ¡Añade una!</p>
-                        ) : (
-                            tasks.map(task => (
-                                <TaskItemCard
-                                    key={task.id}
-                                    task={task}
-                                    tagName={tagsMap[task.tag_id]}
-                                    onUpdateTitle={handleUpdateTitle}
-                                    onDelete={handleDeleteTask}
-                                />
-                            ))
-                        )}
+                    <div className="tasks-scroll-container">
+                        {/* Add Task Component */}
+                        <AddTask
+                            blocId={blocId}
+                            tagsMap={tagsMap}
+                            onStartTyping={() => setIsAddingTask(true)}
+                            onClear={() => setIsAddingTask(false)}
+                            onTaskAdded={handleTaskAdded}
+                        />
+
+                        {/* Task List - Hidden when adding task */}
+                        <div className={`task-list-wrapper ${isAddingTask ? 'hidden' : ''}`}>
+                            {tasks.length === 0 ? (
+                                <p className="empty-tasks-message">No hay tareas. ¡Añade una!</p>
+                            ) : (
+                                tasks.map(task => (
+                                    <TaskItemCard
+                                        key={task.id}
+                                        task={task}
+                                        tagName={tagsMap[task.tag_id]}
+                                        onUpdateTitle={handleUpdateTitle}
+                                        onDelete={handleDeleteTask}
+                                        onClick={() => handleSelectTask(task)}
+                                        isSelected={selectedTask?.id === task.id}
+                                    />
+                                ))
+                            )}
+                        </div>
                     </div>
                 </div>
-            </div>
+            </LayoutGroup>
         </div>
     )
 }

@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import './CreateBlocPanel.css'
 
 const CreateBlocPanel = ({ isOpen, onClose, onCreate }) => {
     const [newBlocName, setNewBlocName] = useState('')

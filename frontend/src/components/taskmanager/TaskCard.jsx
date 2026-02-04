@@ -1,5 +1,7 @@
+import './TaskCard.css'
+import { motion } from 'framer-motion'
 
-function TaskCard({ task, tagName, onUpdateTitle, onDelete }) {
+function TaskCard({ task, tagName, onUpdateTitle, onDelete, onClick, isSelected }) {
     // Format date if exists (Date only)
     const formatDate = (dateString) => {
         if (!dateString) return ''
@@ -7,27 +9,24 @@ function TaskCard({ task, tagName, onUpdateTitle, onDelete }) {
         return date.toLocaleDateString('es-ES', {
             day: 'numeric',
             month: 'short'
-            // Removed time format
         })
     }
 
     return (
-        <div className={`task-item ${task.completed ? 'completed' : ''}`}>
+        <motion.div
+            layoutId={`task-${task.id}`}
+            layout
+            transition={{ type: 'spring', stiffness: 350, damping: 25 }}
+            className={`task-item ${task.completed ? 'completed' : ''} ${isSelected ? 'selected' : ''}`}
+            onClick={onClick}
+        >
 
             <div className="task-main-body">
                 <div className="task-vertical-bar"></div>
                 <div className="task-info-column">
-                    <input
-                        type="text"
-                        className="task-item-title-input bold-title"
-                        defaultValue={task.title}
-                        onBlur={(e) => onUpdateTitle(task, e.target.value)}
-                        onKeyDown={(e) => {
-                            if (e.key === 'Enter') {
-                                e.target.blur()
-                            }
-                        }}
-                    />
+                    <div className="task-item-title bold-title">
+                        {task.title}
+                    </div>
                     <div className="task-category">
                         {tagName ? tagName : 'Work'} {/* Default to Work if empty like image, or just tag */}
                     </div>
@@ -44,12 +43,15 @@ function TaskCard({ task, tagName, onUpdateTitle, onDelete }) {
 
                 <button
                     className="delete-task-btn"
-                    onClick={() => onDelete(task.id)}
+                    onClick={(e) => {
+                        e.stopPropagation()
+                        onDelete(task.id)
+                    }}
                 >
                     🗑️
                 </button>
             </div>
-        </div>
+        </motion.div>
     )
 }
 
