@@ -5,7 +5,8 @@ import TaskItemCard from './TaskCard'
 import AddTask from './AddTask'
 import TaskInfo from './TaskInfo'
 import './TaskManager.css'
-import { LayoutGroup } from 'framer-motion'
+import { LayoutGroup, motion } from 'framer-motion'
+import ScrambleText from '../ui/ScrambleText'
 
 function TaskManager() {
     const { blocId } = useParams()
@@ -93,15 +94,8 @@ function TaskManager() {
         setSelectedTask(task)
     }
 
-    if (loading) return (
-        <div className="task-manager">
-            <div className="app-container">
-                <p>Cargando...</p>
-            </div>
-        </div>
-    )
-
-    if (!bloc) return (
+    // Error state only if not loading and no bloc
+    if (!loading && !bloc) return (
         <div className="task-manager">
             <div className="app-container">
                 <p>Bloc no encontrado</p>
@@ -114,7 +108,11 @@ function TaskManager() {
         <div className="task-manager">
             <LayoutGroup>
                 <div className="app-container">
-                    <h1 className="blocs-header">{bloc.name}</h1>
+                    {/* Header with Scramble Effect */}
+                    <ScrambleText
+                        className="blocs-header"
+                        text={bloc ? bloc.name : 'Blocs'}
+                    />
 
                     <button
                         className="back-button-absolute"
@@ -123,44 +121,53 @@ function TaskManager() {
                         ← Volver
                     </button>
 
-                    {/* Task Info Panel (Left Side) */}
-                    <div className="task-info-wrapper">
-                        <TaskInfo
-                            task={selectedTask}
-                            tagName={selectedTask ? tagsMap[selectedTask.tag_id] : null}
-                            onClose={() => setSelectedTask(null)}
-                        />
-                    </div>
-
-                    <div className="tasks-scroll-container">
-                        {/* Add Task Component */}
-                        <AddTask
-                            blocId={blocId}
-                            tagsMap={tagsMap}
-                            onStartTyping={() => setIsAddingTask(true)}
-                            onClear={() => setIsAddingTask(false)}
-                            onTaskAdded={handleTaskAdded}
-                        />
-
-                        {/* Task List - Hidden when adding task */}
-                        <div className={`task-list-wrapper ${isAddingTask ? 'hidden' : ''}`}>
-                            {tasks.length === 0 ? (
-                                <p className="empty-tasks-message">No hay tareas. ¡Añade una!</p>
-                            ) : (
-                                tasks.map(task => (
-                                    <TaskItemCard
-                                        key={task.id}
-                                        task={task}
-                                        tagName={tagsMap[task.tag_id]}
-                                        onUpdateTitle={handleUpdateTitle}
-                                        onDelete={handleDeleteTask}
-                                        onClick={() => handleSelectTask(task)}
-                                        isSelected={selectedTask?.id === task.id}
-                                    />
-                                ))
-                            )}
+                    {/* Main Content - Fades in when loaded */}
+                    <motion.div
+                        className="task-manager-content"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: loading ? 0 : 1 }}
+                        transition={{ duration: 0.5, delay: 0.2 }}
+                        style={{ width: '100%', height: '100%' }} // Ensure full size
+                    >
+                        {/* Task Info Panel (Left Side) */}
+                        <div className="task-info-wrapper">
+                            <TaskInfo
+                                task={selectedTask}
+                                tagName={selectedTask ? tagsMap[selectedTask.tag_id] : null}
+                                onClose={() => setSelectedTask(null)}
+                            />
                         </div>
-                    </div>
+
+                        <div className="tasks-scroll-container">
+                            {/* Add Task Component */}
+                            <AddTask
+                                blocId={blocId}
+                                tagsMap={tagsMap}
+                                onStartTyping={() => setIsAddingTask(true)}
+                                onClear={() => setIsAddingTask(false)}
+                                onTaskAdded={handleTaskAdded}
+                            />
+
+                            {/* Task List - Hidden when adding task */}
+                            <div className={`task-list-wrapper ${isAddingTask ? 'hidden' : ''}`}>
+                                {tasks.length === 0 ? (
+                                    <p className="empty-tasks-message">No hay tareas. ¡Añade una!</p>
+                                ) : (
+                                    tasks.map(task => (
+                                        <TaskItemCard
+                                            key={task.id}
+                                            task={task}
+                                            tagName={tagsMap[task.tag_id]}
+                                            onUpdateTitle={handleUpdateTitle}
+                                            onDelete={handleDeleteTask}
+                                            onClick={() => handleSelectTask(task)}
+                                            isSelected={selectedTask?.id === task.id}
+                                        />
+                                    ))
+                                )}
+                            </div>
+                        </div>
+                    </motion.div>
                 </div>
             </LayoutGroup>
         </div>

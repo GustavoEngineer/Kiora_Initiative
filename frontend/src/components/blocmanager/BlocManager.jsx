@@ -3,6 +3,8 @@ import { getBlocs, getTasks, createTask, getTags, createTag, createBloc, updateB
 import BlocCard from './BlocCard'
 import CreateBlocPanel from './CreateBlocPanel'
 import './BlocManager.css'
+import ScrambleText from '../ui/ScrambleText'
+import { motion } from 'framer-motion'
 
 function TaskManager() {
   const [loading, setLoading] = useState(false)
@@ -176,8 +178,14 @@ function TaskManager() {
           onCreate={handleCreateBloc}
         />
 
-        <h1 className="blocs-header">Blocs</h1>
-        <div className="blocs-grid-centered">
+        <ScrambleText className="blocs-header" text="Blocs" />
+
+        <motion.div
+          className="blocs-grid-centered"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: loading ? 0 : 1 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+        >
           {blocs.map((bloc) => (
             <BlocCard
               key={bloc.id}
@@ -186,7 +194,7 @@ function TaskManager() {
               onDelete={handleDeleteBloc}
             />
           ))}
-        </div>
+        </motion.div>
 
         {/* Hidden for now: Task List */}
         <div style={{ display: 'none' }}>
