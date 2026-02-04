@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { getTasks, getBlocById, createTask, updateTask, deleteTask, getTags } from '../../services/api'
 import TaskItemCard from './TaskCard'
-import '../../styles/TaskManager.css' // Reusing main styles or create new ones? Assuming reuse or basic for now.
+import AddTask from './AddTask'
+import '../../styles/TaskManager.css'
 
 function TaskManager() {
     const { blocId } = useParams()
@@ -10,9 +11,10 @@ function TaskManager() {
     const [tasks, setTasks] = useState([])
     const [bloc, setBloc] = useState(null)
     const [loading, setLoading] = useState(true)
-    const [newTaskTitle, setNewTaskTitle] = useState('')
-
     const [tagsMap, setTagsMap] = useState({})
+
+    // View state for creating new task
+    const [isAddingTask, setIsAddingTask] = useState(false)
 
     const fetchData = async () => {
         try {
@@ -45,24 +47,15 @@ function TaskManager() {
         }
     }, [blocId])
 
-    const handleAddTask = async (e) => {
-        if (e.key === 'Enter' && newTaskTitle.trim()) {
-            try {
-                const newTask = {
-                    title: newTaskTitle,
-                    bloc_id: blocId,
-
-                }
-                await createTask(newTask)
-                setNewTaskTitle('')
-                fetchData() // Refresh list
-            } catch (error) {
-                console.error('Error creating task:', error)
-            }
+    const handleTaskAdded = async (newTaskData) => {
+        try {
+            await createTask(newTaskData)
+            fetchData() // Refresh list
+            setIsAddingTask(false) // Show list again
+        } catch (error) {
+            console.error('Error creating task:', error)
         }
     }
-
-
 
     const handleDeleteTask = async (taskId) => {
         if (window.confirm('¿Eliminar esta tarea?')) {
@@ -116,32 +109,31 @@ function TaskManager() {
                 </button>
 
                 <div className="tasks-scroll-container">
-                    {/* Add Task Input */}
-                    <div className="add-task-container">
-                        <input
-                            type="text"
-                            className="add-task-input"
-                            placeholder="+ Añadir nueva tarea"
-                            value={newTaskTitle}
-                            onChange={(e) => setNewTaskTitle(e.target.value)}
-                            onKeyDown={handleAddTask}
-                        />
+                    {/* Add Task Component */}
+                    <AddTask
+                        blocId={blocId}
+                        tagsMap={tagsMap}
+                        onStartTyping={() => setIsAddingTask(true)}
+                        onClear={() => setIsAddingTask(false)}
+                        onTaskAdded={handleTaskAdded}
+                    />
+
+                    {/* Task List - Hidden when adding task */}
+                    <div className={`task-list-wrapper ${isAddingTask ? 'hidden' : ''}`}>
+                        {tasks.length === 0 ? (
+                            <p className="empty-tasks-message">No hay tareas. ¡Añade una!</p>
+                        ) : (
+                            tasks.map(task => (
+                                <TaskItemCard
+                                    key={task.id}
+                                    task={task}
+                                    tagName={tagsMap[task.tag_id]}
+                                    onUpdateTitle={handleUpdateTitle}
+                                    onDelete={handleDeleteTask}
+                                />
+                            ))
+                        )}
                     </div>
-
-                    {tasks.length === 0 ? (
-                        <p className="empty-tasks-message">No hay tareas. ¡Añade una!</p>
-                    ) : (
-                        tasks.map(task => (
-                            <TaskItemCard
-                                key={task.id}
-                                task={task}
-                                tagName={tagsMap[task.tag_id]}
-
-                                onUpdateTitle={handleUpdateTitle}
-                                onDelete={handleDeleteTask}
-                            />
-                        ))
-                    )}
                 </div>
             </div>
         </div>
