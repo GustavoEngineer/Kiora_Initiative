@@ -1,352 +1,353 @@
 /* Minimal TaskManager Styles */
 
-.task-manager {
-  min-height: 100vh;
-  background: #ffffff;
-  padding: 2rem;
+* {
+  box-sizing: border-box;
 }
 
-/* Main Content */
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  /* Strictly prevent scrolling */
+}
+
+.task-manager {
+  height: 100vh;
+  /* Match viewport height */
+  width: 100vw;
+  background: #ffffff;
+  padding: 2rem;
+  overflow: hidden;
+  /* Ensure content doesn't scroll */
+}
+
 /* App Container */
 .app-container {
   display: flex;
-  min-height: 100vh;
-  width: 100%;
-}
-
-/* Sidebar */
-.blocs-sidebar {
-  width: 250px;
-  flex-shrink: 0;
-  background: #fff;
-  border-right: none;
+  flex-direction: column;
+  align-items: center;
+  /* min-height: 100vh; Removed to let content dictate height if needed, or keep to center vertically */
   height: 100vh;
-  position: sticky;
-  top: 0;
-  display: flex;
-  flex-direction: column;
-  z-index: 10;
-  padding: 1rem 0.5rem;
-  overflow-y: auto;
-}
-
-/* Sidebar List */
-.blocs-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-.blocs-grid .bloc-card {
+  /* Fill screen to center vertically */
   width: 100%;
+  padding-top: 0;
+  /* Removing top padding to center fully if desired, or keep small */
+  justify-content: center;
+  /* Center vertically as well */
+  position: relative;
+  /* Context for absolute header */
 }
 
-/* Main Content Area */
-.main-content-area {
-  flex: 1;
-  margin-left: 0;
-  padding: 2rem;
-  background: #ffffff;
-  min-height: 100vh;
+/* Blocs Header */
+.blocs-header {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 0;
+  /* Remove margins */
+  color: #333;
+  text-align: center;
+  position: absolute;
+  top: 1rem;
+  left: 0;
+  right: 0;
 }
 
-/* Empty State */
-.empty-state-selection {
+/* Blocs Grid Centered */
+.blocs-grid-centered {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  /* Center items vertically in this container */
+  align-content: center;
+  /* Center wrapped lines vertically */
+  gap: 2rem;
+  max-width: 1200px;
+  width: 100%;
+  /* flex: 1; Removed */
+  /* padding-bottom: 6rem; Removed */
+}
+
+/* Bloc Card Centered - 3D Container */
+.bloc-card-centered {
+  width: 220px;
+  height: 220px;
+  perspective: 1000px;
+  /* Remove default background/border since inner card handles it */
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.bloc-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  border-radius: 12px;
+}
+
+.bloc-card-centered:hover .bloc-card-inner {
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.bloc-card-centered.flipped .bloc-card-inner {
+  transform: rotateY(180deg);
+}
+
+/* Common Face Styles */
+.bloc-card-front,
+.bloc-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  border-radius: 12px;
+  border: 2px solid #e0e0e0;
+  background: #fff;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 80vh;
-  text-align: center;
-  color: #999;
 }
 
-.empty-icon {
-  width: 80px;
-  height: 80px;
-  margin-bottom: 1.5rem;
-  color: #e0e0e0;
-}
-
-.empty-icon svg {
-  width: 100%;
-  height: 100%;
-}
-
-.empty-state-selection h2 {
-  font-size: 1.5rem;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-  color: #333;
-}
-
-/* Bloc Card Styles (Updated) */
-.bloc-card {
-  background: #f9f9f9;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  padding: 0.75rem 1rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.bloc-card:hover {
-  background: #f0f0f0;
-  border-color: #ccc;
-}
-
-.bloc-card.active {
-  background: #e8f0fe;
-  border-color: #d2e3fc;
-}
-
-.bloc-card.active .bloc-icon {
-  color: #1a73e8;
-}
-
-.bloc-name {
-  color: #333;
-  font-size: 0.875rem;
-  font-weight: 500;
-  text-align: left;
-  word-break: break-word;
-}
-
-/* Card Inner */
-.bloc-card-inner {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 0.75rem;
-}
-
-/* Bloc Icon */
-.bloc-icon {
-  width: 32px;
-  height: 32px;
-  flex-shrink: 0;
-  color: #666;
-}
-
-.bloc-card:hover .bloc-icon {
-  color: #333;
-}
-
-.bloc-icon svg {
-  width: 100%;
-  height: 100%;
-}
-
-/* Add Bloc Card with Inverted Colors */
-.add-bloc-card {
-  background: #000 !important;
-  border-color: #000 !important;
-}
-
-.add-bloc-card:hover {
-  background: #333 !important;
-  border-color: #333 !important;
-}
-
-.add-bloc-card .bloc-icon {
-  color: #fff !important;
-}
-
-.add-bloc-card .bloc-name {
-  color: #fff !important;
-  font-weight: 600;
-}
-
-.add-bloc-card:hover .bloc-icon {
-  color: #fff !important;
-}
-
-.add-bloc-card:hover .bloc-name {
-  color: #fff !important;
-}
-
-.no-blocs-message-sidebar {
-  text-align: center;
-  color: #999;
-  padding: 1rem;
-  font-size: 0.9rem;
-}
-
-@keyframes expandIn {
-  from {
-    opacity: 0;
-    transform: translateY(-10px) scale(0.95);
-    max-height: 0;
-    padding: 0 0.5rem;
-    margin-bottom: 0;
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-    max-height: 200px;
-    padding: 0.5rem;
-    margin-bottom: 0.75rem;
-  }
-}
-
-/* Inline Add Bloc Form */
-.add-bloc-form-container {
-  width: 100%;
-  background: #f9f9f9;
-  border-radius: 8px;
-  border: 1px solid #e0e0e0;
-  overflow: hidden;
-  animation: expandIn 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-}
-
-.inline-bloc-input {
-  width: 100%;
-  padding: 0.5rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  margin-bottom: 0.5rem;
-  font-size: 0.875rem;
-  outline: none;
-}
-
-.inline-bloc-input:focus {
+.bloc-card-centered:hover .bloc-card-front,
+.bloc-card-centered:hover .bloc-card-back {
   border-color: #000;
 }
 
-.inline-form-actions {
-  display: flex;
-  gap: 0.5rem;
+/* Front Face */
+.bloc-card-front {
+  color: black;
 }
 
-.inline-confirm-button {
-  flex: 1;
-  background: #000;
+/* Back Face */
+.bloc-card-back {
+  transform: rotateY(180deg);
+  background: #fafafa;
+  gap: 1rem;
+}
+
+/* Back Face Elements */
+.bloc-icon-small {
+  width: 32px;
+  height: 32px;
+  color: #666;
+  margin-bottom: 0.5rem;
+}
+
+.bloc-name-editable {
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: text;
+  border-bottom: 1px dashed #ccc;
+  padding-bottom: 2px;
+  width: 80%;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.bloc-name-editable:hover {
+  border-bottom-color: #000;
+}
+
+.edit-hint {
+  font-size: 0.8rem;
+  color: #999;
+  margin-left: 0.5rem;
+}
+
+.bloc-name-edit-input {
+  font-size: 1rem;
+  font-weight: 500;
+  text-align: center;
+  border: 1px solid #000;
+  border-radius: 4px;
+  padding: 4px;
+  width: 80%;
+  outline: none;
+}
+
+.delete-bloc-button {
+  background: #ff4d4f;
   color: #fff;
   border: none;
-  border-radius: 4px;
-  padding: 0.4rem;
-  font-size: 0.8rem;
-  font-weight: 500;
-  cursor: pointer;
-}
-
-.inline-confirm-button:hover:not(:disabled) {
-  background: #333;
-}
-
-.inline-cancel-button {
-  background: #fff;
-  color: #666;
-  border: 1px solid #e0e0e0;
-  border-radius: 4px;
   padding: 0.4rem 0.8rem;
-  font-size: 0.8rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
   cursor: pointer;
+  margin-top: 0.5rem;
+  opacity: 0.9;
 }
 
-.inline-cancel-button:hover {
-  background: #f0f0f0;
-  color: #333;
+.delete-bloc-button:hover {
+  opacity: 1;
+  background: #d9363e;
 }
 
-/* Task Creation Form Styles */
-.add-task-trigger-button {
-  width: 100%;
-  padding: 1rem;
-  background: #f9f9f9;
-  border: 1px dashed #ccc;
-  border-radius: 8px;
-  color: #666;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s;
-  text-align: center;
-}
-
-.add-task-trigger-button:hover {
-  background: #f0f0f0;
-  color: #000;
-  border-color: #999;
-}
-
-@keyframes expandTaskForm {
-  from {
-    opacity: 0;
-    transform: translateY(-10px) scale(0.95);
-    max-height: 0;
-    padding: 0 1.5rem;
-    margin-bottom: 0;
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-    max-height: 800px;
-    padding: 1.5rem;
-    margin-bottom: 1rem;
-  }
-}
-
-.task-form-container {
-  background: #f9f9f9;
-  padding: 1.5rem;
-  border-radius: 8px;
-  border: 1px solid #e0e0e0;
-  overflow: hidden;
-  animation: expandTaskForm 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-}
-
-.task-form-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+/* Original styles adapted */
+.bloc-icon-centered {
+  width: 64px;
+  height: 64px;
   margin-bottom: 1rem;
-}
-
-.task-form-header h2 {
-  font-size: 1.25rem;
-  margin: 0;
-}
-
-.close-task-form {
-  background: none;
-  border: none;
-  color: #999;
-  cursor: pointer;
-  font-size: 1rem;
-  padding: 0.25rem 0.5rem;
-}
-
-.close-task-form:hover {
   color: #333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bloc-icon-centered svg {
+  width: 100%;
+  height: 100%;
+  stroke-width: 1.5;
+}
+
+.bloc-name-centered {
+  font-size: 1.1rem;
+  color: #333;
+  text-align: center;
+  font-weight: 600;
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
-  .app-container {
-    flex-direction: column;
+  .bloc-card-centered {
+    width: 160px;
+    height: 160px;
   }
 
-  .blocs-sidebar {
-    width: 100%;
-    height: auto;
-    position: relative;
-    border-right: none;
-    border-bottom: 1px solid #e0e0e0;
-    max-height: 250px;
-    padding: 1rem;
-  }
-
-  .main-content-area {
-    margin-left: 0;
-    padding: 1rem;
+  .blocs-header {
+    font-size: 2rem;
   }
 }
 
-@media (max-width: 480px) {
-  .bloc-icon {
-    width: 28px;
-    height: 28px;
-  }
+/* Add Bloc Button */
+.add-bloc-button {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #333;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 20;
+  transition: background 0.2s;
+}
+
+.add-bloc-button:hover {
+  background: #000;
+}
+
+.add-bloc-button svg {
+  width: 24px;
+  height: 24px;
+}
+
+/* Side Panel Overlay */
+.side-panel-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 99;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.side-panel-overlay.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Side Panel */
+.side-panel {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 350px;
+  background: #fff;
+  z-index: 100;
+  box-shadow: -4px 0 15px rgba(0, 0, 0, 0.1);
+  transform: translateX(100%);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.side-panel.open {
+  transform: translateX(0);
+}
+
+.side-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.side-panel-header h2 {
+  font-size: 1.5rem;
+  margin: 0;
+  font-weight: 600;
+}
+
+.close-panel-button {
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+  cursor: pointer;
+  color: #666;
+  padding: 0.5rem;
+}
+
+.close-panel-button:hover {
+  color: #000;
+}
+
+.side-panel-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Ensure inputs are consistent */
+.task-input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.task-button {
+  padding: 0.75rem;
+  background: #000;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.task-button:hover:not(:disabled) {
+  background: #333;
 }

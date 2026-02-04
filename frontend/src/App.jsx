@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import TaskManager from './components/TaskManager'
-import BlocDetail from './components/BlocDetail'
+import TaskManager from './components/blocmanager/BlocManager'
+import BlocDetail from './components/blocmanager/BlocDetail'
 import './App.css'
 
 function App() {
