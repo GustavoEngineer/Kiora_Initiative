@@ -1,16 +1,27 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 const BlocCard = ({ bloc, onUpdate, onDelete }) => {
     const [isFlipped, setIsFlipped] = useState(false)
     const [isEditing, setIsEditing] = useState(false)
     const [editName, setEditName] = useState(bloc.name)
 
-    const handleDoubleClick = () => {
-        setIsFlipped(!isFlipped)
-        // Reset edit state if flipping back
-        if (isEditing) {
-            setIsEditing(false)
+    const navigate = useNavigate()
+
+    const handleClick = () => {
+        if (!isFlipped) {
+            navigate(`/bloc/${bloc.id}`)
         }
+    }
+
+    const handleCornerHover = () => {
+        setIsFlipped(true)
+    }
+
+    const handleCloseFlip = (e) => {
+        e.stopPropagation()
+        setIsFlipped(false)
+        if (isEditing) setIsEditing(false)
     }
 
     const handleNameClick = (e) => {
@@ -21,8 +32,6 @@ const BlocCard = ({ bloc, onUpdate, onDelete }) => {
 
     const handleNameSave = () => {
         if (!editName.trim()) return
-
-        // Optimistic update or just trigger parent
         onUpdate(bloc.id, { name: editName })
         setIsEditing(false)
     }
@@ -34,7 +43,6 @@ const BlocCard = ({ bloc, onUpdate, onDelete }) => {
         }
     }
 
-    // Helper for icons (moved from TaskManager)
     const getIconByBlocId = (id) => {
         const index = parseInt(id) || 0
         const iconVariant = index % 5
@@ -49,13 +57,20 @@ const BlocCard = ({ bloc, onUpdate, onDelete }) => {
     }
 
     return (
-        <div
-            className={`bloc-card-centered ${isFlipped ? 'flipped' : ''}`}
-            onDoubleClick={handleDoubleClick}
-        >
+        <div className={`bloc-card-centered ${isFlipped ? 'flipped' : ''}`}>
             <div className="bloc-card-inner">
                 {/* Front Face */}
-                <div className="bloc-card-front">
+                <div className="bloc-card-front" onClick={handleClick}>
+                    {/* Corner Trigger for Flip */}
+                    <div
+                        className="corner-flip-trigger"
+                        onMouseEnter={handleCornerHover}
+                        onClick={(e) => { e.stopPropagation(); setIsFlipped(true); }}
+                        title="Editar Bloc"
+                    >
+                        ✎
+                    </div>
+
                     <div className="bloc-icon-centered">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                             {getIconByBlocId(bloc.id)}
@@ -66,6 +81,15 @@ const BlocCard = ({ bloc, onUpdate, onDelete }) => {
 
                 {/* Back Face */}
                 <div className="bloc-card-back">
+                    {/* Close/Flip Back Button */}
+                    <div
+                        className="corner-close-trigger"
+                        onClick={handleCloseFlip}
+                        title="Cerrar edición"
+                    >
+                        ✕
+                    </div>
+
                     <div className="bloc-icon-small">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                             {getIconByBlocId(bloc.id)}
