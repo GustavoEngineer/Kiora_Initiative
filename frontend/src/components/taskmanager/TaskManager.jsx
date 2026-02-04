@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { getTasks, getBlocById, createTask, updateTask, deleteTask } from '../../services/api'
+import TaskItemCard from './TaskCard'
 import '../../styles/TaskManager.css' // Reusing main styles or create new ones? Assuming reuse or basic for now.
 
 function TaskManager() {
@@ -131,31 +132,13 @@ function TaskManager() {
                         <p className="empty-tasks-message">No hay tareas. ¡Añade una!</p>
                     ) : (
                         tasks.map(task => (
-                            <div key={task.id} className={`task-item ${task.completed ? 'completed' : ''}`}>
-                                <input
-                                    type="checkbox"
-                                    className="task-checkbox"
-                                    checked={task.completed || false}
-                                    onChange={() => handleToggleStatus(task)}
-                                />
-                                <input
-                                    type="text"
-                                    className="task-item-title-input"
-                                    defaultValue={task.title}
-                                    onBlur={(e) => handleUpdateTitle(task, e.target.value)}
-                                    onKeyDown={(e) => {
-                                        if (e.key === 'Enter') {
-                                            e.target.blur()
-                                        }
-                                    }}
-                                />
-                                <button
-                                    className="delete-task-btn"
-                                    onClick={() => handleDeleteTask(task.id)}
-                                >
-                                    🗑️
-                                </button>
-                            </div>
+                            <TaskItemCard
+                                key={task.id}
+                                task={task}
+                                onToggle={handleToggleStatus}
+                                onUpdateTitle={handleUpdateTitle}
+                                onDelete={handleDeleteTask}
+                            />
                         ))
                     )}
                 </div>

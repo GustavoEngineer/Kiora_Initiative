@@ -61,15 +61,17 @@ const BlocCard = ({ bloc, onUpdate, onDelete }) => {
             <div className="bloc-card-inner">
                 {/* Front Face */}
                 <div className="bloc-card-front" onClick={handleClick}>
-                    {/* Corner Trigger for Flip */}
-                    <div
-                        className="corner-flip-trigger"
-                        onMouseEnter={handleCornerHover}
-                        onClick={(e) => { e.stopPropagation(); setIsFlipped(true); }}
-                        title="Editar Bloc"
-                    >
-                        ✎
-                    </div>
+                    {/* Corner Trigger for Flip - Only render if not flipped */}
+                    {!isFlipped && (
+                        <div
+                            className="corner-flip-trigger"
+                            onMouseEnter={handleCornerHover}
+                            onClick={(e) => { e.stopPropagation(); setIsFlipped(true); }}
+                            title="Editar Bloc"
+                        >
+                            ✎
+                        </div>
+                    )}
 
                     <div className="bloc-icon-centered">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -81,14 +83,17 @@ const BlocCard = ({ bloc, onUpdate, onDelete }) => {
 
                 {/* Back Face */}
                 <div className="bloc-card-back">
-                    {/* Close/Flip Back Button */}
-                    <div
-                        className="corner-close-trigger"
-                        onClick={handleCloseFlip}
-                        title="Cerrar edición"
-                    >
-                        ✕
-                    </div>
+                    {/* Close/Flip Back Button - Only render if flipped */}
+                    {isFlipped && (
+                        <div
+                            className="corner-close-trigger"
+                            onMouseEnter={handleCloseFlip}
+                            onClick={handleCloseFlip}
+                            title="Cerrar edición"
+                        >
+                            ✕
+                        </div>
+                    )}
 
                     <div className="bloc-icon-small">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
