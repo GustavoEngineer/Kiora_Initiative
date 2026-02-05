@@ -1,32 +1,65 @@
 .task-content-card {
     width: 450px;
-    /* Slightly wider than list for detail view */
     height: 75vh;
+    perspective: 1000px;
+    /* Enable 3D perspective */
+    transform-origin: right center;
+    pointer-events: auto;
+}
+
+.task-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: left;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+}
+
+.task-card-inner.flipped {
+    transform: rotateY(180deg);
+}
+
+.task-card-front,
+.task-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    border-radius: 16px;
+
+    /* Common visual styles previously on card */
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    /* Ensure content stays within rounded corners */
+}
+
+.task-card-front {
     background: rgba(255, 255, 255, 0.4);
     backdrop-filter: blur(10px);
-    border-radius: 16px;
     border: 1px solid rgba(255, 255, 255, 0.5);
     padding: 1.5rem;
-    /* Match panel padding */
     display: flex;
     flex-direction: column;
     color: #333;
-    /* Match panel text color */
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-    /* Stronger shadow */
-    transform-origin: right center;
-    /* Origin from list side */
-    pointer-events: auto;
     overflow-y: auto;
-    /* Allow scrolling content */
-
+    /* Allow scrolling content internally if needed */
     /* Scrollbar hide */
     scrollbar-width: none;
     -ms-overflow-style: none;
+}
 
-    /* Typography */
-    font-family: inherit;
-    font-weight: 600;
+.task-card-front::-webkit-scrollbar {
+    display: none;
+}
+
+.task-card-back {
+    background: #ffffff;
+    /* Pure white as requested */
+    transform: rotateY(180deg);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    /* Subtle border for definition */
 }
 
 .task-content-card::-webkit-scrollbar {
@@ -69,7 +102,11 @@
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
-    /* Adjusted gap */
+    /* Default gap */
+    flex: 1;
+    /* Take remaining height */
+    min-height: 0;
+    /* Enable scrolling if needed inside flex child, though overflow is on card */
 }
 
 .task-title-large {
@@ -80,15 +117,23 @@
     margin: 0;
 }
 
+/* Container to group title metas closely if needed, 
+   or just use gap override on elements */
+.task-meta-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    /* Close gap between Tag/Time and Date */
+    margin-top: -0.5rem;
+}
+
 /* New classes for attributes under title */
 .task-header-meta {
     display: flex;
     align-items: center;
     gap: 1.5rem;
     color: #555;
-    margin-top: -0.5rem;
-    /* Pull closer to title */
-    margin-bottom: 0.5rem;
+    /* Removed margins as parent container controls gap now */
 }
 
 .header-meta-item {
@@ -145,8 +190,15 @@
     align-items: center;
     gap: 1.5rem;
     color: #555;
-    margin-bottom: 2rem;
+    /* Removed large margin bottom to fit tighter if needed, or keep it for separation from description */
+    margin-bottom: 0.5rem;
 }
+
+/* Reusing grid styles if they exist elsewhere? 
+   We removed .task-meta-grid usage. 
+   Keeping .meta-item/icon/text for reference or safety if used dynamically? 
+   Actually, I can just clean up if I'm sure. I'll leave them be to avoid breaking anything not seen.
+*/
 
 .task-description-section {
     font-size: 1.1rem;
@@ -155,13 +207,25 @@
     white-space: pre-wrap;
     font-weight: 500;
     flex-grow: 1;
-    /* Allow description to take available space */
+    overflow-y: auto;
+    /* Allow description to scroll if very long */
+    padding-right: 0.5rem;
+    /* Space for scrollbar */
+}
+
+/* Scrollbar for description */
+.task-description-section::-webkit-scrollbar {
+    width: 6px;
+}
+
+.task-description-section::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 3px;
 }
 
 .task-actions {
     margin-top: auto;
-    /* Push to bottom */
-    padding-top: 2rem;
+    padding-top: 1.5rem;
 }
 
 .task-start-btn {
@@ -188,5 +252,123 @@
 }
 
 .task-start-btn:active {
+    transform: translateY(0);
+}
+
+/* Edit button style ( reusing close button style basically) */
+.task-content-action-btn {
+    background: transparent;
+    border: none;
+    color: #666;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    padding: 0.5rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Back Side Styles */
+.task-back-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 1.5rem;
+}
+
+.task-back-header {
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.task-back-title {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #999;
+    font-weight: 700;
+}
+
+.task-edit-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    flex: 1;
+    overflow-y: auto;
+}
+
+.task-edit-input {
+    width: 100%;
+    padding: 0.8rem;
+    border: none;
+    border-bottom: 1px solid #eee;
+    font-family: inherit;
+    font-size: 1rem;
+    color: #333;
+    outline: none;
+    background: transparent;
+    transition: border-color 0.2s;
+}
+
+.task-edit-input:focus {
+    border-bottom-color: #000;
+}
+
+.title-input {
+    font-size: 1.5rem;
+    font-weight: 700;
+    padding: 0.5rem 0;
+}
+
+.task-edit-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.input-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    position: relative;
+}
+
+.input-group.full-width {
+    grid-column: 1 / -1;
+}
+
+.input-icon {
+    color: #999;
+    flex-shrink: 0;
+}
+
+/* Textarea styles removed */
+
+.task-delete-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.8rem;
+    background: #ff4d4f;
+    /* Danger color */
+    color: white;
+    border: none;
+    padding: 1rem;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.task-delete-btn:hover {
+    background: #ff2a2d;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 77, 79, 0.2);
+}
+
+.task-delete-btn:active {
     transform: translateY(0);
 }

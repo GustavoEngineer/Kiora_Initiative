@@ -80,6 +80,16 @@ function BlocManager() {
         setSelectedTask(null)
     }
 
+    const handleTaskUpdate = (updatedTask) => {
+        setSelectedTask(updatedTask)
+        setTasksRefreshTrigger(prev => prev + 1)
+    }
+
+    const handleTaskDelete = () => {
+        setSelectedTask(null)
+        setTasksRefreshTrigger(prev => prev + 1)
+    }
+
     return (
         <>
             <div className="width-wrapper">
@@ -95,6 +105,8 @@ function BlocManager() {
                             <TaskContentCard
                                 task={selectedTask}
                                 onClose={() => setSelectedTask(null)}
+                                onTaskUpdate={handleTaskUpdate}
+                                onTaskDelete={handleTaskDelete}
                             />
                         </motion.div>
                     )}

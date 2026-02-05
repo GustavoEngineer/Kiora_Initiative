@@ -147,7 +147,11 @@ const TaskListPanel = ({ blocId, onClose, selectedTask, onSelectTask, refreshTri
                 <motion.div layout className="task-panel-header">
                     <h3>{isCreating ? 'Nueva Tarea' : 'Tareas'}</h3>
                     {!isCreating && (
-                        <button className="close-panel-btn" onClick={onClose}>
+                        <button
+                            className="close-panel-btn"
+                            onClick={onClose}
+                            onMouseEnter={onClose}
+                        >
                             <CloseLine size={18} />
                         </button>
                     )}
