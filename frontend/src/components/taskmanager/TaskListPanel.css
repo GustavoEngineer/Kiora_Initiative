@@ -16,12 +16,24 @@
     /* transition: width 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); REMOVED: Managed by Framer Motion */
     position: relative;
     overflow: hidden;
+    transition: width 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.task-list-panel.tag-creating-mode {
+    width: 450px;
+}
+
+.importance-slider {
+    width: 100px;
+    height: 4px;
+    accent-color: #333;
+    cursor: pointer;
 }
 
 /* Expanded State */
 /* LEFT SECTION: The Task List (always visible) */
 .panel-list-section {
-    width: 320px;
+    width: 100%;
     min-width: 320px;
     display: flex;
     flex-direction: column;
@@ -330,15 +342,17 @@
 .importance-selector {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 4px;
+    /* Reduced from 6px */
     font-size: 0.75rem;
     color: #666;
     margin-left: auto;
-    margin-right: 8px;
+    margin-right: 4px;
+    /* Reduced from 8px */
 }
 
 .importance-slider {
-    width: 60px;
+    width: 100px;
     height: 4px;
     accent-color: #333;
     cursor: pointer;

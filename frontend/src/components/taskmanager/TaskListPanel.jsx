@@ -75,11 +75,28 @@ const TaskListPanel = ({ blocId, onClose, selectedTask, onSelectTask, refreshTri
         const totalEstimatedHours = hours + (minutes / 60)
 
         try {
+            let finalTagId = selectedTag?.id || null
+
+            // Auto-create tag if pending
+            if (isCreatingTag && tagSearch.trim()) {
+                try {
+                    const newTag = await createTag({
+                        name: tagSearch,
+                        importance_level: newTagImportance
+                    })
+                    // Update local tags state so it appears immediately
+                    setAllTags(prev => [...prev, newTag])
+                    finalTagId = newTag.id
+                } catch (tagError) {
+                    console.error('Error auto-creating tag:', tagError)
+                }
+            }
+
             await createTask({
                 title: newTaskName,
                 bloc_id: blocId,
                 completed: false,
-                tag_id: selectedTag?.id || null,
+                tag_id: finalTagId,
                 estimated_hours: totalEstimatedHours > 0 ? totalEstimatedHours : null,
                 due_date: newDate ? new Date(newDate).toISOString() : null
             })
@@ -136,7 +153,7 @@ const TaskListPanel = ({ blocId, onClose, selectedTask, onSelectTask, refreshTri
 
     return (
         <motion.div
-            className={`task-list-panel ${isCreating ? 'creating-mode' : ''}`}
+            className={`task-list-panel ${isCreating ? 'creating-mode' : ''} ${isCreatingTag ? 'tag-creating-mode' : ''}`}
             // Static width, but allow Framer Motion entrance/exit
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
