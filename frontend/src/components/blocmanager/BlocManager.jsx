@@ -1,17 +1,22 @@
 import { useState, useEffect } from 'react'
-import { getBlocs, createBloc, updateBloc, deleteBloc } from '../../services/api'
+import { getBlocs, createBloc, updateBloc, deleteBloc, getTags } from '../../services/api'
 import BlocCard from './BlocCard'
 import CreateBlocPanel from './CreateBlocPanel'
 import TaskListPanel from '../taskmanager/TaskListPanel'
+import TaskContentCard from '../taskmanager/TaskContentCard'
 import './BlocManager.css'
 import { motion, AnimatePresence } from 'framer-motion'
-import { AddLine } from '@mingcute/react'
 
 function BlocManager() {
     const [loading, setLoading] = useState(false)
     const [blocs, setBlocs] = useState([])
     const [showBlocPanel, setShowBlocPanel] = useState(false)
     const [selectedBlocId, setSelectedBlocId] = useState(null)
+    const [selectedTask, setSelectedTask] = useState(null)
+
+    // Task Expansion State (Lifted from TaskListPanel)
+    const [allTags, setAllTags] = useState([])
+    const [tasksRefreshTrigger, setTasksRefreshTrigger] = useState(0)
 
     // Load Blocs on mount
     useEffect(() => {
@@ -28,7 +33,17 @@ function BlocManager() {
         }
 
         fetchBlocs()
+        fetchTags()
     }, [])
+
+    const fetchTags = async () => {
+        try {
+            const tags = await getTags()
+            setAllTags(tags)
+        } catch (error) {
+            console.error('Error fetching tags:', error)
+        }
+    }
 
     const handleCreateBloc = async (name) => {
         await createBloc({ name })
@@ -59,17 +74,42 @@ function BlocManager() {
         }
     }
 
+    // Reset task selection when closing/switching blocs
+    const handleCloseBloc = () => {
+        setSelectedBlocId(null)
+        setSelectedTask(null)
+    }
+
     return (
         <>
             <div className="width-wrapper">
-                <AnimatePresence>
+                <AnimatePresence mode="popLayout">
+                    {selectedTask && (
+                        <motion.div
+                            key="task-content"
+                            initial={{ opacity: 0, x: 20, width: 0 }}
+                            animate={{ opacity: 1, x: 0, width: 'auto' }}
+                            exit={{ opacity: 0, x: 20, width: 0 }}
+                            transition={{ duration: 0.3 }}
+                        >
+                            <TaskContentCard
+                                task={selectedTask}
+                                onClose={() => setSelectedTask(null)}
+                            />
+                        </motion.div>
+                    )}
                     {selectedBlocId && (
                         <TaskListPanel
+                            key="task-list"
                             blocId={selectedBlocId}
-                            onClose={() => setSelectedBlocId(null)}
+                            onClose={handleCloseBloc}
+                            refreshTrigger={tasksRefreshTrigger}
+                            externalTags={allTags}
+                            selectedTask={selectedTask}
+                            onSelectTask={setSelectedTask}
                         />
                     )}
-                </AnimatePresence>
+                </AnimatePresence >
 
                 <div className="right-sidebar-container">
                     {/* Sidebar Header Removed per request */}
@@ -85,15 +125,22 @@ function BlocManager() {
                             <BlocCard
                                 key={bloc.id}
                                 bloc={bloc}
-                                onUpdate={handleUpdateBloc} // Kept but unused by BlocCard now
-                                onDelete={handleDeleteBloc} // Kept but unused by BlocCard now
-                                onSelect={() => setSelectedBlocId(selectedBlocId === bloc.id ? null : bloc.id)}
+                                onUpdate={handleUpdateBloc}
+                                onDelete={handleDeleteBloc}
+                                onSelect={() => {
+                                    if (selectedBlocId === bloc.id) {
+                                        handleCloseBloc()
+                                    } else {
+                                        setSelectedBlocId(bloc.id)
+                                        setSelectedTask(null)
+                                    }
+                                }}
                                 isSelected={selectedBlocId === bloc.id}
                             />
                         ))}
                     </motion.div>
                 </div>
-            </div>
+            </div >
 
             <CreateBlocPanel
                 isOpen={showBlocPanel}

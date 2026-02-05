@@ -1,11 +1,11 @@
 import { useState, useEffect, useRef } from 'react'
 import { getTasks, createTask, updateTask, deleteTask, getTags, createTag } from '../../services/api'
 import { motion, AnimatePresence } from 'framer-motion'
-import { AddLine, CloseLine, Delete2Line, TimeLine, TagLine, CheckLine } from '@mingcute/react'
+import { AddLine, CloseLine, TimeLine, TagLine, CheckLine } from '@mingcute/react'
 import TaskCard from './TaskCard'
 import './TaskListPanel.css'
 
-const TaskListPanel = ({ blocId, onClose }) => {
+const TaskListPanel = ({ blocId, onClose, selectedTask, onSelectTask, refreshTrigger, externalTags }) => {
     const [tasks, setTasks] = useState([])
     const [loading, setLoading] = useState(false)
     const [newTaskName, setNewTaskName] = useState('')
@@ -28,12 +28,20 @@ const TaskListPanel = ({ blocId, onClose }) => {
 
     const tagInputRef = useRef(null)
 
+    // Sync tags from parent if provided, otherwise fetch
+    useEffect(() => {
+        if (externalTags && externalTags.length > 0) {
+            setAllTags(externalTags)
+        } else {
+            fetchTags()
+        }
+    }, [externalTags])
+
     useEffect(() => {
         if (blocId) {
             fetchTasks()
         }
-        fetchTags()
-    }, [blocId])
+    }, [blocId, refreshTrigger]) // Added refreshTrigger dependency
 
     const fetchTasks = async () => {
         try {
@@ -65,11 +73,6 @@ const TaskListPanel = ({ blocId, onClose }) => {
         const hours = parseInt(estHours) || 0
         const minutes = parseInt(estMinutes) || 0
         const totalEstimatedHours = hours + (minutes / 60)
-
-        // Determine Tag ID
-        // If no tag selected, try to find one by name or use a default (assuming backend handles null or we pick first)
-        // For now, if no tag selected, we might send null or a default 'General' if we find it.
-        // Let's send selectedTag?.id.
 
         try {
             await createTask({
@@ -131,210 +134,214 @@ const TaskListPanel = ({ blocId, onClose }) => {
         }
     }
 
-    // ... (toggle/delete handlers omitted for brevity in this snippet if unused in UI, but kept in full file if I replace correctly. I should include them to avoid suppression)
-    // Re-including them to be safe
-    const handleToggleTask = async (task) => { /* ... */ } // Placeholder logic if I don't paste fully
-    const handleDeleteTask = async (taskId) => {
-        try {
-            await deleteTask(taskId)
-            fetchTasks()
-        } catch (error) {
-            console.error('Error deleting task:', error)
-        }
-    }
-
     return (
         <motion.div
             className={`task-list-panel ${isCreating ? 'creating-mode' : ''}`}
+            // Static width, but allow Framer Motion entrance/exit
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: 20 }}
-            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            transition={{ duration: 0.3 }}
         >
-            <motion.div layout className="task-panel-header">
-                <h3>{isCreating ? 'Nueva Tarea' : 'Tareas'}</h3>
-                {!isCreating && (
-                    <button className="close-panel-btn" onClick={onClose}>
-                        <CloseLine size={18} />
-                    </button>
-                )}
-            </motion.div>
-
-            <form onSubmit={handleCreateTask} className="add-task-form">
-                <motion.div layout className="input-group-main">
-                    <input
-                        type="text"
-                        placeholder="Nueva tarea..."
-                        value={newTaskName}
-                        onChange={(e) => setNewTaskName(e.target.value)}
-                        onFocus={() => setIsCreating(true)}
-                        className="add-task-input"
-                        autoFocus={isCreating}
-                    />
+            <div className="panel-list-section">
+                <motion.div layout className="task-panel-header">
+                    <h3>{isCreating ? 'Nueva Tarea' : 'Tareas'}</h3>
                     {!isCreating && (
-                        <button type="submit" className="add-task-btn">
-                            <AddLine size={18} />
+                        <button className="close-panel-btn" onClick={onClose}>
+                            <CloseLine size={18} />
                         </button>
                     )}
                 </motion.div>
 
-                <AnimatePresence>
-                    {isCreating && (
-                        <motion.div
-                            layout
-                            className="expanded-form-fields"
-                            initial={{ opacity: 0, height: 0 }}
-                            animate={{ opacity: 1, height: 'auto' }}
-                            exit={{ opacity: 0, height: 0 }}
-                        >
-                            {/* Time Estimation */}
-                            <div className="form-row time-estimation-row">
-                                <label className="form-label"><TimeLine size={14} /> Estimado:</label>
-                                <div className="time-inputs">
-                                    <input
-                                        type="number"
-                                        placeholder="HH"
-                                        className="time-input"
-                                        min="0"
-                                        value={estHours}
-                                        onChange={(e) => setEstHours(e.target.value)}
-                                    />
-                                    <span className="time-separator">:</span>
-                                    <input
-                                        type="number"
-                                        placeholder="MM"
-                                        className="time-input"
-                                        min="0"
-                                        max="59"
-                                        value={estMinutes}
-                                        onChange={(e) => setEstMinutes(e.target.value)}
-                                    />
-                                </div>
-                            </div>
+                <form onSubmit={handleCreateTask} className="add-task-form">
+                    <motion.div layout className="input-group-main">
+                        <input
+                            type="text"
+                            placeholder="Nueva tarea..."
+                            value={newTaskName}
+                            onChange={(e) => setNewTaskName(e.target.value)}
+                            onFocus={() => {
+                                setIsCreating(true)
+                                // Only call if provided
+                                if (onSelectTask) onSelectTask(null)
+                            }}
+                            className="add-task-input"
+                            autoFocus={isCreating}
+                        />
+                        {!isCreating && (
+                            <button type="submit" className="add-task-btn">
+                                <AddLine size={18} />
+                            </button>
+                        )}
+                    </motion.div>
 
-                            {/* Tag Selection */}
-                            {/* Tag Selection */}
-                            <div className="tag-section-block" style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '0.8rem' }}>
-                                {/* Top Row: Label + Input */}
-                                <div className="form-row">
-                                    <label className="form-label"><TagLine size={14} /> Etiqueta:</label>
-
-                                    {isCreatingTag ? (
-                                        <div className="tag-creation-ui">
-                                            <span className="new-tag-name">{tagSearch}</span>
-                                            <div className="importance-selector">
-                                                <span>Imp: {newTagImportance}</span>
-                                                <input
-                                                    type="range"
-                                                    min="1"
-                                                    max="10"
-                                                    value={newTagImportance}
-                                                    onChange={(e) => setNewTagImportance(parseInt(e.target.value))}
-                                                    className="importance-slider"
-                                                />
-                                            </div>
-                                            <button type="button" onClick={confirmCreateTag} className="confirm-tag-btn">
-                                                <CheckLine size={16} />
-                                            </button>
-                                        </div>
-                                    ) : (
+                    <AnimatePresence>
+                        {isCreating && (
+                            <motion.div
+                                layout
+                                className="expanded-form-fields"
+                                initial={{ opacity: 0, height: 0 }}
+                                animate={{ opacity: 1, height: 'auto' }}
+                                exit={{ opacity: 0, height: 0 }}
+                            >
+                                {/* Time Estimation */}
+                                <div className="form-row time-estimation-row">
+                                    <label className="form-label"><TimeLine size={14} /> Estimado:</label>
+                                    <div className="time-inputs">
                                         <input
-                                            type="text"
-                                            placeholder="Buscar o crear..."
-                                            value={tagSearch}
-                                            onChange={(e) => {
-                                                setTagSearch(e.target.value)
-                                                if (selectedTag && selectedTag.name !== e.target.value) {
-                                                    setSelectedTag(null)
-                                                }
-                                            }}
-                                            className="secondary-input tag-input-compact"
-                                            ref={tagInputRef}
+                                            type="number"
+                                            placeholder="HH"
+                                            className="time-input"
+                                            min="0"
+                                            value={estHours}
+                                            onChange={(e) => setEstHours(e.target.value)}
                                         />
+                                        <span className="time-separator">:</span>
+                                        <input
+                                            type="number"
+                                            placeholder="MM"
+                                            className="time-input"
+                                            min="0"
+                                            max="59"
+                                            value={estMinutes}
+                                            onChange={(e) => setEstMinutes(e.target.value)}
+                                        />
+                                    </div>
+                                </div>
+
+                                {/* Tag Selection */}
+                                <div className="tag-section-block" style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '0.8rem' }}>
+                                    {/* Top Row: Label + Input */}
+                                    <div className="form-row">
+                                        <label className="form-label"><TagLine size={14} /> Etiqueta:</label>
+
+                                        {isCreatingTag ? (
+                                            <div className="tag-creation-ui">
+                                                <span className="new-tag-name">{tagSearch}</span>
+                                                <div className="importance-selector">
+                                                    <span>Imp: {newTagImportance}</span>
+                                                    <input
+                                                        type="range"
+                                                        min="1"
+                                                        max="10"
+                                                        value={newTagImportance}
+                                                        onChange={(e) => setNewTagImportance(parseInt(e.target.value))}
+                                                        className="importance-slider"
+                                                    />
+                                                </div>
+                                                <button type="button" onClick={confirmCreateTag} className="confirm-tag-btn">
+                                                    <CheckLine size={16} />
+                                                </button>
+                                            </div>
+                                        ) : (
+                                            <input
+                                                type="text"
+                                                placeholder="Buscar o crear..."
+                                                value={tagSearch}
+                                                onChange={(e) => {
+                                                    setTagSearch(e.target.value)
+                                                    if (selectedTag && selectedTag.name !== e.target.value) {
+                                                        setSelectedTag(null)
+                                                    }
+                                                }}
+                                                className="secondary-input tag-input-compact"
+                                                ref={tagInputRef}
+                                            />
+                                        )}
+                                    </div>
+
+                                    {/* Bottom Row: Horizontal List (Full Width) */}
+                                    {!isCreatingTag && (
+                                        <div className="tags-horizontal-list">
+                                            {allTags
+                                                .filter(tag => tag.name.toLowerCase().includes(tagSearch.toLowerCase()))
+                                                .map(tag => (
+                                                    <div
+                                                        key={tag.id}
+                                                        className={`tag-chip ${selectedTag?.id === tag.id ? 'selected' : ''}`}
+                                                        onClick={() => {
+                                                            setSelectedTag(tag)
+                                                            setTagSearch(tag.name)
+                                                        }}
+                                                    >
+                                                        {tag.name}
+                                                    </div>
+                                                ))
+                                            }
+                                            {tagSearch && !allTags.some(t => t.name.toLowerCase() === tagSearch.toLowerCase()) && (
+                                                <div className="tag-chip create-chip" onClick={initCreateTag}>
+                                                    + Crear "{tagSearch}"
+                                                </div>
+                                            )}
+                                        </div>
                                     )}
                                 </div>
 
-                                {/* Bottom Row: Horizontal List (Full Width) */}
-                                {!isCreatingTag && (
-                                    <div className="tags-horizontal-list">
-                                        {allTags
-                                            .filter(tag => tag.name.toLowerCase().includes(tagSearch.toLowerCase()))
-                                            .map(tag => (
-                                                <div
-                                                    key={tag.id}
-                                                    className={`tag-chip ${selectedTag?.id === tag.id ? 'selected' : ''}`}
-                                                    onClick={() => {
-                                                        setSelectedTag(tag)
-                                                        setTagSearch(tag.name)
-                                                    }}
-                                                >
-                                                    {tag.name}
-                                                </div>
-                                            ))
-                                        }
-                                        {tagSearch && !allTags.some(t => t.name.toLowerCase() === tagSearch.toLowerCase()) && (
-                                            <div className="tag-chip create-chip" onClick={initCreateTag}>
-                                                + Crear "{tagSearch}"
-                                            </div>
-                                        )}
-                                    </div>
-                                )}
-                            </div>
+                                {/* Date Input */}
+                                <div className="form-row">
+                                    <label className="form-label">Fecha:</label>
+                                    <input
+                                        type="date"
+                                        value={newDate}
+                                        onChange={(e) => setNewDate(e.target.value)}
+                                        className="secondary-input"
+                                    />
+                                </div>
 
-                            {/* Date Input */}
-                            <div className="form-row">
-                                <label className="form-label">Fecha:</label>
-                                <input
-                                    type="date"
-                                    value={newDate}
-                                    onChange={(e) => setNewDate(e.target.value)}
-                                    className="secondary-input"
-                                />
-                            </div>
+                                <div className="form-actions">
+                                    <button type="button" onClick={resetForm} className="cancel-btn">
+                                        Cancelar
+                                    </button>
+                                    <button type="submit" className="save-btn">
+                                        Guardar
+                                    </button>
+                                </div>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+                </form>
 
-                            <div className="form-actions">
-                                <button type="button" onClick={resetForm} className="cancel-btn">
-                                    Cancelar
-                                </button>
-                                <button type="submit" className="save-btn">
-                                    Guardar
-                                </button>
-                            </div>
+                <AnimatePresence>
+                    {!isCreating && (
+                        <motion.div
+                            layout
+                            className="tasks-list-container"
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: 'auto' }}
+                            exit={{ opacity: 0, height: 0 }}
+                            transition={{ duration: 0.2 }}
+                        >
+                            {loading ? (
+                                <div className="loading-tasks">Cargando...</div>
+                            ) : tasks.length === 0 ? (
+                                <div className="empty-tasks">No hay tareas</div>
+                            ) : (
+                                tasks
+                                    .filter(task => !selectedTask || task.id !== selectedTask.id) // Filter out selected task
+                                    .map(task => {
+                                        const tag = allTags.find(t => t.id === task.tag_id)
+                                        return (
+                                            <motion.div
+                                                key={task.id}
+                                                layout
+                                                initial={{ opacity: 0, scale: 0.9 }}
+                                                animate={{ opacity: 1, scale: 1 }}
+                                                exit={{ opacity: 0, scale: 0.9, height: 0, marginBottom: 0 }}
+                                                transition={{ duration: 0.2 }}
+                                            >
+                                                <TaskCard
+                                                    task={task}
+                                                    tagName={tag ? tag.name : "Personal"} // Default or empty
+                                                    onClick={() => onSelectTask && onSelectTask(task)} // Select task on click
+                                                />
+                                            </motion.div>
+                                        )
+                                    })
+                            )}
                         </motion.div>
                     )}
                 </AnimatePresence>
-            </form>
-
-            <AnimatePresence>
-                {!isCreating && (
-                    <motion.div
-                        layout
-                        className="tasks-list-container"
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto' }}
-                        exit={{ opacity: 0, height: 0 }}
-                        transition={{ duration: 0.2 }}
-                    >
-                        {loading ? (
-                            <div className="loading-tasks">Cargando...</div>
-                        ) : tasks.length === 0 ? (
-                            <div className="empty-tasks">No hay tareas</div>
-                        ) : (
-                            tasks.map(task => {
-                                const tag = allTags.find(t => t.id === task.tag_id)
-                                return (
-                                    <TaskCard
-                                        key={task.id}
-                                        task={task}
-                                        tagName={tag ? tag.name : "Personal"} // Default or empty
-                                        onClick={() => console.log('Task clicked', task.id)}
-                                    />
-                                )
-                            })
-                        )}
-                    </motion.div>
-                )}
-            </AnimatePresence>
+            </div>
         </motion.div>
     )
 }
