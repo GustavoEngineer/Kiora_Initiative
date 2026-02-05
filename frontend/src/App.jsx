@@ -1,15 +1,18 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import TaskManager from './components/blocmanager/BlocManager'
-import BlocTaskView from './components/taskmanager/TaskManager'
+import BlocManager from './components/blocmanager/BlocManager'
 import './App.css'
 
 function App() {
   return (
     <div className="app">
       <BrowserRouter>
+        {/* Persistent Bloc Sidebar */}
+        <BlocManager />
+
         <Routes>
-          <Route path="/" element={<TaskManager />} />
-          <Route path="/bloc/:blocId" element={<BlocTaskView />} />
+          {/* Main Content Areas can go here, e.g. Task Lists */}
+          {/* For now, just a placeholder or empty route since user wanted "Only Blocs" visible on the right */}
+          <Route path="/" element={null} />
         </Routes>
       </BrowserRouter>
     </div>

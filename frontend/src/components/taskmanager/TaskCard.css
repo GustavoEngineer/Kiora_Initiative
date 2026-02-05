@@ -1,117 +1,76 @@
-/* Task Item Styles */
-.task-item {
-    background: #fff;
-    /* border-bottom: 1px solid #f0f0f0; Removed in favor of card separation */
-    padding: 0.75rem 1.5rem;
-    /* Reduced vertical padding (0.75rem) */
+.task-card-container {
     display: flex;
-    flex-direction: row;
     align-items: center;
-    gap: 1rem;
-    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
-    position: relative;
-    border-radius: 12px;
-    margin-bottom: 1rem;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    background: transparent;
+    padding: 0.15rem 0;
+    /* Vertical padding reduced */
     cursor: pointer;
-    border: 2px solid transparent;
-    will-change: transform;
+    transition: background 0.2s;
+    border-radius: 4px;
+    /* Optional, for hover effect */
+    margin-bottom: 0;
+    /* Let container gap handle spacing */
 }
 
-.task-item:hover {
-    background: #fff;
-    /* transform: translateY(-2px); Removed to prevent Framer Motion conflict */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+.task-card-container:hover {
+    background: rgba(0, 0, 0, 0.02);
 }
 
-.task-item.selected {
-    opacity: 0;
-    pointer-events: none;
-    visibility: hidden;
-    height: 0;
-    margin: 0;
-    padding: 0;
-    border: none;
+/* Vertical Bar */
+.task-card-bar {
+    width: 4px;
+    height: 36px;
+    /* Adjust based on content height */
+    background-color: #000;
+    border-radius: 2px;
+    margin-right: 1rem;
+    flex-shrink: 0;
+}
+
+/* Content Area */
+.task-card-content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
     overflow: hidden;
 }
 
-.task-main-body {
-    display: flex;
-    flex: 1;
-    align-items: center;
-    gap: 1rem;
-}
-
-.task-vertical-bar {
-    width: 4px;
-    height: 28px;
-    /* Reduced height to fit thinner card */
-    background-color: #000;
-    border-radius: 2px;
-}
-
-.task-info-column {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 0.1rem;
-    flex: 1;
-}
-
-.task-item-title {
-    width: 100%;
-    font-size: 1rem;
-    color: #333;
-    border: none;
-    background: transparent;
-    outline: none;
-    padding: 0;
-}
-
-.bold-title {
+.task-card-title {
+    font-size: 0.95rem;
     font-weight: 700;
-    font-size: 1rem;
+    /* Bold */
+    color: #000;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 2px;
 }
 
-.task-category {
-    font-size: 0.85rem;
+.task-card-tag {
+    font-size: 0.8rem;
     color: #888;
+    /* Gray/Lighter */
     font-weight: 500;
 }
 
-.task-right-side {
+/* Time/Date Area */
+.task-card-time {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    justify-content: center;
-    margin-right: 2rem;
-    gap: 0.5rem;
-    min-width: 100px;
-}
-
-.task-date {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     color: #999;
-    text-align: right;
-    white-space: pre-wrap;
-    /* allow breakdown */
+    margin-left: 1rem;
+    flex-shrink: 0;
+    line-height: 1.3;
 }
 
-/* Delete Button */
-.delete-task-btn {
-    opacity: 0;
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    font-size: 1.1rem;
-    transition: opacity 0.2s;
-    padding: 0.2rem;
+.task-card-dayname {
+    font-weight: 600;
+    color: #555;
+    /* Distinct color for day name */
 }
 
-.task-item:hover .delete-task-btn {
-    opacity: 1;
-}
-
-.delete-task-btn:hover {
-    transform: scale(1.1);
+.task-card-date {
+    color: #bbb;
 }

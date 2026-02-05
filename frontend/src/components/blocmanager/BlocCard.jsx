@@ -1,46 +1,14 @@
-import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import './BlocCard.css'
 
-const BlocCard = ({ bloc, onUpdate, onDelete }) => {
-    const [isFlipped, setIsFlipped] = useState(false)
-    const [isEditing, setIsEditing] = useState(false)
-    const [editName, setEditName] = useState(bloc.name)
-
+const BlocCard = ({ bloc, onSelect, isSelected }) => {
     const navigate = useNavigate()
 
     const handleClick = () => {
-        if (!isFlipped) {
+        if (onSelect) {
+            onSelect()
+        } else {
             navigate(`/bloc/${bloc.id}`)
-        }
-    }
-
-    const handleCornerHover = () => {
-        setIsFlipped(true)
-    }
-
-    const handleCloseFlip = (e) => {
-        e.stopPropagation()
-        setIsFlipped(false)
-        if (isEditing) setIsEditing(false)
-    }
-
-    const handleNameClick = (e) => {
-        e.stopPropagation()
-        setIsEditing(true)
-        setEditName(bloc.name)
-    }
-
-    const handleNameSave = () => {
-        if (!editName.trim()) return
-        onUpdate(bloc.id, { name: editName })
-        setIsEditing(false)
-    }
-
-    const handleDelete = (e) => {
-        e.stopPropagation()
-        if (window.confirm('¿Seguro que quieres eliminar este bloc?')) {
-            onDelete(bloc.id)
         }
     }
 
@@ -58,81 +26,17 @@ const BlocCard = ({ bloc, onUpdate, onDelete }) => {
     }
 
     return (
-        <div className={`bloc-card-centered ${isFlipped ? 'flipped' : ''}`}>
-            <div className="bloc-card-inner">
-                {/* Front Face */}
-                <div className="bloc-card-front" onClick={handleClick}>
-                    {/* Corner Trigger for Flip - Only render if not flipped */}
-                    {!isFlipped && (
-                        <div
-                            className="corner-flip-trigger"
-                            onMouseEnter={handleCornerHover}
-                            onClick={(e) => { e.stopPropagation(); setIsFlipped(true); }}
-                            title="Editar Bloc"
-                        >
-                            ✎
-                        </div>
-                    )}
-
-                    <div className="bloc-icon-centered">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                            {getIconByBlocId(bloc.id)}
-                        </svg>
-                    </div>
-                    <div className="bloc-name-centered">{bloc.name}</div>
-                </div>
-
-                {/* Back Face */}
-                <div className="bloc-card-back">
-                    {/* Close/Flip Back Button - Only render if flipped */}
-                    {isFlipped && (
-                        <div
-                            className="corner-close-trigger"
-                            onMouseEnter={handleCloseFlip}
-                            onClick={handleCloseFlip}
-                            title="Cerrar edición"
-                        >
-                            ✕
-                        </div>
-                    )}
-
-                    <div className="bloc-icon-small">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                            {getIconByBlocId(bloc.id)}
-                        </svg>
-                    </div>
-
-                    {isEditing ? (
-                        <input
-                            type="text"
-                            value={editName}
-                            onChange={(e) => setEditName(e.target.value)}
-                            onBlur={handleNameSave}
-                            onKeyDown={(e) => {
-                                if (e.key === 'Enter') handleNameSave()
-                            }}
-                            className="bloc-name-edit-input"
-                            autoFocus
-                            onClick={(e) => e.stopPropagation()}
-                        />
-                    ) : (
-                        <div
-                            className="bloc-name-centered bloc-name-editable"
-                            onClick={handleNameClick}
-                        >
-                            {bloc.name}
-                            <span className="edit-hint">✎</span>
-                        </div>
-                    )}
-
-                    <button
-                        className="delete-bloc-button"
-                        onClick={handleDelete}
-                    >
-                        Eliminar
-                    </button>
-                </div>
+        <div
+            className={`bloc-card-simple ${isSelected ? 'selected' : ''}`}
+            onClick={handleClick}
+            title={bloc.name}
+        >
+            <div className="bloc-icon-simple">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                    {getIconByBlocId(bloc.id)}
+                </svg>
             </div>
+            <div className="bloc-name-simple">{bloc.name}</div>
         </div>
     )
 }

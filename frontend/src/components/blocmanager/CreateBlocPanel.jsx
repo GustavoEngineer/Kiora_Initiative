@@ -1,56 +1,64 @@
 import { useState } from 'react'
+import { CloseLine } from '@mingcute/react'
+import { motion, AnimatePresence } from 'framer-motion'
 import './CreateBlocPanel.css'
 
 const CreateBlocPanel = ({ isOpen, onClose, onCreate }) => {
-    const [newBlocName, setNewBlocName] = useState('')
-    const [creatingBloc, setCreatingBloc] = useState(false)
+    const [blocName, setBlocName] = useState('')
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault()
-        if (!newBlocName.trim()) {
-            alert('Por favor escribe un nombre para el bloc')
-            return
-        }
-
-        try {
-            setCreatingBloc(true)
-            await onCreate(newBlocName)
-            setNewBlocName('')
-        } finally {
-            setCreatingBloc(false)
-        }
+        if (!blocName.trim()) return
+        onCreate(blocName)
+        setBlocName('')
     }
 
+    if (!isOpen) return null
+
     return (
-        <>
-            <div
-                className={`side-panel-overlay ${isOpen ? 'open' : ''}`}
-                onClick={onClose}
-            ></div>
-            <div className={`side-panel ${isOpen ? 'open' : ''}`}>
-                <div className="side-panel-header">
-                    <h2>Nuevo Bloc</h2>
-                    <button className="close-panel-button" onClick={onClose}>X</button>
-                </div>
-                <form onSubmit={handleSubmit} className="side-panel-form">
-                    <div className="form-group">
-                        <label htmlFor="blocName">Nombre del Bloc</label>
-                        <input
-                            id="blocName"
-                            type="text"
-                            value={newBlocName}
-                            onChange={(e) => setNewBlocName(e.target.value)}
-                            placeholder="Ej. Universidad"
-                            className="task-input"
-                            autoFocus={isOpen}
-                        />
-                    </div>
-                    <button type="submit" className="task-button" disabled={creatingBloc}>
-                        {creatingBloc ? 'Creando...' : 'Crear Bloc'}
-                    </button>
-                </form>
-            </div>
-        </>
+        <AnimatePresence>
+            {isOpen && (
+                <>
+                    <motion.div
+                        className="panel-overlay"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        onClick={onClose}
+                    />
+                    <motion.div
+                        className="create-bloc-panel-centered"
+                        initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                        animate={{ opacity: 1, scale: 1, y: 0 }}
+                        exit={{ opacity: 0, scale: 0.95, y: 20 }}
+                    >
+                        <div className="panel-header">
+                            <h3>Nuevo Bloc</h3>
+                            <button className="close-btn" onClick={onClose}>
+                                <CloseLine size={20} />
+                            </button>
+                        </div>
+
+                        <form onSubmit={handleSubmit} className="panel-form">
+                            <div className="form-group">
+                                <label>Nombre del Bloc</label>
+                                <input
+                                    type="text"
+                                    value={blocName}
+                                    onChange={(e) => setBlocName(e.target.value)}
+                                    placeholder="Ej. Personal, Trabajo..."
+                                    autoFocus
+                                />
+                            </div>
+
+                            <button type="submit" className="create-btn" disabled={!blocName.trim()}>
+                                Crear Bloc
+                            </button>
+                        </form>
+                    </motion.div>
+                </>
+            )}
+        </AnimatePresence>
     )
 }
 

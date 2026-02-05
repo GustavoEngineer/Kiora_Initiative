@@ -1,57 +1,37 @@
 import './TaskCard.css'
-import { motion } from 'framer-motion'
 
-function TaskCard({ task, tagName, onUpdateTitle, onDelete, onClick, isSelected }) {
-    // Format date if exists (Date only)
-    const formatDate = (dateString) => {
-        if (!dateString) return ''
-        const date = new Date(dateString)
-        return date.toLocaleDateString('es-ES', {
-            day: 'numeric',
-            month: 'short'
-        })
-    }
+const TaskCard = ({ task, tagName, onClick }) => {
+    // Tag passed from parent or fallback
+    const tag = tagName || "Personal"
+
+    // Date formatting logic
+    // Assuming task has a date field, if not using current date or random for demo
+    // In real app, use task.due_date or task.created_at
+    const dateObj = task.created_at ? new Date(task.created_at) : new Date()
+
+    const dayName = dateObj.toLocaleDateString('es-ES', { weekday: 'long' })
+    const dateNum = dateObj.toLocaleDateString('es-ES', { day: 'numeric', month: 'numeric', year: 'numeric' })
+
+    // Capitalize first letter of day name
+    const dayNameCap = dayName.charAt(0).toUpperCase() + dayName.slice(1)
 
     return (
-        <motion.div
-            layoutId={`task-${task.id}`}
-            layout
-            transition={{ type: 'spring', stiffness: 1000, damping: 40, mass: 0.5 }}
-            className={`task-item ${task.completed ? 'completed' : ''} ${isSelected ? 'selected' : ''}`}
-            onClick={onClick}
-        >
+        <div className="task-card-container" onClick={onClick}>
+            {/* Left Indicator Bar */}
+            <div className="task-card-bar"></div>
 
-            <div className="task-main-body">
-                <div className="task-vertical-bar"></div>
-                <div className="task-info-column">
-                    <div className="task-item-title bold-title">
-                        {task.title}
-                    </div>
-                    <div className="task-category">
-                        {tagName ? tagName : 'Work'} {/* Default to Work if empty like image, or just tag */}
-                    </div>
-                </div>
+            {/* Main Content: Title and Tag */}
+            <div className="task-card-content">
+                <div className="task-card-title">{task.title}</div>
+                <div className="task-card-tag">{tag}</div>
             </div>
 
-            <div className="task-right-side">
-                {task.due_date && (
-                    <div className="task-date">
-                        {formatDate(task.due_date)}
-                    </div>
-                )}
-                {/* Time could be separate if needed, but user asked to remove it */}
-
-                <button
-                    className="delete-task-btn"
-                    onClick={(e) => {
-                        e.stopPropagation()
-                        onDelete(task.id)
-                    }}
-                >
-                    🗑️
-                </button>
+            {/* Right Side: Day/Date */}
+            <div className="task-card-time">
+                <span className="task-card-dayname">{dayNameCap}</span>
+                <span className="task-card-date">{dateNum}</span>
             </div>
-        </motion.div>
+        </div>
     )
 }
 

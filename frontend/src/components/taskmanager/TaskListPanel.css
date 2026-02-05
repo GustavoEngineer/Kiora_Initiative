@@ -1,0 +1,470 @@
+.task-list-panel {
+    width: 320px;
+    height: 75vh;
+    /* Fixed height to prevent resizing */
+    /* Remove min/max height to ensure stability */
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+    pointer-events: auto;
+    /* Enable interaction */
+    align-self: flex-end;
+    margin-bottom: 1.5rem;
+}
+
+.task-panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.task-panel-header h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.close-panel-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: #666;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px;
+    border-radius: 50%;
+    transition: background 0.2s;
+}
+
+.close-panel-btn:hover {
+    background: rgba(0, 0, 0, 0.05);
+    color: #333;
+}
+
+.add-task-form {
+    display: flex;
+    flex-direction: column;
+    /* Changed to column to stack expanded fields */
+    gap: 0.8rem;
+    margin-bottom: 1rem;
+}
+
+.input-group-main {
+    display: flex;
+    gap: 0.5rem;
+    width: 100%;
+}
+
+.expanded-form-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    overflow: hidden;
+}
+
+.add-task-input {
+    flex: 1;
+    background: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 0.6rem 0.8rem;
+    outline: none;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+    color: #333;
+    font-family: inherit;
+}
+
+.secondary-input {
+    background: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 0.6rem 0.8rem;
+    outline: none;
+    font-size: 0.9rem;
+    width: 100%;
+    color: #333;
+    font-family: inherit;
+    transition: all 0.2s;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+}
+
+.secondary-input:focus {
+    background: #fff;
+    border-color: #333;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.cancel-btn,
+.save-btn {
+    flex: 1;
+    padding: 0.6rem;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.cancel-btn {
+    background: transparent;
+    color: #666;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.cancel-btn:hover {
+    background: rgba(0, 0, 0, 0.05);
+    color: #333;
+}
+
+.save-btn {
+    background: #1a1a1a;
+    color: white;
+}
+
+.save-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Creating Mode Adjustments */
+/* If creating-mode class is applied to parent, we can adjust general styles */
+.creating-mode {
+    justify-content: flex-start;
+    /* Ensure form stays at top */
+}
+
+/* Original List Container (Unchanged mainly, but ensures flex: 1 works) */
+.tasks-list-container {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    padding-right: 4px;
+    scrollbar-width: none;
+}
+
+.tasks-list-container::-webkit-scrollbar {
+    display: none;
+}
+
+.task-item {
+    background: rgba(255, 255, 255, 0.4);
+    border-radius: 8px;
+    padding: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    transition: all 0.2s;
+    border: 1px solid transparent;
+}
+
+.task-item:hover {
+    background: rgba(255, 255, 255, 0.7);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+}
+
+.task-checkbox {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #ccc;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    flex-shrink: 0;
+}
+
+.task-item.completed .task-checkbox {
+    background: #333;
+    border-color: #333;
+    color: #fff;
+}
+
+.task-title {
+    flex: 1;
+    font-size: 0.95rem;
+    color: #333;
+    word-break: break-word;
+}
+
+.task-item.completed .task-title {
+    color: #999;
+    text-decoration: line-through;
+}
+
+.delete-task-btn {
+    background: transparent;
+    border: none;
+    color: #ccc;
+    cursor: pointer;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    /* Hidden by default */
+    transition: all 0.2s;
+}
+
+.task-item:hover .delete-task-btn {
+    opacity: 1;
+}
+
+.delete-task-btn:hover {
+    color: #ff4d4f;
+}
+
+.loading-tasks,
+.empty-tasks {
+    text-align: center;
+    color: #999;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+}
+
+/* Smart Input Styles */
+.form-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.form-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.85rem;
+    color: #555;
+    flex-shrink: 0;
+    font-weight: 500;
+    min-width: 85px;
+}
+
+/* Time Inputs */
+.time-inputs {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 4px 8px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+    transition: all 0.2s;
+}
+
+.time-inputs:focus-within {
+    border-color: #333;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.time-input {
+    width: 32px;
+    padding: 2px 0;
+    border: none;
+    background: transparent;
+    text-align: center;
+    font-size: 0.9rem;
+    outline: none;
+    font-family: inherit;
+    color: #333;
+    -moz-appearance: textfield;
+}
+
+.time-input::-webkit-outer-spin-button,
+.time-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.time-separator {
+    color: #ccc;
+    font-weight: 500;
+    margin: 0 2px;
+    padding-bottom: 2px;
+}
+
+/* Tag & Date Overrides */
+.tag-input {
+    cursor: text;
+}
+
+/* Tag Creation UI */
+.tag-creation-ui {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex: 1;
+    background: #fff;
+    padding: 4px 8px;
+    border-radius: 8px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+}
+
+.new-tag-name {
+    font-weight: 600;
+    color: #333;
+    font-size: 0.9rem;
+    padding: 0 4px;
+}
+
+.importance-selector {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.75rem;
+    color: #666;
+    margin-left: auto;
+    margin-right: 8px;
+}
+
+.importance-slider {
+    width: 60px;
+    height: 4px;
+    accent-color: #333;
+    cursor: pointer;
+}
+
+.confirm-tag-btn {
+    background: #333;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.1s;
+}
+
+.confirm-tag-btn:hover {
+    transform: scale(1.05);
+}
+
+/* Dropdown */
+.tag-dropdown {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    max-height: 180px;
+    overflow-y: auto;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    margin-top: 6px;
+    padding: 4px;
+    width: 100%;
+}
+
+.tag-option {
+    padding: 8px 12px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 6px;
+    color: #444;
+}
+
+.tag-option:hover {
+    background: #f5f5f5;
+    color: #000;
+}
+
+.tag-option.create-option {
+    color: #333;
+    font-weight: 500;
+    margin-top: 4px;
+    border-top: 1px solid #f0f0f0;
+    border-radius: 0 0 6px 6px;
+    padding-top: 12px;
+}
+
+
+
+/* Horizontal Tag UI */
+.tag-input-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    overflow: hidden;
+}
+
+.tags-horizontal-list {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    padding-bottom: 2px;
+    scrollbar-width: none;
+    /* Hide scrollbar for cleaner look */
+    -ms-overflow-style: none;
+    white-space: nowrap;
+    mask-image: linear-gradient(to right, black 90%, transparent 100%);
+    /* Fade effect at end */
+}
+
+.tags-horizontal-list::-webkit-scrollbar {
+    display: none;
+}
+
+.tag-chip {
+    padding: 4px 12px;
+    background: #f7f7f7;
+    border: 1px solid #e0e0e0;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    color: #666;
+    cursor: pointer;
+    transition: all 0.2s;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.tag-chip:hover {
+    background: #eee;
+    color: #333;
+    border-color: #ccc;
+}
+
+.tag-chip.selected {
+    background: #333;
+    color: #fff;
+    border-color: #333;
+}
+
+.tag-chip.create-chip {
+    background: #f0f7ff;
+    color: #007aff;
+    border-color: #007aff;
+    font-weight: 500;
+}
+
+.tag-input-compact {
+    padding: 0.5rem 0.8rem !important;
+    /* Force override if needed */
+}
