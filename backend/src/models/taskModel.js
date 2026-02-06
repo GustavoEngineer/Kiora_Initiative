@@ -20,7 +20,15 @@ class TaskModel {
       VALUES ($1, $2, $3, $4, $5, $6)
       RETURNING *
     `;
-        const values = [title, due_date, completed || false, estimated_hours, bloc_id, tag_id];
+        const values = [
+            title,
+            due_date,
+            completed || false,
+            estimated_hours,
+            bloc_id,
+            tag_id
+        ].map(v => v === undefined ? null : v);
+
         const { rows } = await db.query(query, values);
         return rows[0];
     }
@@ -33,7 +41,16 @@ class TaskModel {
       WHERE id = $7
       RETURNING *
     `;
-        const values = [title, due_date, completed, estimated_hours, bloc_id, tag_id, id];
+        const values = [
+            title,
+            due_date,
+            completed,
+            estimated_hours,
+            bloc_id,
+            tag_id,
+            id
+        ].map(v => v === undefined ? null : v);
+
         const { rows } = await db.query(query, values);
         return rows[0];
     }

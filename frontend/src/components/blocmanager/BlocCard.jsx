@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react'
 import { Edit2Line } from '@mingcute/react'
 import './BlocCard.css'
 
-const BlocCard = ({ bloc, onSelect, isSelected, onUpdate }) => {
+const BlocCard = ({ bloc, onSelect, isSelected, onUpdate, editable = true }) => {
     const navigate = useNavigate()
     const [isFlipped, setIsFlipped] = useState(false)
     const [editName, setEditName] = useState(bloc.name)
@@ -23,7 +23,7 @@ const BlocCard = ({ bloc, onSelect, isSelected, onUpdate }) => {
     }
 
     const handleSave = () => {
-        if (editName.trim() !== bloc.name) {
+        if (editable && editName.trim() !== bloc.name) {
             onUpdate(bloc.id, { ...bloc, name: editName })
         }
     }
@@ -60,16 +60,18 @@ const BlocCard = ({ bloc, onSelect, isSelected, onUpdate }) => {
                     onClick={handleClick}
                     title={bloc.name}
                 >
-                    <button
-                        className="bloc-edit-btn"
-                        onMouseEnter={() => setIsFlipped(true)}
-                        onClick={(e) => {
-                            e.stopPropagation() // Prevent navigation
-                            setIsFlipped(true)
-                        }}
-                    >
-                        <Edit2Line size={16} />
-                    </button>
+                    {editable && (
+                        <button
+                            className="bloc-edit-btn"
+                            onMouseEnter={() => setIsFlipped(true)}
+                            onClick={(e) => {
+                                e.stopPropagation() // Prevent navigation
+                                setIsFlipped(true)
+                            }}
+                        >
+                            <Edit2Line size={16} />
+                        </button>
+                    )}
 
                     <div className="bloc-icon-simple">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">

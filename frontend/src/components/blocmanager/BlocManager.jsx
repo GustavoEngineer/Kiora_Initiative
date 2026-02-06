@@ -150,6 +150,22 @@ function BlocManager() {
                                 isSelected={selectedBlocId === bloc.id}
                             />
                         ))}
+                        <BlocCard
+                            key="all-bloc"
+                            bloc={{ id: 'all', name: 'Todos' }}
+                            onUpdate={() => { }} // No-op
+                            onDelete={() => { }} // No-op
+                            editable={false}
+                            onSelect={() => {
+                                if (selectedBlocId === 'all') {
+                                    handleCloseBloc()
+                                } else {
+                                    setSelectedBlocId('all')
+                                    setSelectedTask(null)
+                                }
+                            }}
+                            isSelected={selectedBlocId === 'all'}
+                        />
                     </motion.div>
                 </div>
             </div >

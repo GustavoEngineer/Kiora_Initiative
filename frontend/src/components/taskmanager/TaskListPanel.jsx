@@ -47,7 +47,8 @@ const TaskListPanel = ({ blocId, onClose, selectedTask, onSelectTask, refreshTri
         try {
             setLoading(true)
             const allTasks = await getTasks()
-            const blocTasks = allTasks.filter(task => task.bloc_id === blocId)
+            // If blocId is 'all', show all tasks. Otherwise, filter by blocId.
+            const blocTasks = blocId === 'all' ? allTasks : allTasks.filter(task => task.bloc_id === blocId)
             setTasks(blocTasks)
         } catch (error) {
             console.error('Error fetching tasks:', error)
@@ -67,7 +68,8 @@ const TaskListPanel = ({ blocId, onClose, selectedTask, onSelectTask, refreshTri
 
     const handleCreateTask = async (e) => {
         e.preventDefault()
-        if (!newTaskName.trim()) return
+        // Prevent creation if in 'all' view or empty name
+        if (blocId === 'all' || !newTaskName.trim()) return
 
         // Calculate Estimated Hours (decimal)
         const hours = parseInt(estHours) || 0
@@ -162,7 +164,11 @@ const TaskListPanel = ({ blocId, onClose, selectedTask, onSelectTask, refreshTri
         >
             <div className="panel-list-section">
                 <motion.div layout className="task-panel-header">
-                    <h3>{isCreating ? 'Nueva Tarea' : 'Tareas'}</h3>
+                    <h3>
+                        {isCreating
+                            ? 'Nueva Tarea'
+                            : (blocId === 'all' ? 'Todas las Tareas' : 'Tareas')}
+                    </h3>
                     {!isCreating && (
                         <button
                             className="close-panel-btn"
@@ -174,153 +180,156 @@ const TaskListPanel = ({ blocId, onClose, selectedTask, onSelectTask, refreshTri
                     )}
                 </motion.div>
 
-                <form onSubmit={handleCreateTask} className="add-task-form">
-                    <motion.div layout className="input-group-main">
-                        <input
-                            type="text"
-                            placeholder="Nueva tarea..."
-                            value={newTaskName}
-                            onChange={(e) => setNewTaskName(e.target.value)}
-                            onFocus={() => {
-                                setIsCreating(true)
-                                // Only call if provided
-                                if (onSelectTask) onSelectTask(null)
-                            }}
-                            className="add-task-input"
-                            autoFocus={isCreating}
-                        />
-                        {!isCreating && (
-                            <button type="submit" className="add-task-btn">
-                                <AddLine size={18} />
-                            </button>
-                        )}
-                    </motion.div>
+                {/* Only show creation form if NOT in 'all' view */}
+                {blocId !== 'all' && (
+                    <form onSubmit={handleCreateTask} className="add-task-form">
+                        <motion.div layout className="input-group-main">
+                            <input
+                                type="text"
+                                placeholder="Nueva tarea..."
+                                value={newTaskName}
+                                onChange={(e) => setNewTaskName(e.target.value)}
+                                onFocus={() => {
+                                    setIsCreating(true)
+                                    // Only call if provided
+                                    if (onSelectTask) onSelectTask(null)
+                                }}
+                                className="add-task-input"
+                                autoFocus={isCreating}
+                            />
+                            {!isCreating && (
+                                <button type="submit" className="add-task-btn">
+                                    <AddLine size={18} />
+                                </button>
+                            )}
+                        </motion.div>
 
-                    <AnimatePresence>
-                        {isCreating && (
-                            <motion.div
-                                layout
-                                className="expanded-form-fields"
-                                initial={{ opacity: 0, height: 0 }}
-                                animate={{ opacity: 1, height: 'auto' }}
-                                exit={{ opacity: 0, height: 0 }}
-                            >
-                                {/* Time Estimation */}
-                                <div className="form-row time-estimation-row">
-                                    <label className="form-label"><TimeLine size={14} /> Estimado:</label>
-                                    <div className="time-inputs">
-                                        <input
-                                            type="number"
-                                            placeholder="HH"
-                                            className="time-input"
-                                            min="0"
-                                            value={estHours}
-                                            onChange={(e) => setEstHours(e.target.value)}
-                                        />
-                                        <span className="time-separator">:</span>
-                                        <input
-                                            type="number"
-                                            placeholder="MM"
-                                            className="time-input"
-                                            min="0"
-                                            max="59"
-                                            value={estMinutes}
-                                            onChange={(e) => setEstMinutes(e.target.value)}
-                                        />
-                                    </div>
-                                </div>
-
-                                {/* Tag Selection */}
-                                <div className="tag-section-block" style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '0.8rem' }}>
-                                    {/* Top Row: Label + Input */}
-                                    <div className="form-row">
-                                        <label className="form-label"><TagLine size={14} /> Etiqueta:</label>
-
-                                        {isCreatingTag ? (
-                                            <div className="tag-creation-ui">
-                                                <span className="new-tag-name">{tagSearch}</span>
-                                                <div className="importance-selector">
-                                                    <span>Imp: {newTagImportance}</span>
-                                                    <input
-                                                        type="range"
-                                                        min="1"
-                                                        max="10"
-                                                        value={newTagImportance}
-                                                        onChange={(e) => setNewTagImportance(parseInt(e.target.value))}
-                                                        className="importance-slider"
-                                                    />
-                                                </div>
-                                                <button type="button" onClick={confirmCreateTag} className="confirm-tag-btn">
-                                                    <CheckLine size={16} />
-                                                </button>
-                                            </div>
-                                        ) : (
+                        <AnimatePresence>
+                            {isCreating && (
+                                <motion.div
+                                    layout
+                                    className="expanded-form-fields"
+                                    initial={{ opacity: 0, height: 0 }}
+                                    animate={{ opacity: 1, height: 'auto' }}
+                                    exit={{ opacity: 0, height: 0 }}
+                                >
+                                    {/* Time Estimation */}
+                                    <div className="form-row time-estimation-row">
+                                        <label className="form-label"><TimeLine size={14} /> Estimado:</label>
+                                        <div className="time-inputs">
                                             <input
-                                                type="text"
-                                                placeholder="Buscar o crear..."
-                                                value={tagSearch}
-                                                onChange={(e) => {
-                                                    setTagSearch(e.target.value)
-                                                    if (selectedTag && selectedTag.name !== e.target.value) {
-                                                        setSelectedTag(null)
-                                                    }
-                                                }}
-                                                className="secondary-input tag-input-compact"
-                                                ref={tagInputRef}
+                                                type="number"
+                                                placeholder="HH"
+                                                className="time-input"
+                                                min="0"
+                                                value={estHours}
+                                                onChange={(e) => setEstHours(e.target.value)}
                                             />
+                                            <span className="time-separator">:</span>
+                                            <input
+                                                type="number"
+                                                placeholder="MM"
+                                                className="time-input"
+                                                min="0"
+                                                max="59"
+                                                value={estMinutes}
+                                                onChange={(e) => setEstMinutes(e.target.value)}
+                                            />
+                                        </div>
+                                    </div>
+
+                                    {/* Tag Selection */}
+                                    <div className="tag-section-block" style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '0.8rem' }}>
+                                        {/* Top Row: Label + Input */}
+                                        <div className="form-row">
+                                            <label className="form-label"><TagLine size={14} /> Etiqueta:</label>
+
+                                            {isCreatingTag ? (
+                                                <div className="tag-creation-ui">
+                                                    <span className="new-tag-name">{tagSearch}</span>
+                                                    <div className="importance-selector">
+                                                        <span>Imp: {newTagImportance}</span>
+                                                        <input
+                                                            type="range"
+                                                            min="1"
+                                                            max="10"
+                                                            value={newTagImportance}
+                                                            onChange={(e) => setNewTagImportance(parseInt(e.target.value))}
+                                                            className="importance-slider"
+                                                        />
+                                                    </div>
+                                                    <button type="button" onClick={confirmCreateTag} className="confirm-tag-btn">
+                                                        <CheckLine size={16} />
+                                                    </button>
+                                                </div>
+                                            ) : (
+                                                <input
+                                                    type="text"
+                                                    placeholder="Buscar o crear..."
+                                                    value={tagSearch}
+                                                    onChange={(e) => {
+                                                        setTagSearch(e.target.value)
+                                                        if (selectedTag && selectedTag.name !== e.target.value) {
+                                                            setSelectedTag(null)
+                                                        }
+                                                    }}
+                                                    className="secondary-input tag-input-compact"
+                                                    ref={tagInputRef}
+                                                />
+                                            )}
+                                        </div>
+
+                                        {/* Bottom Row: Horizontal List (Full Width) */}
+                                        {!isCreatingTag && (
+                                            <div className="tags-horizontal-list">
+                                                {allTags
+                                                    .filter(tag => tag.name.toLowerCase().includes(tagSearch.toLowerCase()))
+                                                    .map(tag => (
+                                                        <div
+                                                            key={tag.id}
+                                                            className={`tag-chip ${selectedTag?.id === tag.id ? 'selected' : ''}`}
+                                                            onClick={() => {
+                                                                setSelectedTag(tag)
+                                                                setTagSearch(tag.name)
+                                                            }}
+                                                        >
+                                                            {tag.name}
+                                                        </div>
+                                                    ))
+                                                }
+                                                {tagSearch && !allTags.some(t => t.name.toLowerCase() === tagSearch.toLowerCase()) && (
+                                                    <div className="tag-chip create-chip" onClick={initCreateTag}>
+                                                        + Crear "{tagSearch}"
+                                                    </div>
+                                                )}
+                                            </div>
                                         )}
                                     </div>
 
-                                    {/* Bottom Row: Horizontal List (Full Width) */}
-                                    {!isCreatingTag && (
-                                        <div className="tags-horizontal-list">
-                                            {allTags
-                                                .filter(tag => tag.name.toLowerCase().includes(tagSearch.toLowerCase()))
-                                                .map(tag => (
-                                                    <div
-                                                        key={tag.id}
-                                                        className={`tag-chip ${selectedTag?.id === tag.id ? 'selected' : ''}`}
-                                                        onClick={() => {
-                                                            setSelectedTag(tag)
-                                                            setTagSearch(tag.name)
-                                                        }}
-                                                    >
-                                                        {tag.name}
-                                                    </div>
-                                                ))
-                                            }
-                                            {tagSearch && !allTags.some(t => t.name.toLowerCase() === tagSearch.toLowerCase()) && (
-                                                <div className="tag-chip create-chip" onClick={initCreateTag}>
-                                                    + Crear "{tagSearch}"
-                                                </div>
-                                            )}
-                                        </div>
-                                    )}
-                                </div>
+                                    {/* Date Input */}
+                                    <div className="form-row">
+                                        <label className="form-label">Fecha:</label>
+                                        <input
+                                            type="date"
+                                            value={newDate}
+                                            onChange={(e) => setNewDate(e.target.value)}
+                                            className="secondary-input"
+                                        />
+                                    </div>
 
-                                {/* Date Input */}
-                                <div className="form-row">
-                                    <label className="form-label">Fecha:</label>
-                                    <input
-                                        type="date"
-                                        value={newDate}
-                                        onChange={(e) => setNewDate(e.target.value)}
-                                        className="secondary-input"
-                                    />
-                                </div>
-
-                                <div className="form-actions">
-                                    <button type="button" onClick={resetForm} className="cancel-btn">
-                                        Cancelar
-                                    </button>
-                                    <button type="submit" className="save-btn">
-                                        Guardar
-                                    </button>
-                                </div>
-                            </motion.div>
-                        )}
-                    </AnimatePresence>
-                </form>
+                                    <div className="form-actions">
+                                        <button type="button" onClick={resetForm} className="cancel-btn">
+                                            Cancelar
+                                        </button>
+                                        <button type="submit" className="save-btn">
+                                            Guardar
+                                        </button>
+                                    </div>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+                    </form>
+                )}
 
                 <AnimatePresence>
                     {!isCreating && (
