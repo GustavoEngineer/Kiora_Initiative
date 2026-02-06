@@ -2,21 +2,17 @@
     /* Base width when collapsed */
     width: 320px;
     height: 75vh;
-    background: rgba(255, 255, 255, 0.4);
-    backdrop-filter: blur(10px);
-    border-radius: 16px;
-    border: 1px solid rgba(255, 255, 255, 0.5);
+    background: var(--zen-bg-card);
+    backdrop-filter: blur(20px);
+    border-radius: var(--zen-radius);
+    border: var(--zen-border);
     display: flex;
     flex-direction: row;
-    /* Changed to row to support side-by-side */
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+    box-shadow: var(--zen-shadow);
     pointer-events: auto;
-    /* align-self: flex-end; REMOVED: Managed by parent container */
-    /* margin-bottom: 1.5rem; REMOVED: Managed by parent container */
-    /* transition: width 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); REMOVED: Managed by Framer Motion */
     position: relative;
     overflow: hidden;
-    transition: width 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .task-list-panel.tag-creating-mode {
@@ -64,14 +60,14 @@
     margin: 0;
     font-size: 1.1rem;
     font-weight: 600;
-    color: #333;
+    color: var(--zen-text-primary);
 }
 
 .close-panel-btn {
     background: transparent;
     border: none;
     cursor: pointer;
-    color: #666;
+    color: var(--zen-text-secondary);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -81,8 +77,8 @@
 }
 
 .close-panel-btn:hover {
-    background: rgba(0, 0, 0, 0.05);
-    color: #333;
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--zen-text-primary);
     transform: rotate(90deg);
 }
 
@@ -108,35 +104,35 @@
 
 .add-task-input {
     flex: 1;
-    background: #fff;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
     padding: 0.6rem 0.8rem;
     outline: none;
     font-size: 0.9rem;
     transition: all 0.2s;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
-    color: #333;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+    color: var(--zen-text-primary);
     font-family: inherit;
 }
 
 .secondary-input {
-    background: #fff;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
     padding: 0.6rem 0.8rem;
     outline: none;
     font-size: 0.9rem;
     width: 100%;
-    color: #333;
+    color: var(--zen-text-primary);
     font-family: inherit;
     transition: all 0.2s;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .secondary-input:focus {
-    background: #fff;
-    border-color: #333;
+    background: rgba(0, 0, 0, 0.3);
+    border-color: var(--zen-accent);
 }
 
 .form-actions {
@@ -160,23 +156,23 @@
 
 .cancel-btn {
     background: transparent;
-    color: #666;
-    border: 1px solid rgba(0, 0, 0, 0.1);
+    color: var(--zen-text-secondary);
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .cancel-btn:hover {
-    background: rgba(0, 0, 0, 0.05);
-    color: #333;
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--zen-text-primary);
 }
 
 .save-btn {
-    background: #1a1a1a;
+    background: var(--zen-accent);
     color: white;
 }
 
 .save-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px var(--zen-accent-glow);
 }
 
 /* Creating Mode Adjustments */
@@ -197,8 +193,8 @@
 }
 
 .task-item {
-    background: rgba(255, 255, 255, 0.4);
-    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
     padding: 0.8rem;
     display: flex;
     align-items: center;
@@ -208,8 +204,8 @@
 }
 
 .task-item:hover {
-    background: rgba(255, 255, 255, 0.7);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+    background: rgba(255, 255, 255, 0.06);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .task-checkbox {
@@ -274,17 +270,17 @@
     display: flex;
     align-items: center;
     gap: 4px;
-    background: #fff;
-    border: 1px solid rgba(0, 0, 0, 0.1);
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.05);
     border-radius: 8px;
     padding: 4px 8px;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.02);
     transition: all 0.2s;
 }
 
 .time-inputs:focus-within {
-    border-color: #333;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    border-color: var(--zen-accent);
+    background: rgba(0, 0, 0, 0.3);
 }
 
 .time-input {
@@ -296,7 +292,7 @@
     font-size: 0.9rem;
     outline: none;
     font-family: inherit;
-    color: #333;
+    color: var(--zen-text-primary);
     -moz-appearance: textfield;
 }
 
@@ -325,16 +321,15 @@
     align-items: center;
     gap: 0.5rem;
     flex: 1;
-    background: #fff;
+    background: rgba(0, 0, 0, 0.2);
     padding: 4px 8px;
     border-radius: 8px;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .new-tag-name {
     font-weight: 600;
-    color: #333;
+    color: var(--zen-text-primary);
     font-size: 0.9rem;
     padding: 0 4px;
 }
@@ -343,12 +338,10 @@
     display: flex;
     align-items: center;
     gap: 4px;
-    /* Reduced from 6px */
     font-size: 0.75rem;
-    color: #666;
+    color: var(--zen-text-secondary);
     margin-left: auto;
     margin-right: 4px;
-    /* Reduced from 8px */
 }
 
 .importance-slider {
@@ -359,7 +352,7 @@
 }
 
 .confirm-tag-btn {
-    background: #333;
+    background: var(--zen-accent);
     color: white;
     border: none;
     border-radius: 6px;
@@ -378,12 +371,12 @@
 
 /* Dropdown */
 .tag-dropdown {
-    background: #fff;
+    background: var(--zen-bg-card);
     border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
     max-height: 180px;
     overflow-y: auto;
-    border: 1px solid rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     margin-top: 6px;
     padding: 4px;
     width: 100%;
@@ -397,12 +390,12 @@
     justify-content: space-between;
     align-items: center;
     border-radius: 6px;
-    color: #444;
+    color: var(--zen-text-secondary);
 }
 
 .tag-option:hover {
-    background: #f5f5f5;
-    color: #000;
+    background: var(--zen-bg-hover);
+    color: var(--zen-text-primary);
 }
 
 .tag-option.create-option {
@@ -440,11 +433,11 @@
 
 .tag-chip {
     padding: 4px 12px;
-    background: #f7f7f7;
-    border: 1px solid #e0e0e0;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.05);
     border-radius: 20px;
     font-size: 0.8rem;
-    color: #666;
+    color: var(--zen-text-secondary);
     cursor: pointer;
     transition: all 0.2s;
     flex-shrink: 0;
@@ -454,9 +447,9 @@
 }
 
 .tag-chip:hover {
-    background: #eee;
-    color: #333;
-    border-color: #ccc;
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--zen-text-primary);
+    border-color: rgba(255, 255, 255, 0.1);
 }
 
 .tag-chip.selected {
@@ -497,7 +490,7 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 1rem;
-    color: #888;
+    color: var(--zen-text-secondary);
     font-size: 0.8rem;
     font-weight: 500;
     text-transform: uppercase;
@@ -508,15 +501,15 @@
     background: transparent;
     border: none;
     cursor: pointer;
-    color: #888;
+    color: var(--zen-text-secondary);
     padding: 4px;
     border-radius: 50%;
     transition: all 0.2s;
 }
 
 .detail-close-btn:hover {
-    background: rgba(0, 0, 0, 0.05);
-    color: #333;
+    background: var(--zen-bg-hover);
+    color: var(--zen-text-primary);
 }
 
 .detail-title-input {
@@ -525,7 +518,7 @@
     background: transparent;
     font-size: 1.5rem;
     font-weight: 700;
-    color: #333;
+    color: var(--zen-text-primary);
     resize: none;
     outline: none;
     font-family: inherit;
@@ -561,7 +554,7 @@
     align-items: center;
     gap: 0.6rem;
     width: 110px;
-    color: #777;
+    color: var(--zen-text-secondary);
     font-size: 0.95rem;
     font-weight: 500;
 }
@@ -608,8 +601,8 @@
     justify-content: center;
     gap: 0.6rem;
     padding: 0.8rem;
-    border: 1px solid #fee2e2;
-    background: #fff5f5;
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    background: rgba(239, 68, 68, 0.1);
     color: #ef4444;
     border-radius: 12px;
     cursor: pointer;
@@ -619,8 +612,8 @@
 }
 
 .delete-btn-large:hover {
-    background: #fee2e2;
-    border-color: #fecaca;
+    background: rgba(239, 68, 68, 0.15);
+    border-color: rgba(239, 68, 68, 0.3);
     transform: translateY(-1px);
 }
 
@@ -642,7 +635,7 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    color: #666;
+    color: var(--zen-text-secondary);
     font-size: 0.9rem;
 }
 
@@ -651,7 +644,7 @@
     background: transparent;
     font-family: inherit;
     font-size: 0.9rem;
-    color: #333;
+    color: var(--zen-text-primary);
     cursor: pointer;
     outline: none;
 }
@@ -660,7 +653,7 @@
     background: transparent;
     border: none;
     cursor: pointer;
-    color: #888;
+    color: var(--zen-text-secondary);
     padding: 6px;
     border-radius: 50%;
     transition: all 0.2s;
@@ -670,8 +663,8 @@
 }
 
 .icon-btn:hover {
-    background: rgba(0, 0, 0, 0.05);
-    color: #333;
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--zen-text-primary);
 }
 
 .detail-main-content {
@@ -686,7 +679,7 @@
     background: transparent;
     font-size: 1.8rem;
     font-weight: 800;
-    color: #1a1a1a;
+    color: var(--zen-text-primary);
     resize: none;
     outline: none;
     font-family: inherit;
@@ -701,7 +694,7 @@
     align-items: center;
     gap: 0.8rem;
     margin-bottom: 1rem;
-    color: #555;
+    color: var(--zen-text-secondary);
     font-size: 0.95rem;
 }
 

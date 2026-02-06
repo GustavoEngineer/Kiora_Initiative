@@ -1,10 +1,11 @@
 .task-clock-card {
     width: 450px;
-    background: white;
+    background: var(--zen-bg-card);
     padding: 6.2rem 1.5rem;
     /* Increased padding for more height */
-    border-radius: 16px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    border-radius: var(--zen-radius);
+    box-shadow: var(--zen-shadow);
+    border: var(--zen-border);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -36,16 +37,17 @@
 }
 
 .clock-icon {
-    color: #6366f1;
+    color: var(--zen-accent);
     /* Primary color */
     animation: pulse 2s infinite;
+    filter: drop-shadow(0 0 8px var(--zen-accent-glow));
 }
 
 .clock-time {
     font-size: 2rem;
     font-weight: 700;
     font-variant-numeric: tabular-nums;
-    color: #1a1a1a;
+    color: var(--zen-text-primary);
 }
 
 @keyframes pulse {
@@ -78,16 +80,19 @@
     font-size: 1.1rem;
     font-weight: 500;
     padding: 0.8rem;
-    border: 1px solid rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    background: rgba(0, 0, 0, 0.2);
+    color: var(--zen-text-primary);
     border-radius: 8px;
     outline: none;
     font-family: inherit;
     transition: all 0.2s;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .edit-title-input:focus {
-    border-color: #333;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    border-color: var(--zen-accent);
+    background: rgba(0, 0, 0, 0.3);
 }
 
 .form-row {
@@ -101,7 +106,7 @@
     align-items: center;
     gap: 6px;
     font-size: 0.9rem;
-    color: #555;
+    color: var(--zen-text-secondary);
     flex-shrink: 0;
     font-weight: 500;
     min-width: 90px;
@@ -112,17 +117,17 @@
     display: flex;
     align-items: center;
     gap: 4px;
-    background: #fff;
-    border: 1px solid rgba(0, 0, 0, 0.1);
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.05);
     border-radius: 8px;
     padding: 6px 10px;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.02);
     transition: all 0.2s;
 }
 
 .time-inputs:focus-within {
-    border-color: #333;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    border-color: var(--zen-accent);
+    background: rgba(0, 0, 0, 0.3);
 }
 
 .time-input {
@@ -134,7 +139,7 @@
     font-size: 0.95rem;
     outline: none;
     font-family: inherit;
-    color: #333;
+    color: var(--zen-text-primary);
     -moz-appearance: textfield;
 }
 
@@ -145,7 +150,7 @@
 }
 
 .time-separator {
-    color: #ccc;
+    color: var(--zen-text-secondary);
     font-weight: 500;
 }
 
@@ -157,18 +162,20 @@
 }
 
 .secondary-input {
-    background: #fff;
-    border: 1px solid rgba(0, 0, 0, 0.1);
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.05);
     border-radius: 8px;
     padding: 0.6rem 0.8rem;
     outline: none;
     font-size: 0.9rem;
     width: 100%;
-    color: #333;
+    color: var(--zen-text-primary);
     font-family: inherit;
     transition: all 0.2s;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .secondary-input:focus {
-    border-color: #333;
+    border-color: var(--zen-accent);
+    background: rgba(0, 0, 0, 0.3);
 }

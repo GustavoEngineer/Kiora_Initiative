@@ -11,7 +11,7 @@ function BlocManager() {
     const [loading, setLoading] = useState(false)
     const [blocs, setBlocs] = useState([])
     const [showBlocPanel, setShowBlocPanel] = useState(false)
-    const [selectedBlocId, setSelectedBlocId] = useState(null)
+    const [selectedBlocId, setSelectedBlocId] = useState('all')
     const [selectedTask, setSelectedTask] = useState(null)
 
     // Task Expansion State (Lifted from TaskListPanel)

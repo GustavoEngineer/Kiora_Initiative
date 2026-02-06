@@ -23,27 +23,20 @@
     width: auto;
     /* Fit to content (cards) */
     min-width: 140px;
-    /* Slightly wider than card */
     height: 100%;
-    background: rgba(255, 255, 255, 0.5);
-    backdrop-filter: blur(10px);
-    border-left: 1px solid rgba(0, 0, 0, 0.05);
+    /* Zen Mode Update */
+    background: transparent;
     padding: 1rem;
-    /* Uniform padding for equal spacing */
-    /* Close to right edge but with breathing room */
     display: flex;
     flex-direction: column;
     justify-content: center;
-    /* Vertically center content */
-    gap: 1rem;
+    gap: 1.5rem;
+    /* Increased gap for elegance */
 
     /* Hide scrollbar */
     scrollbar-width: none;
-    /* Firefox */
     -ms-overflow-style: none;
-    /* IE/Edge */
     pointer-events: auto;
-    /* Enable clicks */
 }
 
 .right-sidebar-container::-webkit-scrollbar {
@@ -61,7 +54,7 @@
 .sidebar-title {
     font-size: 1.2rem;
     font-weight: 700;
-    color: #1a1a1a;
+    color: var(--zen-text-primary);
 }
 
 .blocs-vertical-list {
@@ -74,20 +67,24 @@
 }
 
 /* Add Button in Header */
+/* Add Button in Header */
 .add-bloc-mini-btn {
-    width: 32px;
-    height: 32px;
+    width: 36px;
+    height: 36px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 8px;
-    background: #1a1a1a;
-    color: white;
-    border: none;
+    border-radius: 12px;
+    background: var(--zen-bg-subtle);
+    color: var(--zen-text-primary);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     cursor: pointer;
-    transition: transform 0.2s;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .add-bloc-mini-btn:hover {
-    transform: scale(1.1);
+    transform: translateY(-2px);
+    background: var(--zen-accent);
+    box-shadow: 0 4px 12px var(--zen-accent-glow);
+    border-color: transparent;
 }
