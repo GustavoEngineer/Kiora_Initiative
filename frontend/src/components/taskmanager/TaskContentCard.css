@@ -87,6 +87,7 @@
     outline: none;
     font-family: inherit;
     color: white;
+    appearance: textfield;
     -moz-appearance: textfield;
 }
 
@@ -493,4 +494,48 @@
 
 .task-delete-btn:active {
     transform: translateY(0);
+}
+
+/* Tag Dropdown Styles */
+.tag-dropdown-list {
+    position: absolute;
+    top: 100%;
+    left: 90px;
+    right: 0;
+    background: var(--zen-bg-card);
+    border: var(--zen-border);
+    border-radius: 8px;
+    box-shadow: var(--zen-shadow);
+    z-index: 10;
+    max-height: 150px;
+    overflow-y: auto;
+    margin-top: 4px;
+}
+
+.tag-dropdown-item {
+    padding: 10px;
+    cursor: pointer;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    color: var(--zen-text-secondary);
+    transition: all 0.2s ease;
+}
+
+.tag-dropdown-item:last-child {
+    border-bottom: none;
+}
+
+.tag-dropdown-item:hover {
+    background: var(--zen-bg-hover);
+    color: var(--zen-text-primary);
+    padding-left: 14px;
+    /* Subtle slide effect */
+}
+
+.tag-dropdown-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.tag-dropdown-list::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
 }

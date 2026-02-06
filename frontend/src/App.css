@@ -40,24 +40,21 @@
 .trigger-icon {
   position: absolute;
   top: 60%;
-  /* Lowered slightly from 50% */
   left: 50%;
   transform: translate(-50%, -50%);
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.2s;
   display: flex;
-  color: #ccc;
-  /* Lighter icon for dark bg */
+  color: var(--zen-accent);
 }
 
 .trigger-icon.visible {
   opacity: 1;
   visibility: visible;
   animation: spin 3s linear infinite;
-  /* Rotate continuously */
-  color: #fff;
-  /* White when active */
+  color: var(--zen-accent);
+  filter: drop-shadow(0 0 8px var(--zen-accent-glow));
 }
 
 @keyframes spin {

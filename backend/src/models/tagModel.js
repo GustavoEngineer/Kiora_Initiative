@@ -26,6 +26,10 @@ class TagModel {
     }
 
     static async delete(id) {
+        // Since task.tag_id is NOT NULL, we must delete the associated tasks first
+        await db.query('DELETE FROM task WHERE tag_id = $1', [id]);
+
+        // Then delete the tag
         const query = 'DELETE FROM tag WHERE id = $1 RETURNING *';
         const { rows } = await db.query(query, [id]);
         return rows[0];

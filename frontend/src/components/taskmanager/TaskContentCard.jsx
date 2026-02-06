@@ -324,25 +324,13 @@ const TaskContentCard = ({ task, onClose, onTaskUpdate, onTaskDelete }) => {
                                         placeholder="Buscar etiqueta..."
                                     />
                                     {showTagDropdown && (
-                                        <div className="tag-dropdown-list" style={{
-                                            position: 'absolute',
-                                            top: '100%',
-                                            left: '90px', // Offset for label width
-                                            right: 0,
-                                            background: 'white',
-                                            border: '1px solid #eee',
-                                            borderRadius: '8px',
-                                            boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-                                            zIndex: 10,
-                                            maxHeight: '150px',
-                                            overflowY: 'auto'
-                                        }}>
+                                        <div className="tag-dropdown-list">
                                             {allTags
                                                 .filter(t => t.name.toLowerCase().includes((formData.tag_name || '').toLowerCase()))
                                                 .map(tag => (
                                                     <div
                                                         key={tag.id}
-                                                        style={{ padding: '8px', cursor: 'pointer', borderBottom: '1px solid #f9f9f9' }}
+                                                        className="tag-dropdown-item"
                                                         onClick={() => handleSelectTag(tag)}
                                                     >
                                                         {tag.name}
