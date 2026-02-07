@@ -1,0 +1,143 @@
+.subtask-popover {
+    position: fixed;
+    z-index: 9999;
+    background: var(--zen-bg-card);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 1rem;
+    width: 280px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    animation: fadeIn 0.2s ease-out;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    max-height: 400px;
+}
+
+.subtask-popover-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--zen-text-secondary);
+    font-size: 0.85rem;
+    font-weight: 500;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.subtask-input-container {
+    display: flex;
+    gap: 8px;
+}
+
+.subtask-input {
+    width: 100%;
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 0.6rem 0.8rem;
+    color: var(--zen-text-primary);
+    font-size: 0.9rem;
+    outline: none;
+    transition: all 0.2s;
+}
+
+.subtask-input:focus {
+    background: rgba(0, 0, 0, 0.3);
+    border-color: var(--zen-accent);
+    box-shadow: 0 0 0 2px rgba(94, 92, 230, 0.2);
+}
+
+.subtask-input::placeholder {
+    color: var(--zen-text-secondary);
+    opacity: 0.6;
+}
+
+.add-subtask-btn {
+    background: var(--zen-accent);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    width: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.add-subtask-btn:hover:not(:disabled) {
+    background: #4a48c4;
+}
+
+.add-subtask-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.subtasks-list-column {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    overflow-y: auto;
+    padding-right: 4px;
+}
+
+.subtasks-list-column::-webkit-scrollbar {
+    width: 4px;
+}
+
+.subtasks-list-column::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+}
+
+.subtask-list-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 10px;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 0.2s;
+}
+
+.subtask-list-item:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.subtask-text {
+    flex: 1;
+    color: var(--zen-text-primary);
+    font-size: 0.9rem;
+    word-break: break-word;
+}
+
+.remove-subtask-btn {
+    background: transparent;
+    border: none;
+    color: var(--zen-text-secondary);
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.remove-subtask-btn:hover {
+    color: #ff453a;
+    /* Red for delete action */
+    background: rgba(255, 69, 58, 0.1);
+}
+
+.empty-subtasks-message {
+    text-align: center;
+    color: var(--zen-text-secondary);
+    font-size: 0.85rem;
+    padding: 1rem;
+    font-style: italic;
+}
