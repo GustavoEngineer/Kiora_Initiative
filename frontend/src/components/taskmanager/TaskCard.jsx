@@ -1,3 +1,4 @@
+import { CheckLine } from '@mingcute/react'
 import './TaskCard.css'
 
 const TaskCard = ({ task, tagName, onClick }) => {
@@ -9,27 +10,36 @@ const TaskCard = ({ task, tagName, onClick }) => {
     // In real app, use task.due_date or task.created_at
     const dateObj = task.created_at ? new Date(task.created_at) : new Date()
 
-    const dayName = dateObj.toLocaleDateString('es-ES', { weekday: 'long' })
-    const dateNum = dateObj.toLocaleDateString('es-ES', { day: 'numeric', month: 'numeric', year: 'numeric' })
-
-    // Capitalize first letter of day name
-    const dayNameCap = dayName.charAt(0).toUpperCase() + dayName.slice(1)
+    // Date formatting: "Lunes, 7 de Octubre"
+    const fullDate = dateObj.toLocaleDateString('es-ES', {
+        weekday: 'long',
+        day: 'numeric',
+        month: 'long'
+    })
+    // Capitalize
+    const fullDateCap = fullDate.charAt(0).toUpperCase() + fullDate.slice(1)
 
     return (
         <div className="task-card-container" onClick={onClick}>
             {/* Left Indicator Bar */}
             <div className="task-card-bar"></div>
 
-            {/* Main Content: Title and Tag */}
+            {/* Main Content: Title and Date */}
             <div className="task-card-content">
                 <div className="task-card-title">{task.title}</div>
-                <div className="task-card-tag">{tag}</div>
+                <div className="task-card-date-row">
+                    <span className="task-card-full-date">{fullDateCap}</span>
+                </div>
             </div>
 
-            {/* Right Side: Day/Date */}
-            <div className="task-card-time">
-                <span className="task-card-dayname">{dayNameCap}</span>
-                <span className="task-card-date">{dateNum}</span>
+            {/* Right Side: Subtasks Indicator */}
+            <div className="task-card-right">
+                {task.subtask_count > 0 && (
+                    <div className="task-card-subtasks-badge">
+                        <CheckLine size={14} />
+                        <span>{task.completed_subtask_count}/{task.subtask_count}</span>
+                    </div>
+                )}
             </div>
         </div>
     )

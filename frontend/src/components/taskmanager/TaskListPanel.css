@@ -33,9 +33,15 @@
     min-width: 320px;
     display: flex;
     flex-direction: column;
-    padding: 1.5rem;
+    padding: 0 0 0.8rem 0;
+    /* No horizontal padding */
+    /* Reduced horizontal padding */
     height: 100%;
 }
+
+/* ... existing code ... */
+
+
 
 
 /* RIGHT SECTION: The Detail View */
@@ -53,7 +59,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1.5rem;
+    margin: 1.5rem;
+    margin-bottom: 0.5rem;
 }
 
 .task-panel-header h3 {
@@ -85,7 +92,8 @@
 .add-task-form {
     display: flex;
     flex-direction: column;
-    gap: 0.8rem;
+    gap: 1.2rem;
+    margin: 1rem;
     margin-bottom: 1rem;
 }
 
@@ -98,7 +106,7 @@
 .expanded-form-fields {
     display: flex;
     flex-direction: column;
-    gap: 0.8rem;
+    gap: 1.2rem;
     overflow: hidden;
 }
 
@@ -203,9 +211,14 @@
     overflow-y: auto;
     display: flex;
     flex-direction: column;
-    gap: 0.4rem;
-    padding-right: 4px;
+    gap: 0.8rem;
+    /* Increased gap for better spacing */
+    padding: 10px 0 30px 0;
+    /* No side padding */
     scrollbar-width: none;
+    /* Infinite Scroll Effect */
+    mask-image: linear-gradient(to bottom, transparent 0%, black 40px, black calc(100% - 40px), transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 40px, black calc(100% - 40px), transparent 100%);
 }
 
 .tasks-list-container::-webkit-scrollbar {
@@ -314,6 +327,7 @@
     font-family: inherit;
     color: var(--zen-text-primary);
     -moz-appearance: textfield;
+    appearance: textfield;
 }
 
 .time-input::-webkit-outer-spin-button,

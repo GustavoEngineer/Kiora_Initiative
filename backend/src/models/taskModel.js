@@ -2,7 +2,12 @@ const db = require('../config/supabase');
 
 class TaskModel {
     static async getAll() {
-        const query = 'SELECT * FROM task';
+        const query = `
+            SELECT t.*, 
+            (SELECT COUNT(*)::int FROM subtask s WHERE s.task_id = t.id) as subtask_count,
+            (SELECT COUNT(*)::int FROM subtask s WHERE s.task_id = t.id AND s.completed = TRUE) as completed_subtask_count
+            FROM task t
+        `;
         const { rows } = await db.query(query);
         return rows;
     }

@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { getTasks, createTask, updateTask, deleteTask, getTags, createTag } from '../../services/api'
+import { getTasks, createTask, updateTask, deleteTask, getTags, createTag, createSubtask } from '../../services/api'
 import { motion, AnimatePresence } from 'framer-motion'
 import { AddLine, CloseLine, TimeLine, TagLine, CheckLine } from '@mingcute/react'
 import TaskCard from './TaskCard'
@@ -18,6 +18,10 @@ const TaskListPanel = ({ blocId, onClose, selectedTask, onSelectTask, refreshTri
     // Time Estimation State
     const [estHours, setEstHours] = useState('')
     const [estMinutes, setEstMinutes] = useState('')
+
+    // Subtasks State
+    const [subtasks, setSubtasks] = useState([])
+    const [currentSubtask, setCurrentSubtask] = useState('')
 
     // Smart Tag State
     const [allTags, setAllTags] = useState([])
@@ -95,16 +99,24 @@ const TaskListPanel = ({ blocId, onClose, selectedTask, onSelectTask, refreshTri
                 }
             }
 
-            await createTask({
+            const createdTask = await createTask({
                 title: newTaskName,
                 bloc_id: blocId,
                 completed: false,
                 tag_id: finalTagId,
                 estimated_hours: totalEstimatedHours > 0 ? totalEstimatedHours : null,
-                estimated_hours: totalEstimatedHours > 0 ? totalEstimatedHours : null,
                 due_date: newDate ? new Date(newDate).toISOString() : null,
                 description: newTaskDescription
             })
+
+            // Create subtasks if any
+            if (subtasks.length > 0) {
+                await Promise.all(subtasks.map(st => createSubtask({
+                    task_id: createdTask.id,
+                    title: st
+                })))
+            }
+
             resetForm()
             fetchTasks()
         } catch (error) {
@@ -123,6 +135,8 @@ const TaskListPanel = ({ blocId, onClose, selectedTask, onSelectTask, refreshTri
         setIsCreatingTag(false)
         setShowTagDropdown(false)
         setIsCreating(false)
+        setSubtasks([])
+        setCurrentSubtask('')
     }
 
     // Tag Handling
@@ -157,6 +171,19 @@ const TaskListPanel = ({ blocId, onClose, selectedTask, onSelectTask, refreshTri
         }
     }
 
+    // Subtask Handlers
+    const handleAddSubtask = (e) => {
+        e.preventDefault() // Prevent form submission
+        if (currentSubtask.trim()) {
+            setSubtasks([...subtasks, currentSubtask.trim()])
+            setCurrentSubtask('')
+        }
+    }
+
+    const handleRemoveSubtask = (index) => {
+        setSubtasks(subtasks.filter((_, i) => i !== index))
+    }
+
     return (
         <motion.div
             className={`task-list-panel ${isCreating ? 'creating-mode' : ''} ${isCreatingTag ? 'tag-creating-mode' : ''}`}
@@ -169,19 +196,9 @@ const TaskListPanel = ({ blocId, onClose, selectedTask, onSelectTask, refreshTri
             <div className="panel-list-section">
                 <motion.div layout className="task-panel-header">
                     <h3>
-                        {isCreating
-                            ? 'Nueva Tarea'
-                            : (blocId === 'all' ? 'Todas las Tareas' : 'Tareas')}
+                        {isCreating ? 'Nueva Tarea' : ''}
                     </h3>
-                    {!isCreating && (
-                        <button
-                            className="close-panel-btn"
-                            onClick={onClose}
-                            onMouseEnter={onClose}
-                        >
-                            <CloseLine size={18} />
-                        </button>
-                    )}
+
                 </motion.div>
 
                 {/* Only show creation form if NOT in 'all' view */}
@@ -201,11 +218,7 @@ const TaskListPanel = ({ blocId, onClose, selectedTask, onSelectTask, refreshTri
                                 className="add-task-input"
                                 autoFocus={isCreating}
                             />
-                            {!isCreating && (
-                                <button type="submit" className="add-task-btn">
-                                    <AddLine size={18} />
-                                </button>
-                            )}
+
                         </motion.div>
 
                         <AnimatePresence>
@@ -326,6 +339,43 @@ const TaskListPanel = ({ blocId, onClose, selectedTask, onSelectTask, refreshTri
                                             onChange={(e) => setNewDate(e.target.value)}
                                             className="secondary-input"
                                         />
+                                    </div>
+
+                                    {/* Subtasks Section */}
+                                    <div className="subtasks-section">
+                                        <div className="form-row">
+                                            <label className="form-label">Subtareas:</label>
+                                            <div className="subtask-input-container" style={{ display: 'flex', gap: '8px', width: '100%' }}>
+                                                <input
+                                                    type="text"
+                                                    className="secondary-input"
+                                                    placeholder="Añadir subtarea..."
+                                                    value={currentSubtask}
+                                                    onChange={(e) => setCurrentSubtask(e.target.value)}
+                                                    onKeyDown={(e) => {
+                                                        if (e.key === 'Enter') {
+                                                            e.preventDefault()
+                                                            handleAddSubtask(e)
+                                                        }
+                                                    }}
+                                                />
+                                                <button type="button" onClick={handleAddSubtask} className="add-subtask-btn">
+                                                    <AddLine size={16} />
+                                                </button>
+                                            </div>
+                                        </div>
+                                        {subtasks.length > 0 && (
+                                            <ul className="subtasks-list-preview">
+                                                {subtasks.map((st, index) => (
+                                                    <li key={index} className="subtask-preview-item">
+                                                        <span>{st}</span>
+                                                        <button type="button" onClick={() => handleRemoveSubtask(index)} className="remove-subtask-btn">
+                                                            <CloseLine size={14} />
+                                                        </button>
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        )}
                                     </div>
 
                                     <div className="form-actions">

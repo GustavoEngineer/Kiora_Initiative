@@ -113,4 +113,25 @@ export const deleteWorkDay = async (id) => {
     return response.data;
 };
 
+// SUBTASKS
+export const getSubtasks = async (taskId) => {
+    const response = await api.get(`/subtasks/task/${taskId}`);
+    return response.data;
+};
+
+export const createSubtask = async (datos) => {
+    const response = await api.post('/subtasks', datos);
+    return response.data;
+};
+
+export const updateSubtask = async (id, datos) => {
+    const response = await api.put(`/subtasks/${id}`, datos);
+    return response.data;
+};
+
+export const deleteSubtask = async (id) => {
+    const response = await api.delete(`/subtasks/${id}`);
+    return response.data;
+};
+
 export default api;

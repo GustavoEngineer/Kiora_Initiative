@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { CloseLine, TimeLine, CalendarLine, TagLine, PlayLine, Edit2Line, Delete2Line } from '@mingcute/react'
-import { updateTask, deleteTask, getTags } from '../../services/api'
+import { CloseLine, TimeLine, CalendarLine, TagLine, PlayLine, Edit2Line, Delete2Line, AddLine, CheckLine } from '@mingcute/react'
+import { updateTask, deleteTask, getTags, getSubtasks, createSubtask, updateSubtask, deleteSubtask } from '../../services/api'
 import TaskClock from './TaskClock'
 import './TaskContentCard.css'
 
@@ -15,6 +15,10 @@ const TaskContentCard = ({ task, onClose, onTaskUpdate, onTaskDelete }) => {
     // Tag State
     const [allTags, setAllTags] = useState([])
     const [showTagDropdown, setShowTagDropdown] = useState(false)
+
+    // Subtasks State
+    const [subtasks, setSubtasks] = useState([])
+    const [newSubtaskTitle, setNewSubtaskTitle] = useState('')
 
     const [formData, setFormData] = useState({
         title: '',
@@ -66,8 +70,19 @@ const TaskContentCard = ({ task, onClose, onTaskUpdate, onTaskDelete }) => {
                 setEstHours('')
                 setEstMinutes('')
             }
+
+            fetchSubtasks(task.id)
         }
     }, [task, allTags])
+
+    const fetchSubtasks = async (taskId) => {
+        try {
+            const data = await getSubtasks(taskId)
+            setSubtasks(data)
+        } catch (error) {
+            console.error('Error fetching subtasks:', error)
+        }
+    }
 
     const handleStartTask = () => {
         setIsTaskStarted(!isTaskStarted)
@@ -200,6 +215,57 @@ const TaskContentCard = ({ task, onClose, onTaskUpdate, onTaskDelete }) => {
         }
     }
 
+    // Subtask Handlers
+    const handleToggleSubtask = async (subtask) => {
+        try {
+            const updated = await updateSubtask(subtask.id, { completed: !subtask.completed })
+            setSubtasks(prev => prev.map(s => s.id === subtask.id ? updated : s))
+            if (onTaskUpdate) {
+                // Trigger refresh to update card counts maybe?
+                // For now just local update is fine, but parent might need to know
+                onTaskUpdate({ ...task })
+            }
+        } catch (error) {
+            console.error('Error toggling subtask:', error)
+        }
+    }
+
+    const handleAddSubtask = async (e) => {
+        e.preventDefault()
+        if (!newSubtaskTitle.trim()) return
+
+        try {
+            const newSubtask = await createSubtask({
+                task_id: task.id,
+                title: newSubtaskTitle
+            })
+            setSubtasks([...subtasks, newSubtask])
+            setNewSubtaskTitle('')
+            if (onTaskUpdate) onTaskUpdate({ ...task })
+        } catch (error) {
+            console.error('Error adding subtask:', error)
+        }
+    }
+
+    const handleDeleteSubtask = async (subtaskId) => {
+        try {
+            await deleteSubtask(subtaskId)
+            setSubtasks(prev => prev.filter(s => s.id !== subtaskId))
+            if (onTaskUpdate) onTaskUpdate({ ...task })
+        } catch (error) {
+            console.error('Error deleting subtask:', error)
+        }
+    }
+
+    const handleUpdateSubtaskTitle = async (subtaskId, newTitle) => {
+        try {
+            const updated = await updateSubtask(subtaskId, { title: newTitle })
+            setSubtasks(prev => prev.map(s => s.id === subtaskId ? updated : s))
+        } catch (error) {
+            console.error('Error updating subtask:', error)
+        }
+    }
+
     return (
         <div className={`task-content-card ${isTaskStarted ? 'started' : ''}`} onMouseLeave={() => {
             setIsFlipped(false)
@@ -252,6 +318,26 @@ const TaskContentCard = ({ task, onClose, onTaskUpdate, onTaskDelete }) => {
                         {task.description && (
                             <div className="task-description-section">
                                 <p>{task.description}</p>
+                            </div>
+                        )}
+
+                        {/* Subtasks View */}
+                        {subtasks.length > 0 && (
+                            <div className="task-subtasks-section">
+                                <h3>Subtareas</h3>
+                                <div className="subtasks-list">
+                                    {subtasks.map(st => (
+                                        <div key={st.id} className={`subtask-item ${st.completed ? 'completed' : ''}`}>
+                                            <div
+                                                className="subtask-checkbox"
+                                                onClick={() => handleToggleSubtask(st)}
+                                            >
+                                                {st.completed && <CheckLine size={14} />}
+                                            </div>
+                                            <span className="subtask-title">{st.title}</span>
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
                         )}
 
@@ -366,6 +452,51 @@ const TaskContentCard = ({ task, onClose, onTaskUpdate, onTaskDelete }) => {
                                     onChange={handleChange}
                                     onBlur={handleUpdate}
                                 />
+                            </div>
+
+                            {/* Subtasks Edit */}
+                            <div className="form-row subtasks-edit-row">
+                                <label className="form-label">Subtareas:</label>
+                                <div className="subtasks-edit-list">
+                                    {subtasks.map(st => (
+                                        <div key={st.id} className="subtask-edit-item">
+                                            <input
+                                                type="text"
+                                                className="subtask-edit-input"
+                                                defaultValue={st.title}
+                                                onBlur={(e) => {
+                                                    if (e.target.value !== st.title) {
+                                                        handleUpdateSubtaskTitle(st.id, e.target.value)
+                                                    }
+                                                }}
+                                            />
+                                            <button
+                                                className="remove-subtask-btn"
+                                                onClick={() => handleDeleteSubtask(st.id)}
+                                            >
+                                                <Delete2Line size={16} />
+                                            </button>
+                                        </div>
+                                    ))}
+                                    <div className="add-subtask-row">
+                                        <input
+                                            type="text"
+                                            placeholder="Nueva subtarea..."
+                                            value={newSubtaskTitle}
+                                            onChange={(e) => setNewSubtaskTitle(e.target.value)}
+                                            onKeyDown={(e) => {
+                                                if (e.key === 'Enter') {
+                                                    e.preventDefault()
+                                                    handleAddSubtask(e)
+                                                }
+                                            }}
+                                            className="secondary-input"
+                                        />
+                                        <button className="add-subtask-btn" onClick={handleAddSubtask}>
+                                            <AddLine size={16} />
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
