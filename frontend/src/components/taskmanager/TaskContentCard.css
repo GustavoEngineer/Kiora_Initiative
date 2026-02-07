@@ -38,6 +38,27 @@
     transition: all 0.2s;
 }
 
+.edit-description-input {
+    width: 100%;
+    font-size: 0.95rem;
+    padding: 0.8rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: #2c2c2e;
+    color: #ddd;
+    border-radius: 8px;
+    outline: none;
+    font-family: inherit;
+    resize: none;
+    transition: all 0.2s;
+    line-height: 1.5;
+}
+
+.edit-description-input:focus {
+    border-color: #5e5ce6;
+    box-shadow: 0 0 0 1px #5e5ce6;
+    background: #333;
+}
+
 .edit-title-input:focus {
     border-color: #5e5ce6;
     box-shadow: 0 0 0 1px #5e5ce6;

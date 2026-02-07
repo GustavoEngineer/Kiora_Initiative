@@ -49,8 +49,8 @@ const TaskContentCard = ({ task, onClose, onTaskUpdate, onTaskDelete }) => {
             }
 
             setFormData({
-                title: task.title,
-                tag_name: initialTagName,
+                title: task.title || '',
+                tag_name: initialTagName || '',
                 tag_id: task.tag_id,
                 due_date: task.due_date ? task.due_date.split('T')[0] : '', // Format for date input
                 description: task.description || ''
@@ -172,7 +172,7 @@ const TaskContentCard = ({ task, onClose, onTaskUpdate, onTaskDelete }) => {
                 completed: task.completed !== undefined ? task.completed : false,
                 bloc_id: task.bloc_id,
                 tag_id: formData.tag_id, // Use the updated tag_id
-                description: task.description
+                description: formData.description
             }
 
             const updatedTask = await updateTask(task.id, payload)
@@ -249,9 +249,11 @@ const TaskContentCard = ({ task, onClose, onTaskUpdate, onTaskDelete }) => {
                             </div>
                         </div>
 
-                        <div className="task-description-section">
-                            <p>{task.description}</p>
-                        </div>
+                        {task.description && (
+                            <div className="task-description-section">
+                                <p>{task.description}</p>
+                            </div>
+                        )}
 
                         <div className="task-actions">
                             <button
@@ -281,6 +283,17 @@ const TaskContentCard = ({ task, onClose, onTaskUpdate, onTaskDelete }) => {
                                 onChange={handleChange}
                                 onBlur={handleUpdate}
                                 placeholder="Título de la tarea"
+                            />
+
+                            {/* 1.5. Description Input */}
+                            <textarea
+                                name="description"
+                                className="edit-description-input"
+                                value={formData.description}
+                                onChange={handleChange}
+                                onBlur={handleUpdate}
+                                placeholder="Descripción..."
+                                rows={4}
                             />
 
                             {/* 2. Time Estimation */}

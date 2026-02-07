@@ -9,6 +9,7 @@ const TaskListPanel = ({ blocId, onClose, selectedTask, onSelectTask, refreshTri
     const [tasks, setTasks] = useState([])
     const [loading, setLoading] = useState(false)
     const [newTaskName, setNewTaskName] = useState('')
+    const [newTaskDescription, setNewTaskDescription] = useState('')
 
     // Creation Mode State
     const [isCreating, setIsCreating] = useState(false)
@@ -100,7 +101,9 @@ const TaskListPanel = ({ blocId, onClose, selectedTask, onSelectTask, refreshTri
                 completed: false,
                 tag_id: finalTagId,
                 estimated_hours: totalEstimatedHours > 0 ? totalEstimatedHours : null,
-                due_date: newDate ? new Date(newDate).toISOString() : null
+                estimated_hours: totalEstimatedHours > 0 ? totalEstimatedHours : null,
+                due_date: newDate ? new Date(newDate).toISOString() : null,
+                description: newTaskDescription
             })
             resetForm()
             fetchTasks()
@@ -111,6 +114,7 @@ const TaskListPanel = ({ blocId, onClose, selectedTask, onSelectTask, refreshTri
 
     const resetForm = () => {
         setNewTaskName('')
+        setNewTaskDescription('')
         setNewDate('')
         setEstHours('')
         setEstMinutes('')
@@ -213,6 +217,13 @@ const TaskListPanel = ({ blocId, onClose, selectedTask, onSelectTask, refreshTri
                                     animate={{ opacity: 1, height: 'auto' }}
                                     exit={{ opacity: 0, height: 0 }}
                                 >
+                                    <textarea
+                                        placeholder="Descripción (opcional)..."
+                                        value={newTaskDescription}
+                                        onChange={(e) => setNewTaskDescription(e.target.value)}
+                                        className="task-description-input"
+                                        rows={2}
+                                    />
                                     {/* Time Estimation */}
                                     <div className="form-row time-estimation-row">
                                         <label className="form-label"><TimeLine size={14} /> Estimado:</label>
