@@ -1,8 +1,9 @@
-/* Minimal BlocDetail Styles */
+/* Minimal BlocDetail Styles - Glassmorphism Updated */
 
 .bloc-detail {
     min-height: 100vh;
-    background: #ffffff;
+    background: transparent;
+    /* Uses app background */
     padding: 2rem;
 }
 
@@ -12,13 +13,14 @@
     align-items: center;
     gap: 0.5rem;
     padding: 0.5rem 1rem;
-    background: #f5f5f5;
-    border: 1px solid #e0e0e0;
-    border-radius: 4px;
-    color: #333;
+    background: var(--bg-card);
+    border: var(--border-glass);
+    border-radius: 12px;
+    color: var(--text-secondary);
     font-size: 0.9rem;
     cursor: pointer;
     margin-bottom: 2rem;
+    transition: all 0.2s;
 }
 
 .back-button svg {
@@ -27,8 +29,9 @@
 }
 
 .back-button:hover {
-    background: #e8e8e8;
-    color: #000;
+    background: var(--bg-glass-hover);
+    color: var(--text-primary);
+    transform: translateX(-4px);
 }
 
 /* Bloc Header */
@@ -39,15 +42,19 @@
     gap: 1rem;
     margin-bottom: 2rem;
     padding: 2rem;
-    background: #f9f9f9;
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
+    background: var(--bg-panel);
+    backdrop-filter: var(--blur-lg);
+    -webkit-backdrop-filter: var(--blur-lg);
+    border: var(--border-glass);
+    border-radius: 20px;
+    box-shadow: var(--shadow-glass);
 }
 
 .bloc-icon-large {
     width: 100px;
     height: 100px;
-    color: #666;
+    color: var(--accent-primary);
+    filter: drop-shadow(0 0 15px rgba(167, 139, 250, 0.4));
 }
 
 .bloc-icon-large svg {
@@ -59,7 +66,8 @@
     font-size: 2rem;
     font-weight: 600;
     margin: 0;
-    color: #000;
+    color: var(--text-primary);
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
 /* Create Task Section */
@@ -72,7 +80,7 @@
     font-size: 1.25rem;
     font-weight: 600;
     margin-bottom: 1rem;
-    color: #000;
+    color: var(--text-primary);
 }
 
 .task-form {
@@ -85,19 +93,21 @@
 .task-textarea,
 .task-select {
     padding: 0.75rem;
-    background: #fff;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    color: #333;
+    background: var(--bg-card);
+    border: 1px solid var(--border-glass);
+    border-radius: 12px;
+    color: var(--text-primary);
     font-size: 1rem;
     font-family: inherit;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .task-input:focus,
 .task-textarea:focus,
 .task-select:focus {
     outline: none;
-    border-color: #999;
+    border-color: var(--accent-primary);
+    background: rgba(0, 0, 0, 0.3);
 }
 
 .task-textarea {
@@ -110,23 +120,23 @@
 }
 
 .task-select option {
-    background: #fff;
-    color: #333;
+    background: var(--bg-card);
+    color: var(--text-primary);
 }
 
 .task-button {
     padding: 0.75rem 1.5rem;
-    background: #000;
+    background: var(--text-primary);
     border: none;
     border-radius: 4px;
-    color: #fff;
+    color: var(--bg-main);
     font-size: 1rem;
     font-weight: 500;
     cursor: pointer;
 }
 
 .task-button:hover:not(:disabled) {
-    background: #333;
+    opacity: 0.9;
 }
 
 .task-button:disabled {
@@ -148,7 +158,7 @@
 }
 
 .form-group label {
-    color: #666;
+    color: var(--text-secondary);
     font-size: 0.875rem;
     font-weight: 500;
 }
@@ -165,8 +175,8 @@
     gap: 0.75rem;
     align-items: center;
     padding: 1rem;
-    background: #f5f5f5;
-    border: 1px solid #e0e0e0;
+    background: var(--bg-hover);
+    border: 1px solid var(--border-subtle);
     border-radius: 4px;
 }
 
@@ -186,12 +196,12 @@
 }
 
 .tag-create-button {
-    background: #000;
-    color: #fff;
+    background: var(--text-primary);
+    color: var(--bg-main);
 }
 
 .tag-create-button:hover:not(:disabled) {
-    background: #333;
+    opacity: 0.9;
 }
 
 .tag-create-button:disabled {
@@ -200,12 +210,13 @@
 }
 
 .tag-cancel-button {
-    background: #e0e0e0;
-    color: #333;
+    background: var(--border-subtle);
+    color: var(--text-primary);
 }
 
 .tag-cancel-button:hover {
-    background: #ccc;
+    background: var(--text-secondary);
+    color: var(--bg-main);
 }
 
 /* Tasks Section */
@@ -219,7 +230,7 @@
     font-weight: 600;
     margin-bottom: 1.5rem;
     text-align: center;
-    color: #000;
+    color: var(--text-primary);
 }
 
 .tasks-list {
@@ -231,40 +242,40 @@
 /* Task Card */
 .task-card {
     padding: 1.5rem;
-    background: #f9f9f9;
-    border: 1px solid #e0e0e0;
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
     border-radius: 8px;
-    border-left: 3px solid #666;
+    border-left: 3px solid var(--text-secondary);
 }
 
 .task-card:hover {
-    background: #f5f5f5;
-    border-left-color: #333;
+    background: var(--bg-hover);
+    border-left-color: var(--text-primary);
 }
 
 .task-card h3 {
     font-size: 1.125rem;
     font-weight: 600;
     margin: 0 0 0.5rem 0;
-    color: #000;
+    color: var(--text-primary);
 }
 
 .task-card p,
 .task-due-date,
 .task-hours {
-    color: #666;
+    color: var(--text-secondary);
     font-size: 0.875rem;
     line-height: 1.5;
     margin: 0 0 0.5rem 0;
 }
 
 .task-due-date {
-    color: #333;
+    color: var(--text-primary);
     font-weight: 500;
 }
 
 .task-hours {
-    color: #666;
+    color: var(--text-secondary);
 }
 
 .task-status {
@@ -300,7 +311,7 @@
 .no-tasks-message {
     text-align: center;
     padding: 2rem;
-    color: #999;
+    color: var(--text-secondary);
 }
 
 .error-message {

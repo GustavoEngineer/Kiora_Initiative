@@ -1,52 +1,63 @@
 .tag-popover {
     position: fixed;
     z-index: 9999;
-    background: var(--zen-bg-card);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 12px;
+    background: var(--bg-panel);
+    backdrop-filter: var(--blur-lg);
+    -webkit-backdrop-filter: var(--blur-lg);
+    border: var(--border-glass-light);
+    border-radius: 16px;
     padding: 1rem;
     width: 250px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-    animation: fadeIn 0.2s ease-out;
-    display: flex;
-    flex-direction: column;
-    gap: 0.8rem;
+    box-shadow: var(--shadow-glass);
+    animation: popoverFadeInLeft 0.2s ease-out;
     max-height: 400px;
     /* Limit height if list is long */
+}
+
+@keyframes popoverFadeInLeft {
+    from {
+        opacity: 0;
+        transform: translate(-100%, 10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate(-100%, 0);
+    }
 }
 
 .tag-popover-header {
     display: flex;
     align-items: center;
     gap: 8px;
-    color: var(--zen-text-secondary);
+    color: var(--text-secondary);
     font-size: 0.85rem;
     font-weight: 500;
     padding-bottom: 0.5rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid var(--border-glass);
 }
 
 .tag-search-input {
     width: 100%;
-    background: rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 8px;
-    padding: 0.6rem 0.8rem;
-    color: var(--zen-text-primary);
+    background: var(--bg-card);
+    border: 1px solid transparent;
+    border-radius: 12px;
+    padding: 0.8rem;
+    color: var(--text-primary);
     font-size: 0.9rem;
     outline: none;
     transition: all 0.2s;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .tag-search-input:focus {
-    background: rgba(0, 0, 0, 0.3);
-    border-color: var(--zen-accent);
-    box-shadow: 0 0 0 2px rgba(94, 92, 230, 0.2);
+    background: rgba(0, 0, 0, 0.4);
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 0 2px rgba(167, 139, 250, 0.2);
 }
 
 .tag-search-input::placeholder {
-    color: var(--zen-text-secondary);
+    color: var(--text-secondary);
     opacity: 0.6;
 }
 
@@ -64,7 +75,7 @@
 }
 
 .tags-list-column::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.1);
+    background: var(--border-subtle);
     border-radius: 2px;
 }
 
@@ -76,23 +87,26 @@
     border-radius: 6px;
     cursor: pointer;
     transition: all 0.2s;
-    color: var(--zen-text-secondary);
+    color: var(--text-secondary);
     font-size: 0.9rem;
 }
 
 .tag-list-item:hover {
-    background: rgba(255, 255, 255, 0.05);
-    color: var(--zen-text-primary);
+    background: var(--bg-hover);
+    color: var(--text-primary);
 }
 
 .tag-list-item.selected {
-    background: rgba(94, 92, 230, 0.1);
-    /* purple tint */
-    color: var(--zen-accent);
+    background: var(--text-primary);
+    color: var(--bg-main);
 }
 
 .check-icon {
-    color: var(--zen-accent);
+    color: var(--accent);
+}
+
+.tag-list-item.selected .check-icon {
+    color: var(--bg-main);
 }
 
 .create-tag-option {
@@ -102,14 +116,14 @@
     padding: 8px 10px;
     border-radius: 6px;
     cursor: pointer;
-    color: var(--zen-accent);
+    color: var(--accent);
     font-size: 0.9rem;
     margin-top: 4px;
-    border: 1px dashed rgba(94, 92, 230, 0.3);
+    border: 1px dashed var(--border-subtle);
 }
 
 .create-tag-option:hover {
-    background: rgba(94, 92, 230, 0.1);
+    background: var(--bg-hover);
 }
 
 /* Creation Panel */
@@ -120,7 +134,7 @@
 }
 
 .creation-header {
-    color: var(--zen-text-primary);
+    color: var(--text-primary);
     font-weight: 500;
     font-size: 0.95rem;
 }
@@ -129,7 +143,7 @@
     display: flex;
     flex-direction: column;
     gap: 6px;
-    color: var(--zen-text-secondary);
+    color: var(--text-secondary);
     font-size: 0.85rem;
 }
 
@@ -138,8 +152,8 @@
 }
 
 .confirm-create-btn {
-    background: var(--zen-accent);
-    color: white;
+    background: var(--text-primary);
+    color: var(--bg-main);
     border: none;
     padding: 8px;
     border-radius: 6px;
@@ -149,17 +163,17 @@
     justify-content: center;
     gap: 6px;
     font-size: 0.9rem;
-    transition: background 0.2s;
+    transition: opacity 0.2s;
 }
 
 .confirm-create-btn:hover {
-    background: #4a48c4;
+    opacity: 0.9;
 }
 
 .cancel-create-btn {
     background: transparent;
-    color: var(--zen-text-secondary);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-secondary);
+    border: 1px solid var(--border-subtle);
     padding: 6px;
     border-radius: 6px;
     cursor: pointer;
@@ -167,13 +181,13 @@
 }
 
 .cancel-create-btn:hover {
-    background: rgba(255, 255, 255, 0.05);
-    color: var(--zen-text-primary);
+    background: var(--bg-hover);
+    color: var(--text-primary);
 }
 
 .empty-tags-message {
     text-align: center;
-    color: var(--zen-text-secondary);
+    color: var(--text-secondary);
     font-size: 0.85rem;
     padding: 1rem;
     font-style: italic;

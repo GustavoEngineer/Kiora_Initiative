@@ -10,7 +10,8 @@ const TagPopover = ({
     selectedTag,
     onSelectTag,
     onCreateTag,
-    onClose
+    onClose,
+    style = {}
 }) => {
     const [search, setSearch] = useState('')
     const [isCreating, setIsCreating] = useState(false)
@@ -27,6 +28,24 @@ const TagPopover = ({
             setTimeout(() => inputRef.current?.focus(), 50)
         }
     }, [isOpen])
+
+    // Close on click outside
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (isOpen && !event.target.closest('.tag-popover') && !event.target.closest('.tag-trigger')) {
+                onClose()
+            }
+        }
+
+        const timer = setTimeout(() => {
+            document.addEventListener('mousedown', handleClickOutside)
+        }, 100)
+
+        return () => {
+            clearTimeout(timer)
+            document.removeEventListener('mousedown', handleClickOutside)
+        }
+    }, [isOpen, onClose])
 
     if (!isOpen) return null
 
@@ -45,8 +64,7 @@ const TagPopover = ({
             onCreateTag({ name: search, importance_level: newTagImportance })
             setSearch('')
             setIsCreating(false)
-            onClose() // Close after creation? Or keep open? User might want to verify.
-            // Let's close for now as selecting usually closes it.
+            onClose()
         }
     }
 
@@ -55,7 +73,8 @@ const TagPopover = ({
             className="tag-popover"
             style={{
                 top: position.top,
-                left: position.left
+                left: position.left,
+                ...style
             }}
         >
             <div className="tag-popover-header">

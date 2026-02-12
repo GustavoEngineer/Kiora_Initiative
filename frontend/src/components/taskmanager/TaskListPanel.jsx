@@ -6,7 +6,7 @@ import TaskCard from '../TaskCard'
 import DescriptionPopover from '../Popovers/DescriptionPopover'
 import TagPopover from '../Popovers/TagPopover'
 import SubtaskPopover from '../Popovers/SubtaskPopover'
-import '../TaskListPanel.css'
+import './TaskListPanel.css'
 
 const TaskListPanel = ({ blocId, onClose, selectedTask, onSelectTask, refreshTrigger, externalTags }) => {
     // ... existing state ...

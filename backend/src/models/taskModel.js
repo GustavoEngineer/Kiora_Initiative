@@ -40,23 +40,19 @@ class TaskModel {
     }
 
     static async update(id, data) {
-        const { title, description, due_date, completed, estimated_hours, bloc_id, tag_id } = data;
+        const fields = Object.keys(data);
+        if (fields.length === 0) return null;
+
+        const setClause = fields.map((field, index) => `${field} = $${index + 1}`).join(', ');
+        const values = fields.map(field => data[field]);
+        values.push(id);
+
         const query = `
-      UPDATE task
-      SET title = $1, description = $2, due_date = $3, completed = $4, estimated_hours = $5, bloc_id = $6, tag_id = $7
-      WHERE id = $8
-      RETURNING *
-    `;
-        const values = [
-            title,
-            description,
-            due_date,
-            completed,
-            estimated_hours,
-            bloc_id,
-            tag_id,
-            id
-        ].map(v => v === undefined ? null : v);
+            UPDATE task
+            SET ${setClause}
+            WHERE id = $${values.length}
+            RETURNING *
+        `;
 
         const { rows } = await db.query(query, values);
         return rows[0];

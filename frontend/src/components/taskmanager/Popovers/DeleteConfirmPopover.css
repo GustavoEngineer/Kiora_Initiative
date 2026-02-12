@@ -1,0 +1,103 @@
+.delete-confirm-popover {
+    width: 450px;
+    background: var(--bg-panel);
+    backdrop-filter: var(--blur-lg);
+    -webkit-backdrop-filter: var(--blur-lg);
+    padding: 1.5rem;
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-glass);
+    border: var(--border-glass);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2147483650;
+    /* Above everything */
+    animation: slideUpFade 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes slideUpFade {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.delete-confirm-icon {
+    color: #ef4444;
+    /* Red warning */
+    background: rgba(239, 68, 68, 0.1);
+    padding: 12px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 15px rgba(239, 68, 68, 0.2);
+}
+
+.delete-confirm-content {
+    text-align: center;
+}
+
+.delete-confirm-content h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.delete-confirm-content p {
+    margin: 0.5rem 0 0;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.delete-confirm-actions {
+    display: flex;
+    gap: 1rem;
+    width: 100%;
+    margin-top: 0.5rem;
+}
+
+.delete-confirm-cancel,
+.delete-confirm-btn {
+    flex: 1;
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+}
+
+.delete-confirm-cancel {
+    background: var(--bg-hover);
+    color: var(--text-primary);
+    border: 1px solid var(--border-glass);
+}
+
+.delete-confirm-cancel:hover {
+    background: var(--bg-card);
+}
+
+.delete-confirm-btn {
+    background: #ef4444;
+    color: white;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+.delete-confirm-btn:hover {
+    background: #dc2626;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(239, 68, 68, 0.4);
+}

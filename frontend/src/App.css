@@ -2,34 +2,36 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  background: var(--bg-app);
+  background-image:
+    radial-gradient(circle at 15% 50%, rgba(167, 139, 250, 0.08), transparent 25%),
+    radial-gradient(circle at 85% 30%, rgba(244, 114, 182, 0.08), transparent 25%);
 }
 
 .user-greeting {
   padding: 2rem 3rem;
-  font-size: 3.5rem;
-  font-weight: 700;
-  color: #fff;
-  /* White text for dark mode */
+  font-size: 2.5rem;
+  font-weight: 600;
+  color: var(--text-primary);
   letter-spacing: -0.02em;
   display: flex;
   align-items: center;
-  /* Align text and trigger */
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
 
 .config-trigger-container {
   display: inline-flex;
   position: relative;
   cursor: pointer;
-  margin-left: 1px;
-  /* Adjust spacing if needed */
+  margin-left: 0.5rem;
   height: 1em;
-  /* Match line height */
   align-items: center;
   justify-content: center;
 }
 
 .trigger-letter {
   transition: opacity 0.2s;
+  color: var(--text-secondary);
 }
 
 .trigger-letter.hidden {
@@ -39,32 +41,21 @@
 
 .trigger-icon {
   position: absolute;
-  top: 60%;
+  top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.2s;
   display: flex;
-  color: var(--zen-accent);
+  color: var(--accent-primary);
+  filter: drop-shadow(0 0 8px rgba(167, 139, 250, 0.4));
 }
 
 .trigger-icon.visible {
   opacity: 1;
   visibility: visible;
-  animation: spin 3s linear infinite;
-  color: var(--zen-accent);
-  filter: drop-shadow(0 0 8px var(--zen-accent-glow));
-}
-
-@keyframes spin {
-  from {
-    transform: translate(-50%, -50%) rotate(0deg);
-  }
-
-  to {
-    transform: translate(-50%, -50%) rotate(360deg);
-  }
+  color: var(--accent-primary);
 }
 
 .main-content {

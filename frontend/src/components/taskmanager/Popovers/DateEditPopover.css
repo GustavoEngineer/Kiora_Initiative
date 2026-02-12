@@ -1,0 +1,81 @@
+.date-edit-popover {
+    width: 280px;
+    background: var(--bg-panel);
+    backdrop-filter: var(--blur-lg);
+    -webkit-backdrop-filter: var(--blur-lg);
+    border: var(--border-glass);
+    border-radius: var(--radius-lg);
+    padding: 1rem;
+    position: fixed;
+    box-shadow: var(--shadow-glass);
+    z-index: 2000;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    animation: popoverFadeInLeft 0.15s ease-out;
+}
+
+@keyframes popoverFadeInLeft {
+    from {
+        opacity: 0;
+        transform: translate(-100%, 10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate(-100%, 0);
+    }
+}
+
+.date-popover-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    font-weight: 500;
+    border-bottom: 1px solid var(--border-glass);
+    padding-bottom: 0.5rem;
+}
+
+.date-edit-input-popover {
+    width: 100%;
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--border-glass);
+    border-radius: 8px;
+    padding: 0.8rem;
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 0.95rem;
+    outline: none;
+    color-scheme: dark;
+    /* Force dark calendar picker */
+}
+
+.date-edit-input-popover:focus {
+    border-color: var(--accent-primary);
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.popover-actions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.popover-save-btn {
+    padding: 0.5rem 1rem;
+    background: var(--accent-gradient);
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(139, 92, 246, 0.3);
+    transition: all 0.2s;
+}
+
+.popover-save-btn:hover {
+    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.5);
+    transform: translateY(-1px);
+}

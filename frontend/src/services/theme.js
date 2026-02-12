@@ -6,86 +6,86 @@
 export const theme = {
     // Color Palette
     colors: {
-        // Primary Colors - Purple/Violet accents
+        // Minimalist Palette
         primary: {
-            main: '#8B7CFF',        // Vibrant purple (main accent)
-            light: '#A89FF5',       // Light pastel purple
-            dark: '#6B5DD6',        // Dark purple
-            glow: '#9D8FFF',        // Purple glow effect
+            main: '#171717',        // Neutral Black
+            light: '#404040',       // Dark Gray
+            dark: '#000000',        // Pure Black
+            glow: 'rgba(0, 0, 0, 0.1)', // Subtle shadow
         },
 
-        // Secondary Colors - Purple highlights
+        // Secondary Colors
         secondary: {
-            main: '#9D8FFF',        // Bright purple
-            light: '#B8ACFF',       // Light purple  
-            dark: '#7B6DD6',        // Dark purple
+            main: '#737373',        // Neutral Gray
+            light: '#a3a3a3',       // Light Gray
+            dark: '#52525b',        // Darker Gray
         },
 
-        // Background Colors - Dark theme
+        // Background Colors - Light theme
         background: {
-            primary: '#0A0A0A',     // Nearly black background
-            secondary: '#1A1A1A',   // Lighter black for panels
-            tertiary: '#252525',    // Card backgrounds
-            overlay: 'rgba(0, 0, 0, 0.85)', // Modal/overlay background
-            glass: 'rgba(26, 26, 26, 0.7)',  // Glassmorphism effect
+            primary: '#ffffff',     // Pure white
+            secondary: '#f9f9f9',   // Off-white for panels
+            tertiary: '#f3f3f3',    // Light gray for cards
+            overlay: 'rgba(255, 255, 255, 0.85)', // Modal/overlay background
+            glass: 'rgba(255, 255, 255, 0.7)',  // Glassmorphism effect
         },
 
         // Text Colors
         text: {
-            primary: '#FFFFFF',     // White - main text
-            secondary: '#B0B0B0',   // Light gray - secondary text
-            tertiary: '#808080',    // Medium gray - tertiary/disabled text
-            accent: '#A89FF5',      // Purple - highlighted text
-            muted: '#606060',       // Dark gray - muted text
+            primary: '#171717',     // Almost black
+            secondary: '#737373',   // Neutral gray
+            tertiary: '#a3a3a3',    // Light gray
+            accent: '#000000',      // Black accent
+            muted: '#d4d4d4',       // Muted text
         },
 
         // Border Colors
         border: {
-            primary: '#8B7CFF',     // Purple borders for highlighted elements
-            secondary: '#404040',   // Gray borders for standard elements
-            subtle: '#2A2A2A',      // Very subtle borders
-            glow: 'rgba(139, 124, 255, 0.5)', // Purple glow for borders
+            primary: '#e5e5e5',     // Light gray
+            secondary: '#d4d4d4',   // Medium gray
+            subtle: '#f3f3f3',      // Very subtle
+            glow: 'rgba(0, 0, 0, 0.05)',
         },
 
-        // Status Colors
+        // Status Colors - Muted/Pastel
         status: {
-            success: '#4CAF50',     // Green
-            warning: '#FFC107',     // Yellow/Orange
-            error: '#F44336',       // Red
-            info: '#2196F3',        // Blue
+            success: '#22c55e',     // Green
+            warning: '#f59e0b',     // Amber
+            error: '#ef4444',       // Red
+            info: '#3b82f6',        // Blue
         },
 
         // UI Elements
         ui: {
-            buttonPrimary: '#8B7CFF',
-            buttonSecondary: '#2A2A2A',
-            buttonHover: '#A89FF5',
-            inputBg: '#1A1A1A',
-            inputBorder: '#404040',
-            inputFocus: '#8B7CFF',
-            progressBar: '#8B7CFF',
-            progressBg: '#2A2A2A',
+            buttonPrimary: '#171717',
+            buttonSecondary: '#f3f3f3',
+            buttonHover: '#404040',
+            inputBg: '#ffffff',
+            inputBorder: '#e5e5e5',
+            inputFocus: '#171717',
+            progressBar: '#171717',
+            progressBg: '#e5e5e5',
         }
     },
 
-    // Typography
+    // Typography - Clean Sans
     typography: {
         fontFamily: {
-            primary: "'Rajdhani', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
-            secondary: "'Orbitron', 'Roboto Mono', monospace",
-            mono: "'JetBrains Mono', 'Courier New', monospace",
+            primary: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+            secondary: "'Inter', sans-serif",
+            mono: "'JetBrains Mono', monospace",
         },
 
         fontSize: {
-            xs: '0.75rem',      // 12px
-            sm: '0.875rem',     // 14px
-            base: '1rem',       // 16px
-            lg: '1.125rem',     // 18px
-            xl: '1.25rem',      // 20px
-            '2xl': '1.5rem',    // 24px
-            '3xl': '1.875rem',  // 30px
-            '4xl': '2.25rem',   // 36px
-            '5xl': '3rem',      // 48px
+            xs: '0.75rem',
+            sm: '0.875rem',
+            base: '1rem',
+            lg: '1.125rem',
+            xl: '1.25rem',
+            '2xl': '1.5rem',
+            '3xl': '1.875rem',
+            '4xl': '2.25rem',
+            '5xl': '3rem',
         },
 
         fontWeight: {
@@ -106,59 +106,59 @@ export const theme = {
         letterSpacing: {
             tight: '-0.02em',
             normal: '0',
-            wide: '0.05em',
-            wider: '0.1em',
+            wide: '0.02em',
+            wider: '0.05em',
         }
     },
 
     // Spacing Scale
     spacing: {
         0: '0',
-        1: '0.25rem',   // 4px
-        2: '0.5rem',    // 8px
-        3: '0.75rem',   // 12px
-        4: '1rem',      // 16px
-        5: '1.25rem',   // 20px
-        6: '1.5rem',    // 24px
-        8: '2rem',      // 32px
-        10: '2.5rem',   // 40px
-        12: '3rem',     // 48px
-        16: '4rem',     // 64px
-        20: '5rem',     // 80px
-        24: '6rem',     // 96px
+        1: '0.25rem',
+        2: '0.5rem',
+        3: '0.75rem',
+        4: '1rem',
+        5: '1.25rem',
+        6: '1.5rem',
+        8: '2rem',
+        10: '2.5rem',
+        12: '3rem',
+        16: '4rem',
+        20: '5rem',
+        24: '6rem',
     },
 
     // Border Radius
     borderRadius: {
         none: '0',
-        sm: '0.125rem',   // 2px
-        base: '0.25rem',  // 4px
-        md: '0.375rem',   // 6px
-        lg: '0.5rem',     // 8px
-        xl: '0.75rem',    // 12px
-        '2xl': '1rem',    // 16px
-        full: '9999px',   // Fully rounded
+        sm: '2px',
+        base: '4px',
+        md: '6px',
+        lg: '8px',
+        xl: '12px',
+        '2xl': '16px',
+        full: '9999px',
     },
 
-    // Shadows
+    // Shadows - Soft
     shadows: {
-        sm: '0 1px 2px 0 rgba(0, 0, 0, 0.5)',
-        base: '0 1px 3px 0 rgba(0, 0, 0, 0.7), 0 1px 2px 0 rgba(0, 0, 0, 0.6)',
-        md: '0 4px 6px -1px rgba(0, 0, 0, 0.8), 0 2px 4px -1px rgba(0, 0, 0, 0.6)',
-        lg: '0 10px 15px -3px rgba(0, 0, 0, 0.9), 0 4px 6px -2px rgba(0, 0, 0, 0.7)',
-        xl: '0 20px 25px -5px rgba(0, 0, 0, 0.9), 0 10px 10px -5px rgba(0, 0, 0, 0.8)',
-        '2xl': '0 25px 50px -12px rgba(0, 0, 0, 0.95)',
-        glow: '0 0 20px rgba(139, 124, 255, 0.4)',
-        glowStrong: '0 0 30px rgba(139, 124, 255, 0.6)',
-        inner: 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.6)',
+        sm: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
+        base: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.05)',
+        md: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.05)',
+        lg: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+        xl: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+        '2xl': '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
+        glow: '0 0 15px rgba(0, 0, 0, 0.05)',
+        glowStrong: '0 0 20px rgba(0, 0, 0, 0.1)',
+        inner: 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.05)',
     },
 
     // Transitions
     transitions: {
-        fast: '150ms cubic-bezier(0.4, 0, 0.2, 1)',
-        base: '200ms cubic-bezier(0.4, 0, 0.2, 1)',
-        medium: '300ms cubic-bezier(0.4, 0, 0.2, 1)',
-        slow: '500ms cubic-bezier(0.4, 0, 0.2, 1)',
+        fast: '150ms ease',
+        base: '200ms ease',
+        medium: '300ms ease',
+        slow: '500ms ease',
     },
 
     // Z-index Scale
@@ -173,7 +173,7 @@ export const theme = {
         tooltip: 1500,
     },
 
-    // Breakpoints (for responsive design)
+    // Breakpoints
     breakpoints: {
         xs: '320px',
         sm: '640px',
@@ -194,11 +194,11 @@ export const theme = {
         },
 
         gradients: {
-            primary: 'linear-gradient(135deg, #8B7CFF 0%, #9D8FFF 100%)',
-            dark: 'linear-gradient(180deg, #1A1A1A 0%, #0A0A0A 100%)',
-            overlay: 'linear-gradient(180deg, rgba(10, 10, 10, 0) 0%, rgba(10, 10, 10, 0.9) 100%)',
-            glow: 'radial-gradient(circle, rgba(139, 124, 255, 0.2) 0%, rgba(139, 124, 255, 0) 70%)',
-            progressBar: 'linear-gradient(90deg, #6B5DD6 0%, #8B7CFF 50%, #A89FF5 100%)',
+            primary: 'linear-gradient(135deg, #f3f3f3 0%, #ffffff 100%)',
+            dark: 'linear-gradient(180deg, #171717 0%, #000000 100%)',
+            overlay: 'linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.9) 100%)',
+            glow: 'radial-gradient(circle, rgba(0, 0, 0, 0.05) 0%, rgba(0, 0, 0, 0) 70%)',
+            progressBar: 'linear-gradient(90deg, #404040 0%, #171717 50%, #404040 100%)',
         },
 
         backdrop: {

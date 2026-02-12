@@ -26,42 +26,45 @@
 .edit-title-input {
     width: 100%;
     font-size: 1.1rem;
-    font-weight: 500;
+    font-weight: 600;
     padding: 0.8rem;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    background: #2c2c2e;
-    /* Dark input */
-    color: white;
-    border-radius: 8px;
+    border: 1px solid transparent;
+    background: var(--bg-card);
+    color: var(--text-primary);
+    border-radius: 12px;
     outline: none;
     font-family: inherit;
     transition: all 0.2s;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .edit-description-input {
     width: 100%;
     font-size: 0.95rem;
     padding: 0.8rem;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    background: #2c2c2e;
-    color: #ddd;
-    border-radius: 8px;
+    border: 1px solid transparent;
+    background: var(--bg-card);
+    color: var(--text-secondary);
+    border-radius: 12px;
     outline: none;
     font-family: inherit;
     resize: none;
     transition: all 0.2s;
     line-height: 1.5;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .edit-description-input:focus {
-    border-color: #5e5ce6;
-    box-shadow: 0 0 0 1px #5e5ce6;
-    background: #333;
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 0 2px rgba(167, 139, 250, 0.2);
+    background: rgba(0, 0, 0, 0.3);
+    color: var(--text-primary);
 }
 
 .edit-title-input:focus {
-    border-color: #5e5ce6;
-    box-shadow: 0 0 0 1px #5e5ce6;
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 0 2px rgba(167, 139, 250, 0.2);
+    background: rgba(0, 0, 0, 0.3);
 }
 
 .form-row {
@@ -75,7 +78,7 @@
     align-items: center;
     gap: 6px;
     font-size: 0.9rem;
-    color: #aaa;
+    color: var(--text-secondary);
     flex-shrink: 0;
     font-weight: 500;
     min-width: 90px;
@@ -86,16 +89,18 @@
     display: flex;
     align-items: center;
     gap: 4px;
-    background: #2c2c2e;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 8px;
+    background: var(--bg-card);
+    border: 1px solid transparent;
+    border-radius: 12px;
     padding: 6px 10px;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
     transition: all 0.2s;
 }
 
 .time-inputs:focus-within {
-    border-color: #5e5ce6;
+    border-color: var(--accent-primary);
+    background: rgba(0, 0, 0, 0.3);
+    box-shadow: 0 0 0 2px rgba(167, 139, 250, 0.2);
 }
 
 .time-input {
@@ -107,7 +112,7 @@
     font-size: 0.95rem;
     outline: none;
     font-family: inherit;
-    color: white;
+    color: var(--text-primary);
     appearance: textfield;
     -moz-appearance: textfield;
 }
@@ -119,7 +124,7 @@
 }
 
 .time-separator {
-    color: #666;
+    color: var(--text-secondary);
     font-weight: 500;
 }
 
@@ -131,20 +136,22 @@
 }
 
 .secondary-input {
-    background: #2c2c2e;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: var(--bg-hover);
+    border: 1px solid transparent;
     border-radius: 8px;
     padding: 0.6rem 0.8rem;
     outline: none;
     font-size: 0.9rem;
     width: 100%;
-    color: white;
+    color: var(--text-primary);
     font-family: inherit;
     transition: all 0.2s;
 }
 
 .secondary-input:focus {
-    border-color: #5e5ce6;
+    border-color: var(--border-subtle);
+    background: var(--bg-main);
+    box-shadow: var(--shadow-sm);
 }
 
 .task-card-inner {
@@ -168,24 +175,20 @@
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
     border-radius: 24px;
-
-    /* Common visual styles previously on card */
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+    box-shadow: var(--shadow-glass);
     overflow: hidden;
-    /* Ensure content stays within rounded corners */
+    border: var(--border-glass);
 }
 
 .task-card-front {
-    background: #1c1c1e;
-    /* Dark Card */
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: var(--bg-panel);
+    backdrop-filter: var(--blur-lg);
+    -webkit-backdrop-filter: var(--blur-lg);
     padding: 1.5rem;
     display: flex;
     flex-direction: column;
-    color: #f5f5f5;
+    color: var(--text-primary);
     overflow-y: auto;
-    /* Allow scrolling content internally if needed */
-    /* Scrollbar hide */
     scrollbar-width: none;
     -ms-overflow-style: none;
 }
@@ -195,10 +198,10 @@
 }
 
 .task-card-back {
-    background: #1c1c1e;
-    /* Pure white as requested */
+    background: var(--bg-panel);
+    backdrop-filter: var(--blur-lg);
+    -webkit-backdrop-filter: var(--blur-lg);
     transform: rotateY(180deg);
-    border: 1px solid rgba(255, 255, 255, 0.08);
     /* Subtle border for definition */
 }
 
@@ -210,17 +213,13 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    /* Reduced bottom margin as we moved tag */
     margin-bottom: 0.5rem;
 }
 
-/* Removed .task-content-tag as it is no longer used in header in this form, existing code might still need it but we changed JSX. 
-   We will keep it or replace it. I'll stick to new classes. */
-
 .task-content-close {
-    background: rgba(255, 255, 255, 0.05);
+    background: transparent;
     border: none;
-    color: #888;
+    color: var(--text-secondary);
     cursor: pointer;
     transition: all 0.2s ease;
     padding: 0.5rem;
@@ -229,12 +228,11 @@
     align-items: center;
     justify-content: center;
     margin-left: auto;
-    /* Push to right */
 }
 
 .task-content-close:hover {
-    background: rgba(255, 255, 255, 0.15);
-    color: white;
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-primary);
     transform: rotate(90deg);
 }
 
@@ -242,38 +240,31 @@
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
-    /* Default gap */
     flex: 1;
-    /* Take remaining height */
     min-height: 0;
-    /* Enable scrolling if needed inside flex child, though overflow is on card */
 }
 
 .task-title-large {
-    font-size: 2.5rem;
+    font-size: 2.2rem;
     font-weight: 700;
     line-height: 1.2;
-    color: white;
+    color: var(--text-primary);
     margin: 0;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
-/* Container to group title metas closely if needed, 
-   or just use gap override on elements */
 .task-meta-container {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-    /* Close gap between Tag/Time and Date */
     margin-top: -0.5rem;
 }
 
-/* New classes for attributes under title */
 .task-header-meta {
     display: flex;
     align-items: center;
     gap: 1.5rem;
-    color: #aaa;
-    /* Removed margins as parent container controls gap now */
+    color: var(--text-secondary);
 }
 
 .header-meta-item {
@@ -285,77 +276,21 @@
     background: rgba(255, 255, 255, 0.05);
     padding: 0.4rem 0.8rem;
     border-radius: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    color: #ccc;
+    border: 1px solid transparent;
+    color: var(--text-secondary);
 }
-
-.task-meta-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 1.5rem;
-    padding: 1.5rem;
-    background: rgba(255, 255, 255, 0.03);
-    border-radius: 16px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.meta-item {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-}
-
-.meta-icon {
-    color: var(--primary-color, #5e5ce6);
-    /* Purple */
-}
-
-.meta-text {
-    display: flex;
-    flex-direction: column;
-}
-
-.meta-label {
-    font-size: 0.8rem;
-    color: #888;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-}
-
-.meta-value {
-    font-size: 1.1rem;
-    font-weight: 500;
-}
-
-.task-header-meta-secondary {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-    color: #888;
-    /* Removed large margin bottom to fit tighter if needed, or keep if desireable */
-    margin-bottom: 0.5rem;
-}
-
-/* Reusing grid styles if they exist elsewhere? 
-   We removed .task-meta-grid usage. 
-   Keeping .meta-item/icon/text for reference or safety if used dynamically? 
-   Actually, I can just clean up if I'm sure. I'll leave them be to avoid breaking anything not seen.
-*/
 
 .task-description-section {
     font-size: 1.1rem;
     line-height: 1.6;
-    color: #ddd;
+    color: var(--text-primary);
     white-space: pre-wrap;
     font-weight: 400;
     flex-grow: 1;
     overflow-y: auto;
-    /* Allow description to scroll if very long */
     padding-right: 0.5rem;
-    /* Space for scrollbar */
 }
 
-/* Scrollbar for description */
 .task-description-section::-webkit-scrollbar {
     width: 6px;
 }
@@ -376,8 +311,7 @@
     align-items: center;
     justify-content: center;
     gap: 0.8rem;
-    background: #5e5ce6;
-    /* Purple Brand */
+    background: var(--accent-gradient);
     color: white;
     border: none;
     padding: 1rem;
@@ -386,23 +320,23 @@
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s ease;
+    box-shadow: 0 4px 12px rgba(167, 139, 250, 0.3);
 }
 
 .task-start-btn:hover {
-    background: #4a48c4;
+    opacity: 0.9;
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(94, 92, 230, 0.4);
+    box-shadow: 0 6px 16px rgba(167, 139, 250, 0.4), var(--shadow-glow);
 }
 
 .task-start-btn:active {
     transform: translateY(0);
 }
 
-/* Edit button style ( reusing close button style basically) */
 .task-content-action-btn {
-    background: rgba(255, 255, 255, 0.05);
+    background: transparent;
     border: none;
-    color: #888;
+    color: var(--text-secondary);
     cursor: pointer;
     transition: all 0.2s ease;
     padding: 0.5rem;
@@ -410,6 +344,15 @@
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.task-edit-btn-hover {
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.task-content-card:hover .task-edit-btn-hover {
+    opacity: 1;
 }
 
 /* Back Side Styles */
@@ -429,7 +372,7 @@
     font-size: 0.9rem;
     text-transform: uppercase;
     letter-spacing: 0.1em;
-    color: #888;
+    color: var(--text-secondary);
     font-weight: 700;
 }
 
@@ -445,17 +388,17 @@
     width: 100%;
     padding: 0.8rem;
     border: none;
-    border-bottom: 1px solid #444;
+    border-bottom: 1px solid var(--border-subtle);
     font-family: inherit;
     font-size: 1rem;
-    color: white;
+    color: var(--text-primary);
     outline: none;
     background: transparent;
     transition: border-color 0.2s;
 }
 
 .task-edit-input:focus {
-    border-bottom-color: #5e5ce6;
+    border-bottom-color: var(--accent);
 }
 
 .title-input {
@@ -482,11 +425,9 @@
 }
 
 .input-icon {
-    color: #888;
+    color: var(--text-secondary);
     flex-shrink: 0;
 }
-
-/* Textarea styles removed */
 
 .task-delete-btn {
     width: 100%;
@@ -494,10 +435,9 @@
     align-items: center;
     justify-content: center;
     gap: 0.8rem;
-    background: rgba(255, 77, 79, 0.1);
-    /* Danger color transparent */
-    color: #ff4d4f;
-    border: 1px solid rgba(255, 77, 79, 0.2);
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+    border: 1px solid rgba(239, 68, 68, 0.2);
     padding: 1rem;
     border-radius: 12px;
     font-size: 1.1rem;
@@ -507,10 +447,10 @@
 }
 
 .task-delete-btn:hover {
-    background: #ff4d4f;
+    background: #ef4444;
     color: white;
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(255, 77, 79, 0.2);
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
 }
 
 .task-delete-btn:active {
@@ -523,10 +463,10 @@
     top: 100%;
     left: 90px;
     right: 0;
-    background: var(--zen-bg-card);
-    border: var(--zen-border);
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
     border-radius: 8px;
-    box-shadow: var(--zen-shadow);
+    box-shadow: var(--shadow-lg);
     z-index: 10;
     max-height: 150px;
     overflow-y: auto;
@@ -536,8 +476,8 @@
 .tag-dropdown-item {
     padding: 10px;
     cursor: pointer;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    color: var(--zen-text-secondary);
+    border-bottom: 1px solid var(--border-subtle);
+    color: var(--text-secondary);
     transition: all 0.2s ease;
 }
 
@@ -546,10 +486,9 @@
 }
 
 .tag-dropdown-item:hover {
-    background: var(--zen-bg-hover);
-    color: var(--zen-text-primary);
+    background: var(--bg-hover);
+    color: var(--text-primary);
     padding-left: 14px;
-    /* Subtle slide effect */
 }
 
 .tag-dropdown-list::-webkit-scrollbar {
@@ -557,6 +496,6 @@
 }
 
 .tag-dropdown-list::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.1);
+    background: var(--border-subtle);
     border-radius: 3px;
 }

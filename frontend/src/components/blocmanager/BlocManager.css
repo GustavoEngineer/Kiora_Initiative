@@ -17,21 +17,28 @@
     z-index: 100;
     gap: 1rem;
     /* Symmetric spacing between task panel and sidebar */
+    padding-right: 1.5rem;
 }
 
 .right-sidebar-container {
     width: auto;
     /* Fit to content (cards) */
     min-width: 140px;
-    height: 100%;
-    /* Zen Mode Update */
-    background: transparent;
-    padding: 1rem;
+    height: auto;
+    max-height: 90vh;
+    /* Glassmorphism Update */
+    background: var(--bg-glass);
+    backdrop-filter: var(--blur-lg);
+    -webkit-backdrop-filter: var(--blur-lg);
+    border: var(--border-glass);
+    border-radius: var(--radius-xl);
+    padding: 1.5rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
     gap: 1.5rem;
     /* Increased gap for elegance */
+    box-shadow: var(--shadow-glass);
 
     /* Hide scrollbar */
     scrollbar-width: none;
@@ -49,12 +56,15 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 0.5rem;
+    padding-bottom: 1rem;
+    border-bottom: var(--border-glass);
 }
 
 .sidebar-title {
     font-size: 1.2rem;
-    font-weight: 700;
-    color: var(--zen-text-primary);
+    font-weight: 600;
+    color: var(--text-primary);
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
 .blocs-vertical-list {
@@ -67,7 +77,6 @@
 }
 
 /* Add Button in Header */
-/* Add Button in Header */
 .add-bloc-mini-btn {
     width: 36px;
     height: 36px;
@@ -75,16 +84,17 @@
     align-items: center;
     justify-content: center;
     border-radius: 12px;
-    background: var(--zen-bg-subtle);
-    color: var(--zen-text-primary);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: var(--bg-card);
+    color: var(--text-secondary);
+    border: var(--border-glass);
     cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.2s ease;
 }
 
 .add-bloc-mini-btn:hover {
     transform: translateY(-2px);
-    background: var(--zen-accent);
-    box-shadow: 0 4px 12px var(--zen-accent-glow);
-    border-color: transparent;
+    background: var(--bg-glass-hover);
+    color: var(--accent-primary);
+    box-shadow: 0 0 10px rgba(167, 139, 250, 0.2);
+    border-color: var(--accent-primary);
 }

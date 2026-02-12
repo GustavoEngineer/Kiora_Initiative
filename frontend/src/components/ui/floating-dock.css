@@ -1,33 +1,47 @@
 .floating-dock-container {
     display: flex;
     gap: 1rem;
-    padding: 1rem;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 2rem;
+    padding: 0.8rem 1.5rem;
+    background: var(--bg-glass);
+    backdrop-filter: var(--blur-lg);
+    -webkit-backdrop-filter: var(--blur-lg);
+    border-radius: 9999px;
     align-items: center;
     justify-content: center;
     height: 80px;
     margin-top: 5rem;
     margin-bottom: 2rem;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: var(--border-glass);
+    box-shadow: var(--shadow-glass);
 }
 
 .dock-icon-wrapper {
     aspect-ratio: 1;
     border-radius: 50%;
-    background: #2A2A2A;
+    background: rgba(255, 255, 255, 0.05);
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     position: relative;
-    color: var(--zen-text-primary);
+    color: var(--text-secondary);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 1px solid transparent;
+}
+
+.dock-icon-wrapper:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-primary);
+    transform: translateY(-8px) scale(1.1);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
 }
 
 .dock-icon-wrapper.active {
-    background: var(--zen-accent);
-    box-shadow: 0 0 20px var(--zen-accent-glow);
-    color: white;
+    background: var(--accent-gradient);
+    box-shadow: 0 4px 12px rgba(167, 139, 250, 0.4);
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-4px) scale(1.1);
 }
 
 .dock-icon-inner {
@@ -45,10 +59,10 @@
 
 .active-dot {
     position: absolute;
-    bottom: -10px;
-    width: 4px;
-    height: 4px;
-    background: var(--zen-accent);
+    bottom: -8px;
+    width: 6px;
+    height: 6px;
+    background: white;
     border-radius: 50%;
-    box-shadow: 0 0 5px var(--zen-accent);
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
 }

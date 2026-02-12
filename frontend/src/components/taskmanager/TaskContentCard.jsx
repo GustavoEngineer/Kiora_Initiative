@@ -1,79 +1,55 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { CloseLine, TimeLine, CalendarLine, TagLine, PlayLine, Edit2Line, Delete2Line, AddLine, CheckLine } from '@mingcute/react'
-import { updateTask, deleteTask, getTags, getSubtasks, createSubtask, updateSubtask, deleteSubtask } from '../../services/api'
+import { CloseLine, TimeLine, CalendarLine, TagLine, PlayLine, Delete2Line, AddLine, CheckLine, Edit2Line } from '@mingcute/react'
+import { updateTask, deleteTask, getSubtasks, createSubtask, updateSubtask, deleteSubtask, getTags, createTag } from '../../services/api'
 import TaskClock from './TaskClock'
+import TitleEditPopover from './Popovers/TitleEditPopover'
+import TagPopover from './Popovers/TagPopover'
+import DateEditPopover from './Popovers/DateEditPopover'
+import SubtaskPopover from './Popovers/SubtaskPopover'
+import TimeEditPopover from './Popovers/TimeEditPopover'
 import './TaskContentCard.css'
 
 const TaskContentCard = ({ task, onClose, onTaskUpdate, onTaskDelete }) => {
-    const [isFlipped, setIsFlipped] = useState(false)
     const [isTaskStarted, setIsTaskStarted] = useState(false)
-
-    // Split time estimation state
-    const [estHours, setEstHours] = useState('')
-    const [estMinutes, setEstMinutes] = useState('')
-
-    // Tag State
-    const [allTags, setAllTags] = useState([])
-    const [showTagDropdown, setShowTagDropdown] = useState(false)
 
     // Subtasks State
     const [subtasks, setSubtasks] = useState([])
     const [newSubtaskTitle, setNewSubtaskTitle] = useState('')
 
-    const [formData, setFormData] = useState({
-        title: '',
-        tag_name: '',
-        tag_id: null,
-        due_date: '',
-        description: ''
-    })
+    // Title Popover State
+    const [showTitlePopover, setShowTitlePopover] = useState(false)
+    const [titlePopoverPos, setTitlePopoverPos] = useState({ top: 0, left: 0 })
+    const [tempTitle, setTempTitle] = useState('')
 
-    // Fetch tags on mount
-    useEffect(() => {
-        const fetchTags = async () => {
-            try {
-                const tags = await getTags()
-                setAllTags(tags)
-            } catch (error) {
-                console.error('Error fetching tags:', error)
-            }
-        }
-        fetchTags()
-    }, [])
+    // Tag Popover State
+    const [showTagPopover, setShowTagPopover] = useState(false)
+    const [tagPopoverPos, setTagPopoverPos] = useState({ top: 0, left: 0 })
+    const [allTags, setAllTags] = useState([])
+    const [selectedTag, setSelectedTag] = useState(null)
+
+    // Date Popover State
+    const [showDatePopover, setShowDatePopover] = useState(false)
+    const [datePopoverPos, setDatePopoverPos] = useState({ top: 0, left: 0 })
+    const [tempDate, setTempDate] = useState('')
+
+    // Subtask Popover State
+    const [showSubtaskPopover, setShowSubtaskPopover] = useState(false)
+    const [subtaskPopoverPos, setSubtaskPopoverPos] = useState({ top: 0, left: 0 })
+
+    // Time Popover State
+    const [showTimePopover, setShowTimePopover] = useState(false)
+    const [timePopoverPos, setTimePopoverPos] = useState({ top: 0, left: 0 })
+
+    const editBtnRef = useRef(null)
+    const cardRef = useRef(null)
 
     // Reset loop
     useEffect(() => {
         setIsTaskStarted(false)
         if (task) {
-            let initialTagName = task.tag_name
-            // If tag_name is missing but we have the ID and the tags list, find it
-            if (!initialTagName && task.tag_id && allTags.length > 0) {
-                const foundTag = allTags.find(t => t.id === task.tag_id)
-                if (foundTag) initialTagName = foundTag.name
-            }
-
-            setFormData({
-                title: task.title || '',
-                tag_name: initialTagName || '',
-                tag_id: task.tag_id,
-                due_date: task.due_date ? task.due_date.split('T')[0] : '', // Format for date input
-                description: task.description || ''
-            })
-
-            // Init time
-            if (task.estimated_hours) {
-                const h = Math.floor(task.estimated_hours)
-                const m = Math.round((task.estimated_hours - h) * 60)
-                setEstHours(h.toString())
-                setEstMinutes(m.toString())
-            } else {
-                setEstHours('')
-                setEstMinutes('')
-            }
-
             fetchSubtasks(task.id)
         }
-    }, [task, allTags])
+    }, [task])
 
     const fetchSubtasks = async (taskId) => {
         try {
@@ -112,98 +88,7 @@ const TaskContentCard = ({ task, onClose, onTaskUpdate, onTaskDelete }) => {
         return validTime.trim() || '0m'
     }
 
-    const handleChange = (e) => {
-        const { name, value } = e.target
-        setFormData(prev => ({
-            ...prev,
-            [name]: value
-        }))
-    }
-
-    // Tag Handlers
-    const handleTagChange = (e) => {
-        setFormData(prev => ({ ...prev, tag_name: e.target.value }))
-        setShowTagDropdown(true)
-    }
-
-    const handleSelectTag = async (tag) => {
-        const newTagId = tag.id
-        const newTagName = tag.name
-
-        // Optimistic UI Update
-        setFormData(prev => ({
-            ...prev,
-            tag_name: newTagName,
-            tag_id: newTagId
-        }))
-        setShowTagDropdown(false)
-
-        // Trigger Save immediately
-        try {
-            // Re-calculate hours from current state
-            const h = parseInt(estHours) || 0
-            const m = parseInt(estMinutes) || 0
-            const totalHours = h + (m / 60)
-
-            const payload = {
-                title: formData.title || task.title,
-                estimated_hours: totalHours > 0 ? totalHours : null,
-                due_date: formData.due_date ? new Date(formData.due_date).toISOString() : (task.due_date || null),
-                completed: task.completed !== undefined ? task.completed : false,
-                bloc_id: task.bloc_id,
-                tag_id: newTagId, // Use the new ID directly
-                description: task.description
-            }
-
-            const updatedTask = await updateTask(task.id, payload)
-
-            if (onTaskUpdate) {
-                const taskWithTag = { ...updatedTask, tag_name: newTagName }
-                onTaskUpdate(taskWithTag)
-            }
-        } catch (error) {
-            console.error('Error updating tag:', error)
-            alert('Error al actualizar etiqueta')
-        }
-    }
-
-    // New handlers for time
-    const handleTimeChange = (type, value) => {
-        if (type === 'hours') setEstHours(value)
-        if (type === 'minutes') setEstMinutes(value)
-    }
-
-    const handleUpdate = async () => {
-        try {
-            // Calculate total hours
-            const h = parseInt(estHours) || 0
-            const m = parseInt(estMinutes) || 0
-            const totalHours = h + (m / 60)
-
-            const payload = {
-                title: formData.title || task.title,
-                estimated_hours: totalHours > 0 ? totalHours : null,
-                due_date: formData.due_date ? new Date(formData.due_date).toISOString() : (task.due_date || null),
-                completed: task.completed !== undefined ? task.completed : false,
-                bloc_id: task.bloc_id,
-                tag_id: formData.tag_id, // Use the updated tag_id
-                description: formData.description
-            }
-
-            const updatedTask = await updateTask(task.id, payload)
-
-            if (onTaskUpdate) {
-                // Ensure we pass back the tag_name for UI update if not returned by backend fully populated
-                const taskWithTag = { ...updatedTask, tag_name: formData.tag_name }
-                onTaskUpdate(taskWithTag)
-            }
-        } catch (error) {
-            console.error('Error updating task:', error)
-            alert('Error al actualizar tarea')
-        }
-    }
-
-    const handleDelete = async () => {
+    const handleDeleteClick = async () => {
         try {
             await deleteTask(task.id)
             if (onTaskDelete) {
@@ -266,18 +151,164 @@ const TaskContentCard = ({ task, onClose, onTaskUpdate, onTaskDelete }) => {
         }
     }
 
+    const handleEditClick = () => {
+        if (editBtnRef.current && cardRef.current) {
+            const btnRect = editBtnRef.current.getBoundingClientRect()
+            const cardRect = cardRef.current.getBoundingClientRect()
+
+            // Fallback to button rect if card rect is somehow failing/missing
+            // But main logic: LEFT of the CARD with a 20px gap
+            const leftPos = cardRect ? (cardRect.left - 20) : (btnRect.left - 320);
+
+            setTitlePopoverPos({
+                top: btnRect.top,
+                left: leftPos
+            })
+            setTempTitle(task.title)
+            setShowTitlePopover(true)
+        }
+    }
+
+    // Tag Logic
+    const fetchTags = async () => {
+        try {
+            const tags = await getTags()
+            setAllTags(tags)
+            const currentTag = tags.find(t => t.id === task.tag_id)
+            setSelectedTag(currentTag)
+        } catch (error) {
+            console.error('Error fetching tags:', error)
+        }
+    }
+
+    const handleEditTagClick = () => {
+        fetchTags()
+        // Position same as title popover for now, or maybe centered?
+        setTagPopoverPos(titlePopoverPos)
+        setShowTagPopover(true)
+    }
+
+    const handleTagSelect = async (tag) => {
+        try {
+            const updatedTask = await updateTask(task.id, { tag_id: tag.id })
+            setSelectedTag(tag)
+            if (onTaskUpdate) onTaskUpdate({ ...task, tag_id: tag.id, tag_name: tag.name })
+            setShowTagPopover(false)
+        } catch (error) {
+            console.error('Error updating tag:', error)
+        }
+    }
+
+    const handleCreateTag = async (newTagData) => {
+        try {
+            const newTag = await createTag(newTagData)
+            setAllTags(prev => [...prev, newTag])
+            handleTagSelect(newTag)
+        } catch (e) {
+            console.error(e)
+        }
+    }
+
+    // Date Logic
+    const handleEditDateClick = () => {
+        setTempDate(task.due_date || new Date().toISOString())
+        setDatePopoverPos(titlePopoverPos)
+        setShowDatePopover(true)
+    }
+
+    const handleDateSave = async () => {
+        if (!tempDate) {
+            setShowDatePopover(false)
+            return
+        }
+
+        try {
+            // Ensure we have a valid ISO string. tempDate from input type='date' is YYYY-MM-DD
+            // We might want to keep time if it exists, but type='date' strips it.
+            // For now, let's just save the date.
+            const dateObj = new Date(tempDate)
+            const isoDate = dateObj.toISOString()
+
+            const updatedTask = await updateTask(task.id, { due_date: isoDate })
+            if (onTaskUpdate) onTaskUpdate({ ...task, due_date: isoDate })
+            setShowDatePopover(false)
+        } catch (error) {
+            console.error('Error updating date:', error)
+            alert('Error al actualizar fecha')
+        }
+    }
+
+    const handleTitleSave = async () => {
+        if (!tempTitle.trim() || tempTitle === task.title) {
+            setShowTitlePopover(false)
+            return
+        }
+
+        try {
+            const updatedTask = await updateTask(task.id, { title: tempTitle })
+            if (onTaskUpdate) {
+                onTaskUpdate({ ...task, title: tempTitle })
+            }
+            setShowTitlePopover(false)
+        } catch (error) {
+            console.error('Error updating title:', error)
+            alert('Error al actualizar título')
+        }
+    }
+
+    // Subtask Popover Handlers
+    const handleEditSubtasksClick = () => {
+        setSubtaskPopoverPos(titlePopoverPos)
+        setShowSubtaskPopover(true)
+    }
+
+    const handleAddSubtaskFromPopover = async (title) => {
+        try {
+            const newSubtask = await createSubtask({
+                task_id: task.id,
+                title: title
+            })
+            setSubtasks(prev => [...prev, newSubtask])
+            if (onTaskUpdate) onTaskUpdate({ ...task })
+        } catch (error) {
+            console.error('Error adding subtask:', error)
+        }
+    }
+
+    const handleRemoveSubtaskFromPopover = async (index) => {
+        const subtaskToRemove = subtasks[index]
+        if (subtaskToRemove) {
+            await handleDeleteSubtask(subtaskToRemove.id)
+        }
+    }
+
+    // Time Popover Handlers
+    const handleEditTimeClick = () => {
+        setTimePopoverPos(titlePopoverPos)
+        setShowTimePopover(true)
+    }
+
+    const handleTimeSave = async (hours, minutes) => {
+        try {
+            const totalHours = hours + (minutes / 60)
+            const updatedTask = await updateTask(task.id, { estimated_hours: totalHours })
+            if (onTaskUpdate) onTaskUpdate({ ...task, estimated_hours: totalHours })
+            setShowTimePopover(false)
+        } catch (error) {
+            console.error('Error updating time:', error)
+        }
+    }
+
     return (
-        <div className={`task-content-card ${isTaskStarted ? 'started' : ''}`} onMouseLeave={() => {
-            setIsFlipped(false)
-            setShowTagDropdown(false)
-        }}>
-            <div className={`task-card-inner ${isFlipped ? 'flipped' : ''}`}>
+        <div className={`task-content-card ${isTaskStarted ? 'started' : ''}`} ref={cardRef}>
+            <div className="task-card-inner">
                 <div className="task-card-front">
                     <div className="task-content-header">
                         <button
-                            className="task-content-action-btn"
+                            ref={editBtnRef}
+                            className="task-content-action-btn task-edit-btn-hover"
                             title="Editar"
-                            onMouseEnter={() => setIsFlipped(true)}
+                            onClick={handleEditClick}
                         >
                             <Edit2Line size={24} />
                         </button>
@@ -299,7 +330,7 @@ const TaskContentCard = ({ task, onClose, onTaskUpdate, onTaskDelete }) => {
                             <div className="task-header-meta">
                                 <div className="header-meta-item">
                                     <TagLine size={18} />
-                                    <span>{formData.tag_name || task.tag_name || "Tarea"}</span>
+                                    <span>{task.tag_name || "Tarea"}</span>
                                 </div>
                                 <div className="header-meta-item">
                                     <TimeLine size={18} />
@@ -352,162 +383,6 @@ const TaskContentCard = ({ task, onClose, onTaskUpdate, onTaskDelete }) => {
                         </div>
                     </div>
                 </div>
-
-                <div className="task-card-back">
-                    <div className="task-back-content">
-                        <div className="task-back-header">
-                            <span className="task-back-title">Editar Tarea</span>
-                        </div>
-
-                        <div className="task-edit-form">
-                            {/* 1. Title Input */}
-                            <input
-                                type="text"
-                                name="title"
-                                className="edit-title-input"
-                                value={formData.title}
-                                onChange={handleChange}
-                                onBlur={handleUpdate}
-                                placeholder="Título de la tarea"
-                            />
-
-                            {/* 1.5. Description Input */}
-                            <textarea
-                                name="description"
-                                className="edit-description-input"
-                                value={formData.description}
-                                onChange={handleChange}
-                                onBlur={handleUpdate}
-                                placeholder="Descripción..."
-                                rows={4}
-                            />
-
-                            {/* 2. Time Estimation */}
-                            <div className="form-row time-estimation-row">
-                                <label className="form-label"><TimeLine size={14} /> Estimado:</label>
-                                <div className="time-inputs">
-                                    <input
-                                        type="number"
-                                        placeholder="HH"
-                                        className="time-input"
-                                        min="0"
-                                        value={estHours}
-                                        onChange={(e) => handleTimeChange('hours', e.target.value)}
-                                        onBlur={handleUpdate}
-                                    />
-                                    <span className="time-separator">:</span>
-                                    <input
-                                        type="number"
-                                        placeholder="MM"
-                                        className="time-input"
-                                        min="0"
-                                        max="59"
-                                        value={estMinutes}
-                                        onChange={(e) => handleTimeChange('minutes', e.target.value)}
-                                        onBlur={handleUpdate}
-                                    />
-                                </div>
-                            </div>
-
-                            {/* 3. Tag Input (Editable with dropdown) */}
-                            <div className="form-row" style={{ position: 'relative' }}>
-                                <label className="form-label"><TagLine size={14} /> Etiqueta:</label>
-                                <div style={{ width: '100%' }}>
-                                    <input
-                                        type="text"
-                                        name="tag_name"
-                                        className="secondary-input"
-                                        value={formData.tag_name}
-                                        onChange={handleTagChange}
-                                        onFocus={() => setShowTagDropdown(true)}
-                                        placeholder="Buscar etiqueta..."
-                                    />
-                                    {showTagDropdown && (
-                                        <div className="tag-dropdown-list">
-                                            {allTags
-                                                .filter(t => t.name.toLowerCase().includes((formData.tag_name || '').toLowerCase()))
-                                                .map(tag => (
-                                                    <div
-                                                        key={tag.id}
-                                                        className="tag-dropdown-item"
-                                                        onClick={() => handleSelectTag(tag)}
-                                                    >
-                                                        {tag.name}
-                                                    </div>
-                                                ))
-                                            }
-                                        </div>
-                                    )}
-                                </div>
-                            </div>
-
-                            {/* 4. Date Input */}
-                            <div className="form-row">
-                                <label className="form-label"><CalendarLine size={14} /> Fecha:</label>
-                                <input
-                                    type="date"
-                                    name="due_date"
-                                    className="secondary-input"
-                                    value={formData.due_date}
-                                    onChange={handleChange}
-                                    onBlur={handleUpdate}
-                                />
-                            </div>
-
-                            {/* Subtasks Edit */}
-                            <div className="form-row subtasks-edit-row">
-                                <label className="form-label">Subtareas:</label>
-                                <div className="subtasks-edit-list">
-                                    {subtasks.map(st => (
-                                        <div key={st.id} className="subtask-edit-item">
-                                            <input
-                                                type="text"
-                                                className="subtask-edit-input"
-                                                defaultValue={st.title}
-                                                onBlur={(e) => {
-                                                    if (e.target.value !== st.title) {
-                                                        handleUpdateSubtaskTitle(st.id, e.target.value)
-                                                    }
-                                                }}
-                                            />
-                                            <button
-                                                className="remove-subtask-btn"
-                                                onClick={() => handleDeleteSubtask(st.id)}
-                                            >
-                                                <Delete2Line size={16} />
-                                            </button>
-                                        </div>
-                                    ))}
-                                    <div className="add-subtask-row">
-                                        <input
-                                            type="text"
-                                            placeholder="Nueva subtarea..."
-                                            value={newSubtaskTitle}
-                                            onChange={(e) => setNewSubtaskTitle(e.target.value)}
-                                            onKeyDown={(e) => {
-                                                if (e.key === 'Enter') {
-                                                    e.preventDefault()
-                                                    handleAddSubtask(e)
-                                                }
-                                            }}
-                                            className="secondary-input"
-                                        />
-                                        <button className="add-subtask-btn" onClick={handleAddSubtask}>
-                                            <AddLine size={16} />
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="task-actions">
-                            <button className="task-delete-btn" onClick={handleDelete}>
-                                <Delete2Line size={20} />
-                                <span>Eliminar tarea</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
             </div>
 
             <TaskClock
@@ -515,6 +390,81 @@ const TaskContentCard = ({ task, onClose, onTaskUpdate, onTaskDelete }) => {
                 initialSeconds={(task.estimated_hours || 0) * 3600}
                 key={task.id}
             />
+
+            {showTitlePopover && (
+                <TitleEditPopover
+                    isOpen={showTitlePopover}
+                    position={titlePopoverPos}
+                    value={tempTitle}
+                    onChange={setTempTitle}
+                    onSave={handleTitleSave}
+                    onClose={() => setShowTitlePopover(false)}
+                    onDelete={handleDeleteClick}
+                    onEditTag={handleEditTagClick}
+                    onEditDate={handleEditDateClick}
+                    onEditSubtasks={handleEditSubtasksClick}
+                    onEditTime={handleEditTimeClick}
+                />
+            )}
+
+            {showTagPopover && (
+                <TagPopover
+                    isOpen={showTagPopover}
+                    position={tagPopoverPos}
+                    tags={allTags}
+                    selectedTag={selectedTag}
+                    onSelectTag={handleTagSelect}
+                    onCreateTag={handleCreateTag}
+                    onClose={() => setShowTagPopover(false)}
+                    style={{ transform: 'translate(-100%, 0)' }}
+                />
+            )}
+
+            {showDatePopover && (
+                <DateEditPopover
+                    isOpen={showDatePopover}
+                    position={datePopoverPos}
+                    value={tempDate}
+                    onChange={setTempDate}
+                    onSave={handleDateSave}
+                    onClose={() => setShowDatePopover(false)}
+                />
+            )}
+
+            {showSubtaskPopover && (
+                <SubtaskPopover
+                    isOpen={showSubtaskPopover}
+                    position={subtaskPopoverPos}
+                    subtasks={subtasks.map(s => s.title)} // Pass titles string array if popover expects strings, or modify popover? 
+                    // SubtaskPopover expects strings array based on previous view_file. 
+                    // Wait, view_file showed: 
+                    // subtasks.map((st, index) => ( ... <span className="subtask-text">{st}</span> ... ))
+                    // So it expects an array of strings. 
+                    // But my subtasks are objects {id, title, completed}.
+                    // I should map to strings here, OR update SubtaskPopover to handle objects. 
+                    // Since it's reused from TaskListPanel (creation mode), it likely uses strings.
+                    // For editing existing tasks, it's better if SubtaskPopover handles objects or I map them.
+                    // If I map to strings, I lose IDs for deletion in the popover if it relies on index. 
+                    // handleRemoveSubtaskFromPopover receives index. 
+                    // It will work if the array order is preserved.
+                    onAddSubtask={handleAddSubtaskFromPopover}
+                    onRemoveSubtask={handleRemoveSubtaskFromPopover}
+                    onClose={() => setShowSubtaskPopover(false)}
+                    style={{ transform: 'translate(-100%, 0)' }}
+                />
+            )}
+
+            {showTimePopover && (
+                <TimeEditPopover
+                    isOpen={showTimePopover}
+                    position={timePopoverPos}
+                    hours={Math.floor(task.estimated_hours || 0)}
+                    minutes={Math.round(((task.estimated_hours || 0) % 1) * 60)}
+                    onSave={handleTimeSave}
+                    onClose={() => setShowTimePopover(false)}
+                    style={{ transform: 'translate(-100%, 0)' }}
+                />
+            )}
         </div>
     )
 }

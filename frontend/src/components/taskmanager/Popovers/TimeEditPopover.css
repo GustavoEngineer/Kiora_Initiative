@@ -1,0 +1,97 @@
+.time-edit-popover {
+    width: 200px;
+    background: var(--bg-panel);
+    backdrop-filter: var(--blur-lg);
+    -webkit-backdrop-filter: var(--blur-lg);
+    border: var(--border-glass);
+    border-radius: var(--radius-lg);
+    padding: 1rem;
+    position: fixed;
+    box-shadow: var(--shadow-glass);
+    z-index: 2000;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    animation: popoverFadeInLeft 0.15s ease-out;
+}
+
+@keyframes popoverFadeInLeft {
+    from {
+        opacity: 0;
+        transform: translate(-100%, 10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate(-100%, 0);
+    }
+}
+
+.time-popover-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    font-weight: 500;
+    border-bottom: 1px solid var(--border-glass);
+    padding-bottom: 0.5rem;
+}
+
+.time-inputs-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.time-input-group {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.time-input {
+    width: 50px;
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--border-glass);
+    border-radius: 8px;
+    padding: 0.5rem;
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 1rem;
+    text-align: center;
+    outline: none;
+}
+
+.time-input:focus {
+    border-color: var(--accent-primary);
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.time-label {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.popover-actions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.popover-save-btn {
+    width: 100%;
+    padding: 0.5rem 1rem;
+    background: var(--text-primary);
+    border: none;
+    border-radius: 8px;
+    color: var(--bg-main);
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.popover-save-btn:hover {
+    opacity: 0.9;
+}

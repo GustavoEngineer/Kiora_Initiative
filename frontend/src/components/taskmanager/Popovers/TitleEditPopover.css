@@ -1,0 +1,95 @@
+.title-edit-popover {
+    position: absolute;
+    background: var(--bg-panel);
+    backdrop-filter: var(--blur-lg);
+    -webkit-backdrop-filter: var(--blur-lg);
+    border: var(--border-glass-light);
+    border-radius: 16px;
+    padding: 12px;
+    box-shadow: var(--shadow-glass);
+    z-index: 2147483647;
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    /* Animation */
+    animation: popoverFadeIn 0.2s ease-out;
+    margin-right: 10px;
+    /* Gap from the anchor */
+}
+
+@keyframes popoverFadeIn {
+    from {
+        opacity: 0;
+        transform: translate(-100%, 10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate(-100%, 0);
+    }
+}
+
+.title-edit-input-popover {
+    background: var(--bg-hover);
+    border: 1px solid transparent;
+    color: var(--text-primary);
+    font-size: 1.1rem;
+    padding: 10px;
+    border-radius: 8px;
+    outline: none;
+    font-family: inherit;
+    width: 100%;
+}
+
+.title-edit-input-popover:focus {
+    border-color: var(--border-subtle);
+    background: var(--bg-main);
+}
+
+.popover-actions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.popover-save-btn {
+    background: var(--text-primary);
+    color: var(--bg-main);
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.popover-save-btn:hover {
+    opacity: 0.9;
+}
+
+.popover-menu-item {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    padding: 10px;
+    text-align: left;
+    cursor: pointer;
+    font-size: 1rem;
+    border-radius: 6px;
+    transition: background 0.2s;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.popover-menu-item:hover {
+    background: var(--bg-hover);
+    color: var(--text-primary);
+}
+
+.popover-menu-item.delete-item:hover {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+}

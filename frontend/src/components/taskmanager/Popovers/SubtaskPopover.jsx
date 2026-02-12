@@ -9,7 +9,8 @@ const SubtaskPopover = ({
     subtasks,
     onAddSubtask,
     onRemoveSubtask,
-    onClose
+    onClose,
+    style = {}
 }) => {
     const [inputValue, setInputValue] = useState('')
     const inputRef = useRef(null)
@@ -20,6 +21,24 @@ const SubtaskPopover = ({
             setTimeout(() => inputRef.current?.focus(), 50)
         }
     }, [isOpen])
+
+    // Close on click outside
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (isOpen && !event.target.closest('.subtask-popover') && !event.target.closest('.subtask-trigger')) {
+                onClose()
+            }
+        }
+
+        const timer = setTimeout(() => {
+            document.addEventListener('mousedown', handleClickOutside)
+        }, 100)
+
+        return () => {
+            clearTimeout(timer)
+            document.removeEventListener('mousedown', handleClickOutside)
+        }
+    }, [isOpen, onClose])
 
     if (!isOpen) return null
 
@@ -42,7 +61,8 @@ const SubtaskPopover = ({
             className="subtask-popover"
             style={{
                 top: position.top,
-                left: position.left
+                left: position.left,
+                ...style
             }}
         >
             <div className="subtask-popover-header">

@@ -5,12 +5,12 @@
     transform: translate(-50%, -50%);
     width: 600px;
     height: 600px;
-    background: var(--zen-bg-card);
-    border-radius: var(--zen-radius);
+    background: var(--bg-card);
+    border-radius: var(--radius-xl);
     padding: 2rem;
-    color: var(--zen-text-primary);
-    box-shadow: var(--zen-shadow);
-    border: var(--zen-border);
+    color: var(--text-primary);
+    box-shadow: var(--shadow-2xl);
+    border: 1px solid var(--border-subtle);
     transition: all 0.3s ease;
     z-index: 2000;
     display: flex;
@@ -23,7 +23,7 @@
 .config-title {
     margin: 0;
     font-size: 2.5rem;
-    color: var(--zen-text-primary);
+    color: var(--text-primary);
     position: absolute;
     top: 2rem;
     width: 100%;
@@ -93,18 +93,18 @@
     justify-content: center;
     gap: 8px;
     font-size: 1.1rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow-sm);
 }
 
 .item-front {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    color: var(--zen-text-primary);
+    background: var(--bg-hover);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-primary);
 }
 
 .item-back {
-    background: var(--zen-bg-hover);
-    border: 1px solid var(--zen-accent);
+    background: var(--bg-main);
+    border: 1px solid var(--accent);
     transform: rotateX(180deg);
     padding: 0 8px;
     justify-content: space-between;
@@ -113,7 +113,7 @@
 .tag-importance-dot {
     width: 8px;
     height: 8px;
-    background-color: var(--zen-accent);
+    background-color: var(--accent);
     border-radius: 50%;
 }
 
@@ -122,8 +122,8 @@
     width: 80px;
     background: transparent;
     border: none;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-    color: var(--zen-text-primary);
+    border-bottom: 1px solid var(--border-subtle);
+    color: var(--text-primary);
     font-size: 0.9rem;
     padding: 2px 0;
     text-align: center;
@@ -131,7 +131,7 @@
 }
 
 .item-edit-input:focus {
-    border-bottom-color: var(--zen-accent);
+    border-bottom-color: var(--accent);
 }
 
 .item-delete-btn {
@@ -168,26 +168,24 @@
 .workday-large-display {
     font-size: 6rem;
     font-weight: 700;
-    color: var(--zen-text-primary);
+    color: var(--text-primary);
     cursor: pointer;
     line-height: 1;
     transition: all 0.2s ease;
-    text-shadow: 0 0 20px rgba(139, 92, 246, 0.2);
 }
 
 .workday-large-display:hover {
-    color: var(--zen-accent);
+    color: var(--accent);
     transform: scale(1.05);
-    text-shadow: 0 0 30px var(--zen-accent-glow);
 }
 
 .workday-large-input {
     font-size: 6rem;
     font-weight: 700;
-    color: var(--zen-accent);
+    color: var(--accent);
     background: transparent;
     border: none;
-    border-bottom: 2px solid var(--zen-accent);
+    border-bottom: 2px solid var(--accent);
     width: 200px;
     text-align: center;
     outline: none;
@@ -203,7 +201,7 @@
 
 .workday-label {
     margin-top: 1rem;
-    color: var(--zen-text-secondary);
+    color: var(--text-secondary);
     font-size: 1.2rem;
     letter-spacing: 0.05em;
     text-transform: uppercase;
